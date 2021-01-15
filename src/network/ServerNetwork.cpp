@@ -4,18 +4,14 @@
 #include <string>
 #include <network/ServerNetwork.h>
 
-/// TODO:
-//  Handle clientSocket disconnection
-
 ServerNetwork::ServerNetwork(int port)
 {
     this->listenSocket = NetworkService::createServerSocket(port);
     this->threadAccept = std::thread (&ServerNetwork::startAccepting, this);
 
-    /// TODO:
-    // remove hardcoding for 4, (maybe put in config?)
-    // Add available clientIds to queue
-    for (unsigned int i = 0; i < 4; i++) {
+    // Get max players from config, add ids to queue
+    int playerCount = std::stoi(Config::get("Max_Players"));
+    for (int i = 0; i < playerCount; i++) {
         clientIdQueue.push(i);
     }
 }
@@ -43,7 +39,7 @@ unsigned int ServerNetwork::getNextId()
 
 void ServerNetwork::startAccepting()
 {
-    std::cout << "Accepting Clients" << std::endl;
+    std::cout << "Accepting Clients\n";
     while (1) {
         SOCKET clientSocket = accept(listenSocket, NULL, NULL);
         if (WSAGetLastError() == WSAEWOULDBLOCK) {
@@ -57,10 +53,23 @@ void ServerNetwork::startAccepting()
             return;
         }
 
-        unsigned int clientId = getNextId();
-        std::cout << "Accepted Client #" << clientId << std::endl;
-
-        this->addClient(clientId, clientSocket);
+        // Empty, force disconnect client
+        if (clientIdQueue.empty())
+        {
+            std::cout << "no more player slots available, closing the connection" << std::endl;
+            Game::ServerMessage* msg = MessageBuilder::toServerDisconnectMsg(Config::get("Max_Player_Disconnect_Msg"));
+            sendToSocket(clientSocket, *msg);
+            delete msg;
+            closesocket(clientSocket);
+        }
+        // Slot available, continue
+        else
+        {
+            std::cout << "slot available, continuing" << std::endl;
+            unsigned int clientId = getNextId();
+            std::cout << "Accepted Client #" << clientId << std::endl;
+            this->addClient(clientId, clientSocket);
+        }
     }
 }
 
@@ -156,6 +165,17 @@ void ServerNetwork::send(unsigned int clientId, Game::ServerMessage message)
     message.SerializeToArray(buf + sizeof(size_t), msgSize);
 
     NetworkService::sendMessage(this->sessions[clientId], buf, bufSize);
+}
+
+void ServerNetwork::sendToSocket(SOCKET socket, Game::ServerMessage message)
+{
+    size_t msgSize = message.ByteSizeLong();
+    size_t bufSize = msgSize + sizeof(size_t);
+    char buf[bufSize];
+    memcpy(buf, &msgSize, sizeof(size_t));
+    message.SerializeToArray(buf + sizeof(size_t), msgSize);
+
+    NetworkService::sendMessage(socket, buf, bufSize);
 }
 
 void ServerNetwork::sendToAll(Game::ServerMessage message) 

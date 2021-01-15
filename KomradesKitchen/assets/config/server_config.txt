@@ -18,6 +18,10 @@ Recipe_Choice=2
 // GAMEPLAY VARIABLES
 // // //
 
+// Maximum number of players (Will not support more than 4 currently)
+Max_Players=4
+Max_Player_Disconnect_Msg=Too many players
+
 // Bounding box sizings (collisions)
 Object_Default_Width=1
 Object_Default_Depth=1

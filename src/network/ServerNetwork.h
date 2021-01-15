@@ -1,3 +1,5 @@
+#pragma once
+
 #include <network/NetworkService.h>
 #include <map>
 #include <unordered_map>
@@ -6,6 +8,8 @@
 #include <functional>
 #include <queue>
 #include <schema/Game.pb.h>
+#include <util/Config.h>
+#include <util/MessageBuilder.h>
 
 class ServerNetwork
 {
@@ -25,14 +29,21 @@ public:
      * @param clientId The client to send a message to
      * @param msg The message to send
      * */
-    void send(unsigned int clientId, Game::ServerMessage msg);
+    void send(unsigned int clientId, Game::ServerMessage message);
 
     /**
      * Sends a server message to all clients.
      * 
      * @param msg The message to send
      * */
-    void sendToAll(Game::ServerMessage msg);
+    void sendToAll(Game::ServerMessage message);
+
+    /**
+     * Sends a server message to a specific socket.
+     * @param socket The socket to send a message to
+     * @param msg The message to send
+     * */
+    void sendToSocket(SOCKET socket, Game::ServerMessage message);
 
     /**
      * Reads all messages queued in the socket.
