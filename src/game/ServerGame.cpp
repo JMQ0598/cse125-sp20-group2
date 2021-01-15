@@ -428,7 +428,7 @@ void ServerGame::onRoundChange()
     {
         case Game::RoundInfo::LOBBY:
         {
-            std::cout << "initializing lobby" << std::endl;
+            std::cout << "Initializing Lobby\n";
             break;
         }
         case Game::RoundInfo::DUNGEON_WAITING:

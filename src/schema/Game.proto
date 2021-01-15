@@ -43,6 +43,7 @@ message ServerMessage {
         RoundWin win = 8;
         ValidateCooking validCook = 9;
         InstructionInfo instruction = 10;
+        DisconnectInfo disconnect = 11;
     }
 }
 
@@ -120,4 +121,8 @@ message RoundWin {
 message ValidateCooking {
     required string message = 1;
     required bool valid = 2;
+}
+
+message DisconnectInfo {
+    required string message = 1;
 }

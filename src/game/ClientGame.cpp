@@ -473,6 +473,16 @@ void ClientGame::updateGameState()
                 break;
             }
 
+            case Game::ServerMessage::EventCase::kDisconnect:
+            {
+                /// TODO:
+                // Put actions taken by client during a force disconnect
+                std::cout << " got a disconnect message " << std::endl;
+                std::cout << "reason: " + currMessage.disconnect().message() << std::endl;
+
+                break;
+            }
+
             // All other messages
             default:
             {
