@@ -21,6 +21,7 @@ Window::Window(int width = Config::getFloat("Window_Width"), int height = Config
 	this->camera = new Camera(Config::getVec3("Camera_Location"));
 	this->inventory = NULL;
 	this->vodkaActive = false;
+	this->showSettings = false;
 }
 
 
@@ -378,6 +379,10 @@ void Window::render()
 	else if (this->round == LOBBY_NUM)
 	{
 		ui.UILobbyScreen();
+	}
+
+	if (showSettings) {
+		ui.UIControls(this->glfwViewport);
 	}
 
 	selectedIngredient = tmp != NULL? tmp: selectedIngredient;

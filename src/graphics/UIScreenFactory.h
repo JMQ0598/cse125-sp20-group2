@@ -1,12 +1,20 @@
 #pragma once
 
-#include <gui/imgui_impl_glfw.h>
-#include <gui/imgui_impl_opengl3.h>
+// Standard library
 #include <string>
 #include <unordered_map>
+
+// ImGui
+#include <gui/imgui_impl_glfw.h>
+#include <gui/imgui_impl_opengl3.h>
+
 #include <objects/Ingredient.h>
 #include <constants/gameplay_vars.h>
 #include <graphics/stb_image.h>
+
+// OpenGL function pointers
+#include <glad/glad.h>		// Include this...
+#include <GLFW/glfw3.h>		// ...before this.
 
 class UIScreenFactory {
 public:
@@ -48,6 +56,7 @@ public:
 	Ingredient* UIButtonInventory(std::unordered_map<int, Ingredient*>* map);
 	void UICookingEvent(std::string);
 	void UIInstructionSet(std::vector<std::string>, std::string recipeName);
+	void UIControls(GLFWwindow* window);
 
 	void UIGameOver(bool gameWin);
 

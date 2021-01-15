@@ -41,6 +41,7 @@ class Window
 {
 public:
     bool isClosed;
+    bool showSettings;
     Window(int width, int height);
 
     std::unordered_map<int, GameObject*> objectsToRender;

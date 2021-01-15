@@ -43,8 +43,22 @@ ClientGame::~ClientGame()
     delete winner;
 }
 
+/**
+ * Callback handles key bindings that involve a single key press (not held down)
+ * Differs from processInput in that it does not query the key every frame.
+ */
 void ClientGame::keyBindsHandler(GLFWwindow* glfwWindow, int key, int scancode, int action, int mods)
 {
+    // Handles displaying the Settings Menu
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    {
+        std::cout << "opening settings menu" << std::endl;
+        this->window->showSettings ^= true;
+    }
+
+    // No (other) input while settings menu is open
+    if (this->window->showSettings) return;
+
     // Handles ready up
     if (key == GLFW_KEY_R && action == GLFW_PRESS)
     {
@@ -75,16 +89,80 @@ void ClientGame::keyBindsHandler(GLFWwindow* glfwWindow, int key, int scancode, 
     }
 }
 
+/**
+ * Take in input from the viewport window
+ */
+void ClientGame::processInput()
+{
+    // No input while settings menu is open
+    if (this->window->showSettings) return;
+
+    // Message to send
+    Game::ClientMessage movementMessage;
+    Game::ClientMessage rotationMessage;
+
+    // Get key inputs and set direction of message
+    if (glfwGetKey(window->glfwViewport, GLFW_KEY_W) == GLFW_PRESS &&
+    glfwGetKey(window->glfwViewport, GLFW_KEY_S) == GLFW_PRESS) {
+        // Do nothing: The movements should cancel each other out.
+    }
+    else if (glfwGetKey(window->glfwViewport, GLFW_KEY_W) == GLFW_PRESS)
+    {
+        movementMessage.set_direction(Game::Direction::UP);  
+    }
+	else if (glfwGetKey(window->glfwViewport, GLFW_KEY_S) == GLFW_PRESS) 
+    {
+        movementMessage.set_direction(Game::Direction::DOWN); 
+    }
+
+    
+    if (glfwGetKey(window->glfwViewport, GLFW_KEY_A) == GLFW_PRESS &&
+    glfwGetKey(window->glfwViewport, GLFW_KEY_D) == GLFW_PRESS) {
+        // Do nothing: The movements should cancel each other out.
+    }
+	else if (glfwGetKey(window->glfwViewport, GLFW_KEY_A) == GLFW_PRESS)
+    {
+        rotationMessage.set_direction(Game::Direction::LEFT); 
+    }
+	else if (glfwGetKey(window->glfwViewport, GLFW_KEY_D) == GLFW_PRESS)
+    {
+        rotationMessage.set_direction(Game::Direction::RIGHT); 
+    }
+    // Send message only if it has a direction associated with it
+    if (movementMessage.has_direction()) {
+        this->client.send(movementMessage);
+    }
+    if (rotationMessage.has_direction()) {
+        this->client.send(rotationMessage);
+    }
+
+    // Camera movement options (client-side only)
+    if (glfwGetKey(window->glfwViewport, GLFW_KEY_UP) == GLFW_PRESS)
+		window->camera->processKeyMovement(FORWARD);
+    if (glfwGetKey(window->glfwViewport, GLFW_KEY_DOWN) == GLFW_PRESS)
+		window->camera->processKeyMovement(BACKWARD);
+    if (glfwGetKey(window->glfwViewport, GLFW_KEY_LEFT) == GLFW_PRESS)
+		window->camera->processKeyMovement(LEFT);
+    if (glfwGetKey(window->glfwViewport, GLFW_KEY_RIGHT) == GLFW_PRESS)
+		window->camera->processKeyMovement(RIGHT);
+}
+
+/**
+ * Main game loop.
+ */
 void ClientGame::runGame() 
 {
     // Background music
     music.openFromFile(Config::get("8bit_Paradise"));
-    music.setVolume(Config::getInt("Background_Music_Volume"));
     music.setLoop(true);
     music.play();
 
+    // Game loop runs while window is open
     while(!window->isClosed) 
     {
+        // Update volume
+        music.setVolume(Config::getInt("Background_Music_Volume"));
+
         // Take local input
         // Send to the server
         processInput();
@@ -100,11 +178,17 @@ void ClientGame::runGame()
     }
 }
 
+/**
+ * Read update messages from server
+ */
 void ClientGame::receiveUpdates()
 {
     client.read();
 }
 
+/**
+ * Apply changes to game state based on server messages
+ */
 void ClientGame::updateGameState()
 {
     // Process messages to update client game state
@@ -398,64 +482,4 @@ void ClientGame::updateGameState()
         //PrintUtil::print(currMessage);
     }
     client.messages.clear();
-}
-
-/**
- * Take in input from the viewport window->
- * */
-void ClientGame::processInput()
-{
-	// Exit application.
-	if (glfwGetKey(window->glfwViewport, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-		glfwSetWindowShouldClose(window->glfwViewport, true);
-	}
-
-    // Message to send
-    Game::ClientMessage movementMessage;
-    Game::ClientMessage rotationMessage;
-
-    // Get key inputs and set direction of message
-    if (glfwGetKey(window->glfwViewport, GLFW_KEY_W) == GLFW_PRESS &&
-    glfwGetKey(window->glfwViewport, GLFW_KEY_S) == GLFW_PRESS) {
-        // Do nothing: The movements should cancel each other out.
-    }
-    else if (glfwGetKey(window->glfwViewport, GLFW_KEY_W) == GLFW_PRESS)
-    {
-        movementMessage.set_direction(Game::Direction::UP);  
-    }
-	else if (glfwGetKey(window->glfwViewport, GLFW_KEY_S) == GLFW_PRESS) 
-    {
-        movementMessage.set_direction(Game::Direction::DOWN); 
-    }
-
-    
-    if (glfwGetKey(window->glfwViewport, GLFW_KEY_A) == GLFW_PRESS &&
-    glfwGetKey(window->glfwViewport, GLFW_KEY_D) == GLFW_PRESS) {
-        // Do nothing: The movements should cancel each other out.
-    }
-	else if (glfwGetKey(window->glfwViewport, GLFW_KEY_A) == GLFW_PRESS)
-    {
-        rotationMessage.set_direction(Game::Direction::LEFT); 
-    }
-	else if (glfwGetKey(window->glfwViewport, GLFW_KEY_D) == GLFW_PRESS)
-    {
-        rotationMessage.set_direction(Game::Direction::RIGHT); 
-    }
-    // Send message only if it has a direction associated with it
-    if (movementMessage.has_direction()) {
-        this->client.send(movementMessage);
-    }
-    if (rotationMessage.has_direction()) {
-        this->client.send(rotationMessage);
-    }
-
-    // Camera movement options (client-side only)
-    if (glfwGetKey(window->glfwViewport, GLFW_KEY_UP) == GLFW_PRESS)
-		window->camera->processKeyMovement(FORWARD);
-    if (glfwGetKey(window->glfwViewport, GLFW_KEY_DOWN) == GLFW_PRESS)
-		window->camera->processKeyMovement(BACKWARD);
-    if (glfwGetKey(window->glfwViewport, GLFW_KEY_LEFT) == GLFW_PRESS)
-		window->camera->processKeyMovement(LEFT);
-    if (glfwGetKey(window->glfwViewport, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		window->camera->processKeyMovement(RIGHT);
 }

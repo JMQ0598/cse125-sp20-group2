@@ -259,6 +259,82 @@ void UIScreenFactory::UILobbyScreen() {
 	ImGui::End();
 }
 
+void UIScreenFactory::UIControls(GLFWwindow* window) {
+	
+	// Setup
+	ImGui::SetNextWindowPos(ImVec2(400, 400), ImGuiCond_Once);
+	setWindowSize(ImVec2(800, 400));
+	ImGui::Begin("Settings");
+	ImGui::SetWindowFontScale(Config::getFloat("Font_Scale"));
+
+	// Controls to change volume
+	UIText("Volume");
+	int * val = new int();
+	*val = Config::getInt("Sound_Effect_Volume");
+	if (ImGui::SliderInt("SFX Volume", val, 0, 100)) 
+	{
+		Config::setInt("Sound_Effect_Volume", *val);
+	}
+	*val = Config::getInt("Background_Music_Volume");
+	if (ImGui::SliderInt("Music Volume", val, 0, 100)) 
+	{
+		Config::setInt("Background_Music_Volume", *val);
+	}
+	delete val;
+
+	// Controls to change input keybindings
+	/*UIText("Controls (click to change keybind)");
+
+	UIText("Walk Forward");
+	if ( ImGui::InputText(glfwGetKeyName(Config::getInt("Walk_Forward"), 32), buf, 2) ) 
+	{
+		Config::setInt("Walk_Forward", 66);
+	}
+
+	UIText("Walk Backward");
+	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Walk_Backward"), 32)) ) 
+	{
+
+	}
+
+	UIText("Turn Left");
+	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Turn_Left"), 32)) ) 
+	{
+
+	}
+
+	UIText("Turn Right");
+	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Turn_Right"), 32)) )
+	{
+
+	}
+
+	UIText("Action");
+	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Action"), 32)) )
+	{
+
+	}
+	UIText("Ready");
+	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Ready"), 32)) ) 
+	{
+
+	}
+	UIText("Open Settings");
+	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Open_Settings"), 32)) )
+	{
+
+	}
+	*/
+
+	// Exit button
+	if (ImGui::Button("Exit Game")) {
+		glfwSetWindowShouldClose(window, true);
+	}
+
+	// Finished
+	ImGui::End();
+}
+
 void UIScreenFactory::UIText(std::string str) {
 	ImGui::Text(str.c_str());
 }

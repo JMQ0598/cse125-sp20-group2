@@ -30,7 +30,7 @@ class ClientGame {
         ~ClientGame();
         void setupAndRun();
         void runGame();
-
+        
         // Used to register single key presses
         void keyBindsHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 
