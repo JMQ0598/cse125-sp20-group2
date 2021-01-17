@@ -4,9 +4,9 @@
 NetworkClient::NetworkClient(std::string host, int port)
 {
     this->ConnectSocket = NetworkService::createClientSocket((char *) host.c_str(), port);
-    if (this->ConnectSocket == INVALID_SOCKET) {
+    /*if (this->ConnectSocket == INVALID_SOCKET) {
         exit(ERROR);
-    }
+    }*/
 }
 
 NetworkClient::~NetworkClient()

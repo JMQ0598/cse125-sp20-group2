@@ -14,7 +14,7 @@ OUT_DIR = build
 BIN_DIR = KomradesKitchen/assets
 
 CC = g++
-FLAG = -ggdb -Wall -pthread -Isrc -g -mwindows
+FLAG = -ggdb -Wall -pthread -Isrc -g #-mwindows
 LIBS = -lws2_32 -lsfml-audio -lwsock32 -lprotobuf -lassimp -lglfw3 -lgdi32 -luser32 -lSOIL -lopengl32
 SRC := $(shell find $(SRC_DIR) -name "*.cpp")
 HDR := $(shell find $(HDR_DIR) -name "*.h")
@@ -37,7 +37,7 @@ $(OUT_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) $(FLAG) -c $< -o $@
 
 LOBBY:
-	g++ -ggdb -Wall -mwindows -pthread -Isrc -g LobbySetup.cpp -o KomradesKitchen/Assets/LobbySetup.exe -luser32 -lgdi32
+	g++ -ggdb -Wall -pthread -mwindows -Isrc -g LobbySetup.cpp -o KomradesKitchen/Assets/LobbySetup.exe -luser32 -lgdi32
 
 clean:
 	rm -rf $(OUT_DIR)

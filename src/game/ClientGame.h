@@ -11,6 +11,7 @@
 #include <util/MapBuilder.h>
 #include <SFML/Audio.hpp>
 #include <util/Config.h>
+#include <constants/error_vals.h>
 
 class ClientGame {
     public:
@@ -28,13 +29,16 @@ class ClientGame {
 
         ClientGame(std::string IP, int port);
         ~ClientGame();
-        void setupAndRun();
-        void runGame();
+        int runGame();
         
         // Used to register single key presses
         void keyBindsHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 
     private:
+
+        // Indicates some sort of error. Returned by run.
+        int exitCode = 0;
+
         NetworkClient client;
         Window* window;
         GameObject* winner;

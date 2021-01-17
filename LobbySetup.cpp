@@ -6,7 +6,7 @@
 #include <iostream>
 
 // Filepath
-const char* EXEC_FILE = "gg.exe"; 
+std::string EXEC_FILE = "gg.exe"; 
 
 // BG color
 const COLORREF BG_COLOR = RGB(215, 55, 55);
@@ -48,6 +48,7 @@ const char* ERR_EMFILE = "Too many files open (the specified file must be opened
 const char* ERR_ENOENT = "The file or path not found.";
 const char* ERR_ENOEXEC = "The specified file is not executable or has an invalid executable-file format.";
 const char* ERR_ENOMEM = "Not enough memory is available to execute the new process; the available memory has been corrupted; or an invalid block exists, indicating that the calling process was not allocated properly.";
+const char* ERR_GENERIC = "Unable to spawn game process.";
 
 /**
  * Used for debugging when a process fails to spawn.
@@ -82,17 +83,43 @@ void errorSpawningProcess() {
 /**
  * Creates a thread to host a server and detaches the thread from this one.
  */
-void spawnHost(int port) {
-    const char* const argv[] = {EXEC_FILE, "server", std::to_string(port).c_str()};
-    _execv(EXEC_FILE, argv);
+void spawnHost() 
+{    
+    // Process/Startup info setup
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    ZeroMemory(&pi, sizeof(pi));
+
+    if (!CreateProcess(NULL, strdup(std::string(EXEC_FILE + " server " + std::to_string(port)).c_str()),
+            NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
+    {
+        SetWindowText(hStatus, ERR_GENERIC);
+    } else {
+        ExitProcess(0);
+    }
 }
 
 /**
  * Creates a thread to join a server and detaches the thread from this one.
  */
-void spawnClient(std::string host, int port) {
-    const char* const argv[] = {EXEC_FILE, "client", host.c_str()};
-    _execv(EXEC_FILE, argv);
+void spawnClient() 
+{
+    // Process/Startup info setup
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    ZeroMemory(&pi, sizeof(pi));
+
+    if (!CreateProcess(NULL, strdup(std::string(EXEC_FILE + " client " + std::to_string(port) + " " + hostIP).c_str()),
+            NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
+    {
+        SetWindowText(hStatus, ERR_GENERIC);
+    } else {
+        ExitProcess(0);
+    }
 }
 
 void clearStatusWarning() {
@@ -211,9 +238,9 @@ LRESULT CALLBACK WndProc(
             // Handle if host button is clicked
             ///TODO: Check to make sure port/IP is valid - send response otherwise
             if (LOWORD(wParam) == HOST_BTN_ID) {
-                if (getPort()) spawnHost(0);
+                if (getPort()) spawnHost();
             } else if (LOWORD(wParam) == JOIN_BTN_ID) {
-                if (getPort() && getHostIP()) spawnClient(hostIP, port);
+                if (getPort() && getHostIP()) spawnClient();
             }
             break;
 
