@@ -315,4 +315,19 @@ public:
         // Return
         return ret;
     }
+
+    /**
+     * Helper method to check if a key is already bound in
+     * the config
+     * */
+    static bool noConflictingKey(int newKey) {
+        if (getInt("Walk_Forward") == newKey)       return false;
+        else if (getInt("Walk_Backward") == newKey) return false;
+        else if (getInt("Turn_Left") == newKey)     return false;
+        else if (getInt("Turn_Right") == newKey)    return false;
+        else if (getInt("Action") == newKey)        return false;
+        else if (getInt("Ready") == newKey)         return false;
+        else if (getInt("Open_Settings") == newKey) return false;
+        return true;
+    }
 };

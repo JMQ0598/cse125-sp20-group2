@@ -42,6 +42,14 @@ ClientGame::~ClientGame()
 }
 
 /**
+ * Helper method to check if a key is not printable, therefore not
+ * mappable
+ * */
+bool isMappable(int key) {
+    return glfwGetKeyName(key, 256) != NULL;
+}
+
+/**
  * Callback handles key bindings that involve a single key press (not held down)
  * Differs from processInput in that it does not query the key every frame.
  */
@@ -57,30 +65,37 @@ void ClientGame::keyBindsHandler(GLFWwindow* glfwWindow, int key, int scancode, 
             std::cout << "there is a keybind currently" << std::endl;
             if (this->window->currkeyBindStatus == Window::KeyBindStatus::forwards)
             {
+                if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Walk_Forward", key);
                 std::cout << "forwards" << std::endl;
             }
             else if (this->window->currkeyBindStatus == Window::KeyBindStatus::backwards)
             {
+                if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Walk_Backward", key);
                 std::cout << "backwards" << std::endl;
             }
             else if (this->window->currkeyBindStatus == Window::KeyBindStatus::left)
             {
+                if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Turn_Left", key);
                 std::cout << "left" << std::endl;
             }
             else if (this->window->currkeyBindStatus == Window::KeyBindStatus::right)
             {
+                if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Turn_Right", key);
                 std::cout << "right" << std::endl;
             }
             else if (this->window->currkeyBindStatus == Window::KeyBindStatus::action)
             {
+                if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Action", key);
                 std::cout << "action" << std::endl;
             }
             else if (this->window->currkeyBindStatus == Window::KeyBindStatus::ready)
             {
+                if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Ready", key);
                 std::cout << "ready" << std::endl;
             }
             else if (this->window->currkeyBindStatus == Window::KeyBindStatus::settings)
             {
+                if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Open_Settings", key);
                 std::cout << "settings" << std::endl;
             }
 
@@ -94,9 +109,8 @@ void ClientGame::keyBindsHandler(GLFWwindow* glfwWindow, int key, int scancode, 
         }
     }
     
-
     // Handles displaying the Settings Menu
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    if (key == Config::getInt("Open_Settings") && action == GLFW_PRESS)
     {
         std::cout << "opening settings menu" << std::endl;
         this->window->showSettings ^= true;
@@ -106,7 +120,7 @@ void ClientGame::keyBindsHandler(GLFWwindow* glfwWindow, int key, int scancode, 
     if (this->window->showSettings) return;
 
     // Handles ready up
-    if (key == GLFW_KEY_R && action == GLFW_PRESS)
+    if (key == Config::getInt("Ready") && action == GLFW_PRESS)
     {
         std::cout << "sending ready up message" << std::endl;
         Game::ClientMessage* readyMsg = MessageBuilder::toReadyMessage(true);
@@ -114,16 +128,8 @@ void ClientGame::keyBindsHandler(GLFWwindow* glfwWindow, int key, int scancode, 
         delete readyMsg;
     }
 
-    // Handles toggling free cam
-    if (key == GLFW_KEY_F && action == GLFW_PRESS)
-    {
-        std::cout << "locking / unlocking the camera" << std::endl;
-        this->window->camera->toggleFreeCam();
-        this->window->toggleCursor();
-    }
-
     // Handles interact event
-    if (key == GLFW_KEY_E && action == GLFW_PRESS && this->window->getSelectedIngredient() != NULL && this->window->getRound() == KITCHEN_NUM )
+    if (key == Config::getInt("Action") && action == GLFW_PRESS && this->window->getSelectedIngredient() != NULL && this->window->getRound() == KITCHEN_NUM )
     {
         std::cout << "pressed interact key" << std::endl;
         Game::ClientMessage* cookMsg = MessageBuilder::toCookMessage(this->window->getSelectedIngredient());
@@ -148,29 +154,29 @@ void ClientGame::processInput()
     Game::ClientMessage rotationMessage;
 
     // Get key inputs and set direction of message
-    if (glfwGetKey(window->glfwViewport, GLFW_KEY_W) == GLFW_PRESS &&
-    glfwGetKey(window->glfwViewport, GLFW_KEY_S) == GLFW_PRESS) {
+    if (glfwGetKey(window->glfwViewport, Config::getInt("Walk_Forward")) == GLFW_PRESS &&
+    glfwGetKey(window->glfwViewport, Config::getInt("Walk_Backward")) == GLFW_PRESS) {
         // Do nothing: The movements should cancel each other out.
     }
-    else if (glfwGetKey(window->glfwViewport, GLFW_KEY_W) == GLFW_PRESS)
+    else if (glfwGetKey(window->glfwViewport, Config::getInt("Walk_Forward")) == GLFW_PRESS)
     {
         movementMessage.set_direction(Game::Direction::UP);  
     }
-	else if (glfwGetKey(window->glfwViewport, GLFW_KEY_S) == GLFW_PRESS) 
+	else if (glfwGetKey(window->glfwViewport, Config::getInt("Walk_Backward")) == GLFW_PRESS) 
     {
         movementMessage.set_direction(Game::Direction::DOWN); 
     }
 
     
-    if (glfwGetKey(window->glfwViewport, GLFW_KEY_A) == GLFW_PRESS &&
-    glfwGetKey(window->glfwViewport, GLFW_KEY_D) == GLFW_PRESS) {
+    if (glfwGetKey(window->glfwViewport, Config::getInt("Turn_Left")) == GLFW_PRESS &&
+    glfwGetKey(window->glfwViewport, Config::getInt("Turn_Right")) == GLFW_PRESS) {
         // Do nothing: The movements should cancel each other out.
     }
-	else if (glfwGetKey(window->glfwViewport, GLFW_KEY_A) == GLFW_PRESS)
+	else if (glfwGetKey(window->glfwViewport, Config::getInt("Turn_Left")) == GLFW_PRESS)
     {
         rotationMessage.set_direction(Game::Direction::LEFT); 
     }
-	else if (glfwGetKey(window->glfwViewport, GLFW_KEY_D) == GLFW_PRESS)
+	else if (glfwGetKey(window->glfwViewport, Config::getInt("Turn_Right")) == GLFW_PRESS)
     {
         rotationMessage.set_direction(Game::Direction::RIGHT); 
     }
@@ -181,16 +187,6 @@ void ClientGame::processInput()
     if (rotationMessage.has_direction()) {
         this->client.send(rotationMessage);
     }
-
-    // Camera movement options (client-side only)
-    if (glfwGetKey(window->glfwViewport, GLFW_KEY_UP) == GLFW_PRESS)
-		window->camera->processKeyMovement(FORWARD);
-    if (glfwGetKey(window->glfwViewport, GLFW_KEY_DOWN) == GLFW_PRESS)
-		window->camera->processKeyMovement(BACKWARD);
-    if (glfwGetKey(window->glfwViewport, GLFW_KEY_LEFT) == GLFW_PRESS)
-		window->camera->processKeyMovement(LEFT);
-    if (glfwGetKey(window->glfwViewport, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		window->camera->processKeyMovement(RIGHT);
 }
 
 /**
