@@ -1,4 +1,5 @@
 #include <graphics/UIScreenFactory.h>
+#include <graphics/window.h>
 
 // Simple helper function to load an image into a OpenGL texture with common settings
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
@@ -259,7 +260,7 @@ void UIScreenFactory::UILobbyScreen() {
 	ImGui::End();
 }
 
-void UIScreenFactory::UIControls(GLFWwindow* window) {
+void UIScreenFactory::UIControls(Window* window) {
 	
 	// Setup
 	ImGui::SetNextWindowPos(ImVec2(400, 400), ImGuiCond_Once);
@@ -283,52 +284,60 @@ void UIScreenFactory::UIControls(GLFWwindow* window) {
 	delete val;
 
 	// Controls to change input keybindings
-	/*UIText("Controls (click to change keybind)");
+	UIText("Controls (click to change keybind)");
 
 	UIText("Walk Forward");
-	if ( ImGui::InputText(glfwGetKeyName(Config::getInt("Walk_Forward"), 32), buf, 2) ) 
+	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Walk_Forward"), 32)) ) 
 	{
-		Config::setInt("Walk_Forward", 66);
+		std::cout << "walk forwards keybind initiated" << std::endl;
+		window->currkeyBindStatus = Window::KeyBindStatus::forwards;
 	}
 
 	UIText("Walk Backward");
 	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Walk_Backward"), 32)) ) 
 	{
-
+		std::cout << "walk backwards keybind initiated" << std::endl;
+		window->currkeyBindStatus = Window::KeyBindStatus::backwards;
 	}
 
 	UIText("Turn Left");
 	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Turn_Left"), 32)) ) 
 	{
-
+		std::cout << "turn left keybind initiated" << std::endl;
+		window->currkeyBindStatus = Window::KeyBindStatus::left;
 	}
 
 	UIText("Turn Right");
 	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Turn_Right"), 32)) )
 	{
-
+		std::cout << "turn right keybind initiated" << std::endl;
+		window->currkeyBindStatus = Window::KeyBindStatus::right;
 	}
 
 	UIText("Action");
 	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Action"), 32)) )
 	{
-
+		std::cout << "action keybind initiated" << std::endl;
+		window->currkeyBindStatus = Window::KeyBindStatus::action;
 	}
+
 	UIText("Ready");
 	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Ready"), 32)) ) 
 	{
-
+		std::cout << "ready keybind initiated" << std::endl;
+		window->currkeyBindStatus = Window::KeyBindStatus::ready;
 	}
+
 	UIText("Open Settings");
 	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Open_Settings"), 32)) )
 	{
-
+		std::cout << "open settings keybind initiated" << std::endl;
+		window->currkeyBindStatus = Window::KeyBindStatus::settings;
 	}
-	*/
 
 	// Exit button
 	if (ImGui::Button("Exit Game")) {
-		glfwSetWindowShouldClose(window, true);
+		glfwSetWindowShouldClose(window->glfwViewport, true);
 	}
 
 	// Finished

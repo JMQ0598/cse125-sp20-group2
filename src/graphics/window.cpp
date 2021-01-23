@@ -22,6 +22,9 @@ Window::Window(int width = Config::getFloat("Window_Width"), int height = Config
 	this->inventory = NULL;
 	this->vodkaActive = false;
 	this->showSettings = false;
+
+	// Initialize window in non-keybind state
+	this->currkeyBindStatus = none;
 }
 
 
@@ -382,7 +385,7 @@ void Window::render()
 	}
 
 	if (showSettings) {
-		ui.UIControls(this->glfwViewport);
+		ui.UIControls(this);
 	}
 
 	selectedIngredient = tmp != NULL? tmp: selectedIngredient;

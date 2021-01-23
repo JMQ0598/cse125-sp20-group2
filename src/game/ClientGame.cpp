@@ -47,6 +47,54 @@ ClientGame::~ClientGame()
  */
 void ClientGame::keyBindsHandler(GLFWwindow* glfwWindow, int key, int scancode, int action, int mods)
 {
+    // Checking for pending keybinds
+    /// TODO: actually implement keybind stuff below, modify as needed
+    // Code below is mainly just for testing
+    if (action == GLFW_PRESS)
+    {
+        if (this->window->currkeyBindStatus != Window::KeyBindStatus::none)
+        {
+            std::cout << "there is a keybind currently" << std::endl;
+            if (this->window->currkeyBindStatus == Window::KeyBindStatus::forwards)
+            {
+                std::cout << "forwards" << std::endl;
+            }
+            else if (this->window->currkeyBindStatus == Window::KeyBindStatus::backwards)
+            {
+                std::cout << "backwards" << std::endl;
+            }
+            else if (this->window->currkeyBindStatus == Window::KeyBindStatus::left)
+            {
+                std::cout << "left" << std::endl;
+            }
+            else if (this->window->currkeyBindStatus == Window::KeyBindStatus::right)
+            {
+                std::cout << "right" << std::endl;
+            }
+            else if (this->window->currkeyBindStatus == Window::KeyBindStatus::action)
+            {
+                std::cout << "action" << std::endl;
+            }
+            else if (this->window->currkeyBindStatus == Window::KeyBindStatus::ready)
+            {
+                std::cout << "ready" << std::endl;
+            }
+            else if (this->window->currkeyBindStatus == Window::KeyBindStatus::settings)
+            {
+                std::cout << "settings" << std::endl;
+            }
+
+            std::cout << "resetting keybind to none" << std::endl;
+            this->window->currkeyBindStatus = Window::KeyBindStatus::none;
+        }
+
+        else
+        {
+            std::cout << "no active keybind detected" << std::endl;
+        }
+    }
+    
+
     // Handles displaying the Settings Menu
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
     {
