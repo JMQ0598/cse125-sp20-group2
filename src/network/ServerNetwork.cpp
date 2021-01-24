@@ -10,7 +10,7 @@ ServerNetwork::ServerNetwork(int port)
     this->threadAccept = std::thread (&ServerNetwork::startAccepting, this);
 
     // Get max players from config, add ids to queue
-    int playerCount = std::stoi(Config::get("Max_Players"));
+    int playerCount = Config::getInt("Max_Players");
     for (int i = 0; i < playerCount; i++) {
         clientIdQueue.push(i);
     }

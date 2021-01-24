@@ -8,7 +8,7 @@
 ClientGame::ClientGame(std::string IP, int port) : client(IP, port)
 {
     // Handle bad connect
-    if (client.ConnectSocket == INVALID_SOCKET) this->exitCode = ERR_BADCONNECT;
+    if (client.ConnectSocket == INVALID_SOCKET) this->exitCode = ERR_BADHOST;
 
     // Window setup
     window = new Window(Config::getFloat("Window_Width"), Config::getFloat("Window_Height"));
@@ -476,11 +476,10 @@ void ClientGame::updateGameState()
 
             case Game::ServerMessage::EventCase::kDisconnect:
             {
-                /// TODO:
-                // Put actions taken by client during a force disconnect
+                /// NOTE: Currently only handles full server.
                 std::cout << " got a disconnect message " << std::endl;
                 std::cout << "reason: " + currMessage.disconnect().message() << std::endl;
-                /// TODO: Set error code for run
+                exitCode = ERR_FULLSERVER;
                 break;
             }
 

@@ -40,6 +40,9 @@ std::string hostIP;
 static TCHAR szWindowClass[] = _T("DesktopApp");
 static TCHAR szTitle[] = _T("Lobby Setup");
 
+// Command line received upon process startup. Used for status text's initial value.
+LPSTR cmdLine;
+
 // Error strings
 const char* ERR_E2BIG = "The space required for the arguments and environment settings exceeds 32 KB.";
 const char* ERR_EACCES = "The specified file has a locking or sharing violation.";
@@ -229,7 +232,7 @@ LRESULT CALLBACK WndProc(
             hIP =       CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "localhost", WS_CHILD | WS_VISIBLE, 65, 90, 155, 30, hWnd, (HMENU) IP_BOX_ID, GetModuleHandle(NULL), NULL);
             hHost =     CreateWindowEx(0, "BUTTON", "Host", WS_CHILD | WS_VISIBLE, 65, 125, 100, 30, hWnd, (HMENU) HOST_BTN_ID, GetModuleHandle(NULL), NULL);
             hJoin =     CreateWindowEx(0, "BUTTON", "Join", WS_CHILD | WS_VISIBLE, 65, 160, 100, 30, hWnd, (HMENU) JOIN_BTN_ID, GetModuleHandle(NULL), NULL);
-            hStatus =   CreateWindowEx(0, "STATIC", "", WS_CHILD | WS_VISIBLE | SS_CENTER, 10, 195, 210, 40, hWnd, (HMENU) STATUS_TEXT_ID, GetModuleHandle(NULL), NULL);
+            hStatus =   CreateWindowEx(0, "STATIC", cmdLine, WS_CHILD | WS_VISIBLE | SS_CENTER, 10, 195, 210, 60, hWnd, (HMENU) STATUS_TEXT_ID, GetModuleHandle(NULL), NULL);
             break;
 
         // Handle command messages to window
@@ -320,13 +323,16 @@ int CALLBACK WinMain(
         return 1;
     }
 
+    // Store command line value
+    cmdLine = lpCmdLine;
+
     // Create a window with these properties
     HWND hWnd = CreateWindow(
         szWindowClass,                  // Application name
         szTitle,                        // Title text
         WS_OVERLAPPED | WS_SYSMENU,     // Type of window to create
         CW_USEDEFAULT, CW_USEDEFAULT,   // Initial position of window
-        240, 280,                       // Initial size of window
+        240, 300,                       // Initial size of window
         NULL,                           // Parent of this window
         NULL,                           // Menu bar to be used with this window (NULL for class menu)
         hInstance,                      // An instance of this module
