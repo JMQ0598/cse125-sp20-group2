@@ -81,8 +81,8 @@ void signal_callback_handler(int signum) {
  */
 int main(int argc, char * argv[])
 {
-	// Perform cleanup even when the program is abruptly terminated. (currently does not work unless -mwindows is disabled)
-	//signal(SIGBREAK, &signal_callback_handler);
+	// Perform cleanup even when the program is abruptly terminated. (does not work unless -mwindows is disabled)
+	signal(SIGBREAK, &signal_callback_handler);
 	
 	// Set the seed for random number generation.
 	srand(time(NULL));
@@ -110,14 +110,13 @@ int main(int argc, char * argv[])
 	std::string option = argv[1];
 	if (option == "server")
 	{
-		AllocConsole();
-		freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 		ServerGame game(port);
 	}
 	else if (option == "client")
 	{
-		std::cerr << "Attempting to connect to " << host << std::endl;
+		std::cout << "Attempting to connect to " << host << std::endl;
 		ClientGame game(host, port);
+		FreeConsole();
 		exitCode = game.runGame();
 	}
 
