@@ -7,10 +7,10 @@
 
 ClientGame::ClientGame(std::string IP, int port) : client(IP, port)
 {
-    setupAndRun();
-}
+    // Handle bad connect
+    if (client.ConnectSocket == INVALID_SOCKET) this->exitCode = ERR_BADHOST;
 
-void ClientGame::setupAndRun() {
+    // Window setup
     window = new Window(Config::getFloat("Window_Width"), Config::getFloat("Window_Height"));
 
     // Configure keybinds
@@ -33,8 +33,6 @@ void ClientGame::setupAndRun() {
     winner->applyScale(glm::vec3(1));
     winner->setRender(false);
     window->addObject(-2, winner);
-
-    runGame();
 }
 
 ClientGame::~ClientGame()
@@ -150,7 +148,7 @@ void ClientGame::processInput()
 /**
  * Main game loop.
  */
-void ClientGame::runGame() 
+int ClientGame::runGame() 
 {
     // Background music
     music.openFromFile(Config::get("8bit_Paradise"));
@@ -158,7 +156,7 @@ void ClientGame::runGame()
     music.play();
 
     // Game loop runs while window is open
-    while(!window->isClosed) 
+    while(!window->isClosed && !exitCode) 
     {
         // Update volume
         music.setVolume(Config::getInt("Background_Music_Volume"));
@@ -176,6 +174,9 @@ void ClientGame::runGame()
         // Render world
         window->render();
     }
+
+    // Nonzero if an error has occurred - otherwise exited normally
+    return exitCode;
 }
 
 /**
@@ -475,11 +476,10 @@ void ClientGame::updateGameState()
 
             case Game::ServerMessage::EventCase::kDisconnect:
             {
-                /// TODO:
-                // Put actions taken by client during a force disconnect
+                /// NOTE: Currently only handles full server.
                 std::cout << " got a disconnect message " << std::endl;
                 std::cout << "reason: " + currMessage.disconnect().message() << std::endl;
-
+                exitCode = ERR_FULLSERVER;
                 break;
             }
 

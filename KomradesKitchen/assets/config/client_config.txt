@@ -155,7 +155,7 @@ Ingredient_Rotation_Speed=0.05
 // SOUND VARIABLES
 // // //
 
-Background_Music_Volume=0
+Background_Music_Volume=23
 Sound_Effect_Volume=50
 Nyet_Effect_Volume=100
 Beep_Sound_Effect_Volume=20

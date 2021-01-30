@@ -86,8 +86,6 @@ void Window::setupWindow() {
 	// Current context is window
 	glfwMakeContextCurrent(glfwViewport);
 
-	std::cout << (glfwGetCurrentContext()? "Window exists" : "Window does not exist") << std::endl;
-
 	// Register callback functions
 	glfwSetFramebufferSizeCallback(glfwViewport, framebuffer_size_callback);
 

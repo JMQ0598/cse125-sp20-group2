@@ -6,7 +6,7 @@
 #include <iostream>
 
 // Filepath
-const char* EXEC_FILE = "gg.exe"; 
+std::string EXEC_FILE = "gg.exe"; 
 
 // BG color
 const COLORREF BG_COLOR = RGB(215, 55, 55);
@@ -40,6 +40,9 @@ std::string hostIP;
 static TCHAR szWindowClass[] = _T("DesktopApp");
 static TCHAR szTitle[] = _T("Lobby Setup");
 
+// Command line received upon process startup. Used for status text's initial value.
+LPSTR cmdLine;
+
 // Error strings
 const char* ERR_E2BIG = "The space required for the arguments and environment settings exceeds 32 KB.";
 const char* ERR_EACCES = "The specified file has a locking or sharing violation.";
@@ -48,6 +51,7 @@ const char* ERR_EMFILE = "Too many files open (the specified file must be opened
 const char* ERR_ENOENT = "The file or path not found.";
 const char* ERR_ENOEXEC = "The specified file is not executable or has an invalid executable-file format.";
 const char* ERR_ENOMEM = "Not enough memory is available to execute the new process; the available memory has been corrupted; or an invalid block exists, indicating that the calling process was not allocated properly.";
+const char* ERR_GENERIC = "Unable to spawn game process.";
 
 /**
  * Used for debugging when a process fails to spawn.
@@ -82,17 +86,43 @@ void errorSpawningProcess() {
 /**
  * Creates a thread to host a server and detaches the thread from this one.
  */
-void spawnHost(int port) {
-    const char* const argv[] = {EXEC_FILE, "server", std::to_string(port).c_str()};
-    _execv(EXEC_FILE, argv);
+void spawnHost() 
+{    
+    // Process/Startup info setup
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    ZeroMemory(&pi, sizeof(pi));
+
+    if (!CreateProcess(NULL, strdup(std::string(EXEC_FILE + " server " + std::to_string(port)).c_str()),
+            NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
+    {
+        SetWindowText(hStatus, ERR_GENERIC);
+    } else {
+        ExitProcess(0);
+    }
 }
 
 /**
  * Creates a thread to join a server and detaches the thread from this one.
  */
-void spawnClient(std::string host, int port) {
-    const char* const argv[] = {EXEC_FILE, "client", host.c_str()};
-    _execv(EXEC_FILE, argv);
+void spawnClient() 
+{
+    // Process/Startup info setup
+    STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    ZeroMemory(&pi, sizeof(pi));
+
+    if (!CreateProcess(NULL, strdup(std::string(EXEC_FILE + " client " + std::to_string(port) + " " + hostIP).c_str()),
+            NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
+    {
+        SetWindowText(hStatus, ERR_GENERIC);
+    } else {
+        ExitProcess(0);
+    }
 }
 
 void clearStatusWarning() {
@@ -202,7 +232,7 @@ LRESULT CALLBACK WndProc(
             hIP =       CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "localhost", WS_CHILD | WS_VISIBLE, 65, 90, 155, 30, hWnd, (HMENU) IP_BOX_ID, GetModuleHandle(NULL), NULL);
             hHost =     CreateWindowEx(0, "BUTTON", "Host", WS_CHILD | WS_VISIBLE, 65, 125, 100, 30, hWnd, (HMENU) HOST_BTN_ID, GetModuleHandle(NULL), NULL);
             hJoin =     CreateWindowEx(0, "BUTTON", "Join", WS_CHILD | WS_VISIBLE, 65, 160, 100, 30, hWnd, (HMENU) JOIN_BTN_ID, GetModuleHandle(NULL), NULL);
-            hStatus =   CreateWindowEx(0, "STATIC", "", WS_CHILD | WS_VISIBLE | SS_CENTER, 10, 195, 210, 40, hWnd, (HMENU) STATUS_TEXT_ID, GetModuleHandle(NULL), NULL);
+            hStatus =   CreateWindowEx(0, "STATIC", cmdLine, WS_CHILD | WS_VISIBLE | SS_CENTER, 10, 195, 210, 60, hWnd, (HMENU) STATUS_TEXT_ID, GetModuleHandle(NULL), NULL);
             break;
 
         // Handle command messages to window
@@ -211,9 +241,9 @@ LRESULT CALLBACK WndProc(
             // Handle if host button is clicked
             ///TODO: Check to make sure port/IP is valid - send response otherwise
             if (LOWORD(wParam) == HOST_BTN_ID) {
-                if (getPort()) spawnHost(0);
+                if (getPort()) spawnHost();
             } else if (LOWORD(wParam) == JOIN_BTN_ID) {
-                if (getPort() && getHostIP()) spawnClient(hostIP, port);
+                if (getPort() && getHostIP()) spawnClient();
             }
             break;
 
@@ -293,13 +323,16 @@ int CALLBACK WinMain(
         return 1;
     }
 
+    // Store command line value
+    cmdLine = lpCmdLine;
+
     // Create a window with these properties
     HWND hWnd = CreateWindow(
         szWindowClass,                  // Application name
         szTitle,                        // Title text
         WS_OVERLAPPED | WS_SYSMENU,     // Type of window to create
         CW_USEDEFAULT, CW_USEDEFAULT,   // Initial position of window
-        240, 280,                       // Initial size of window
+        240, 300,                       // Initial size of window
         NULL,                           // Parent of this window
         NULL,                           // Menu bar to be used with this window (NULL for class menu)
         hInstance,                      // An instance of this module

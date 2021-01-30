@@ -5,6 +5,10 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 #include <Windows.h>
+#include <constants/error_vals.h>
+
+// Lobby setup executable
+std::string EXEC_FILE = "LobbySetup.exe"; 
 
 // Config loader variables
 // Declared here because static variables need to be declared outside of class
@@ -13,40 +17,110 @@ std::unordered_map<std::string, std::string>* Config::server_vars;
 std::unordered_map<std::string, std::string>* Config::updated_client_vars;
 std::unordered_map<std::string, std::string>* Config::updated_server_vars;
 
-// ./game [client / server]
+/**
+ * Spawns the lobby setup process. Meant to be called exclusively
+ * at the end of main's lifespan.
+ * 
+ * Handles exit codes (as defined by constants/error_vals.h) and sends
+ * error strings to lobby setup for handling.
+ */
+void spawnLobbySetup(int exitCode) {
+
+	// Determine the error string (if any)
+	std::string err;
+	switch (exitCode) {
+		case ERR_BADHOST:
+			err = ERR_BADHOST_STR;
+			break;
+		case ERR_FULLSERVER:
+			err = ERR_FULLSERVER_STR;
+			break;
+		default:
+			err = "";
+			break;
+	}
+
+	// Process/startup information setup, as required
+	STARTUPINFO si;
+    PROCESS_INFORMATION pi;
+    ZeroMemory(&si, sizeof(si));
+    si.cb = sizeof(si);
+    ZeroMemory(&pi, sizeof(pi));
+
+	// Create the lobby setup process
+	CreateProcess(NULL, strdup((EXEC_FILE + " " + err).c_str()),
+        NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+}
+
+/**
+ * Cleans up the config file (as well as writing as needed)
+ * Returns to the lobby setup process.
+ */
+void cleanup(int exitCode) {
+
+	// Unload config data and write as needed
+	Config::unload();
+
+	// Return to lobby setup with no errors.
+	spawnLobbySetup(exitCode);
+}
+
+/**
+ * This callback performs cleanup upon abrupt program termination.
+ */
+void signal_callback_handler(int signum) {
+	cleanup(ERR_NONE);
+}
+
+/**
+ * Game entry point. Determines whether to spawn a client or
+ * a server host. Sets up random number gen seed as well as config.
+ * Returns to the lobby setup process upon normal termination.
+ * 
+ * Command line usage: ./game [client / server] [port] [IP]
+ */
 int main(int argc, char * argv[])
 {
+	// Perform cleanup even when the program is abruptly terminated. (does not work unless -mwindows is disabled)
+	signal(SIGBREAK, &signal_callback_handler);
+	
+	// Set the seed for random number generation.
 	srand(time(NULL));
 	
 	// Load config data
 	Config::load();
 
-	// Invalid usage - wrong # of args
-	if (argc < 2)
-	{
-		std::cerr << "usage: ./game [client / server]" << std::endl;
+	// Should not get here - no port nor IP
+	// If we do get here, it indicates that LobbySetup failed to prevent this
+	if (argc < 3) {
 		return -1;
 	}
 
-	std::string host ("localhost");
-	if (argc > 2) {
-		host = argv[2];
-	}
+	// Host and client - get port argument
+	int port = atoi(argv[2]);
+
+	// Client spawn only - get host argument
+	std::string host("localhost");
+	if (argc > 3) host = argv[3];
 	
+	// Used to store exit codes
+	int exitCode = 0;
+
+	// Determine if running server/client
 	std::string option = argv[1];
 	if (option == "server")
 	{
-		AllocConsole();
-		freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
-		ServerGame game(9000);
+		ServerGame game(port);
 	}
 	else if (option == "client")
 	{
-		ClientGame game("localhost", 9000);
+		std::cout << "Attempting to connect to " << host << std::endl;
+		ClientGame game(host, port);
+		FreeConsole();
+		exitCode = game.runGame();
 	}
 
-	// Unload config data
-	Config::unload();
+	// Clean up config and go back to lobby process
+	cleanup(exitCode);
 }
-
 
