@@ -239,7 +239,6 @@ LRESULT CALLBACK WndProc(
         case WM_COMMAND:
             
             // Handle if host button is clicked
-            ///TODO: Check to make sure port/IP is valid - send response otherwise
             if (LOWORD(wParam) == HOST_BTN_ID) {
                 if (getPort()) spawnHost();
             } else if (LOWORD(wParam) == JOIN_BTN_ID) {

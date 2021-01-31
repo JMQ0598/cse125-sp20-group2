@@ -1,0 +1,46 @@
+////////////////////////////////////////////////////////////////////////////
+
+// // // // // // // // 
+// KITCHEN MAP PROPERTIES
+// // //
+
+// Kitchen Spawn Positions
+Kitchen_Spawn_Count=4
+Kitchen_Spawn_0=-1,0,1
+Kitchen_Spawn_1=1,0,1
+Kitchen_Spawn_2=-1,0,-1
+Kitchen_Spawn_3=1,0,-1
+
+Cell_Wall_Count=4
+Cell_Scale=3
+Cell_Wall_0=6,0,-30
+Cell_Wall_1=-6,0,-30
+Cell_Wall_2=0,0,-36
+Cell_Wall_3=0,0,-24
+Cell_Base=0,-0.5,-30
+
+Cell_Spawn_Count=3
+Cell_Wall_Spawn_0=1,-0.5,-29
+Cell_Wall_Spawn_1=-1,-0.5,-29
+Cell_Wall_Spawn_2=0,-0.5,-28
+
+// Plate Initial and Variation
+Plate_Init_Spawn=-15,0,-13
+Plate_Spacing=10
+
+// Cutting Board Inital and Variation
+Cutting_Board_Init_Spawn=-15,0,32
+Cutting_Board_Spacing=10
+
+// Pot Inital and Variation
+Pot_Init_Spawn=25,0,-5
+Pot_Spacing=10
+
+// Pan Inital and Variation
+Pan_Init_Spawn=-25,0,-5
+Pan_Spacing=10
+
+// Plate Score
+Plate_Score=5
+
+////////////////////////////////////////////////////////////////////////////

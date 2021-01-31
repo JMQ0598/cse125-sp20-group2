@@ -3,9 +3,14 @@
 void GameProcessor::initLobbyPhase(GameState *gameState)
 {
     gameState->setRoundTime(Config::getInt("Lobby_Round_Time"));
-    // Map* m = MapBuilder::getBasicMap();
-    // MapBuilder::assignIngredientPositions(r, m);
-    // gameState->addWalls(m);
+
+    // Create map and set the gameState's lobbyMap member
+    LobbyMap* m = MapBuilder::getLobbyMap();
+    gameState->lobbyMap = m;
+
+    // Add the game objects involved in the map
+    gameState->addWalls(m);
+
 }
 
 void GameProcessor::initDungeonWaiting(GameState *gameState)
@@ -21,7 +26,7 @@ void GameProcessor::initKitchenWaiting(GameState *gameState)
 void GameProcessor::initDungeonPhase(GameState *gameState, ServerGame *server)
 {
     // Create the map
-    DungeonMap *m = MapBuilder::getBasicDungeonMap();
+    DungeonMap *m = MapBuilder::getDungeonMap();
 
     int recipeChoice = Config::getInt("Recipe_Choice");
     Recipe *r;
@@ -78,9 +83,6 @@ void GameProcessor::initDungeonPhase(GameState *gameState, ServerGame *server)
             server->specificMessages[clientId].push_back(serverMsg);
         }
     }
-
-    ///TODO: Spawn first ingredient
-    // spawnIngredient(gameState, r);
 }
 
 void GameProcessor::initPlayersLocations(Map *map, GameState *gameState)
@@ -96,10 +98,8 @@ void GameProcessor::initPlayersLocations(Map *map, GameState *gameState)
 
 void GameProcessor::initKitchenPhase(GameState *gameState)
 {
-    KitchenMap *m = MapBuilder::getBasicKitchenMap(gameState);
-
+    KitchenMap *m = MapBuilder::getKitchenMap();
     gameState->addWalls(m);
-
     gameState->kitchenMap = m;
 
     for (auto it = m->cookwareObjects.begin(); it != m->cookwareObjects.end(); it++)

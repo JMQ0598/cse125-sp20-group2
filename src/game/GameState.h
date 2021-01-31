@@ -12,6 +12,7 @@
 #include <chrono>
 #include <objects/DungeonMap.h>
 #include <objects/KitchenMap.h>
+#include <objects/LobbyMap.h>
 
 /**
  * This class holds the game state.
@@ -49,8 +50,8 @@ public:
     GameState();
     ~GameState();
 
+    LobbyMap* lobbyMap;
     DungeonMap* dungeonMap;
-
     KitchenMap* kitchenMap;
 
     std::vector<CookEvent*> cookEvents;

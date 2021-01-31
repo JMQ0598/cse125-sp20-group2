@@ -17,6 +17,7 @@ ClientGame::ClientGame(std::string IP, int port) : client(IP, port)
     glfwSetWindowUserPointer(this->window->glfwViewport, reinterpret_cast<void*> (this));
     glfwSetKeyCallback(this->window->glfwViewport, key_callback_wrapper);
 
+    ///TODO: Map variable. Client should not need to know about these.
     // Create floor lol
     GameObject* floor = new GameObject(-1);
     floor->setModel(Config::get("Floor_Model"));
@@ -24,6 +25,7 @@ ClientGame::ClientGame(std::string IP, int port) : client(IP, port)
     floor->applyScale(glm::vec3(2));
     window->addObject(-1, floor);
 
+    ///TODO: Map variable. Client should not need to know about these. Move to kitchen map
     // Winner model invisible
     winner = new GameObject(-2);
     glm::vec3 prisonLocation = Config::getVec3("Cell_Base");

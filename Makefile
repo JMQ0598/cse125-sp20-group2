@@ -5,7 +5,6 @@
 # 	When modifying header files, be sure to make clean
 # 	SOIL Must be before opengl32
 #	-mwindows will hide the console when the program is run
-#TODO: clean up lobby compilation to be more modular
 
 OUT = gg
 SRC_DIR = src

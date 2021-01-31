@@ -1,6 +1,6 @@
 #include <util/MapBuilder.h>
 
-DungeonMap* MapBuilder::getBasicDungeonMap() {
+DungeonMap* MapBuilder::getDungeonMap() {
 
     // Create the dungeon map
     DungeonMap *mp = new DungeonMap();
@@ -58,7 +58,7 @@ DungeonMap* MapBuilder::getBasicDungeonMap() {
     return mp;
 }
 
-KitchenMap* MapBuilder::getBasicKitchenMap(GameState* gameState) {
+KitchenMap* MapBuilder::getKitchenMap() {
     
     // Create kitchenmap container
     KitchenMap* mp = new KitchenMap();
@@ -128,9 +128,6 @@ KitchenMap* MapBuilder::getBasicKitchenMap(GameState* gameState) {
 
         // assign model based on id
         plate->setModel(Config::get("Plate_" + std::to_string(i) + "_Model"));
-
-        std::cout << "WOW IT'S A " << "Plate_" + std::to_string(i) + "_Model" << std::endl;
-
         mp->plateObjects.push_back(plate);
     }
 
@@ -166,6 +163,16 @@ KitchenMap* MapBuilder::getBasicKitchenMap(GameState* gameState) {
         c->setPosition(currPos);
         mp->cookwareObjects.push_back(c);
     }
+
+    return mp;
+}
+
+LobbyMap* MapBuilder::getLobbyMap() {
+    
+    // Create lobbymap container
+    LobbyMap* mp = new LobbyMap();
+
+    ///TODO: Complete lobby map setup (read wall locations, scales, rots, etc.)
 
     return mp;
 }

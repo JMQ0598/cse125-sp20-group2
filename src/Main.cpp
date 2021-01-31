@@ -14,8 +14,10 @@ std::string EXEC_FILE = "LobbySetup.exe";
 // Declared here because static variables need to be declared outside of class
 std::unordered_map<std::string, std::string>* Config::client_vars;
 std::unordered_map<std::string, std::string>* Config::server_vars;
-std::unordered_map<std::string, std::string>* Config::updated_client_vars;
-std::unordered_map<std::string, std::string>* Config::updated_server_vars;
+std::unordered_set<std::string>* Config::updated_vars;
+std::unordered_map<std::string, std::string>* Config::dm_vars;
+std::unordered_map<std::string, std::string>* Config::km_vars;
+std::unordered_map<std::string, std::string>* Config::lm_vars;
 
 /**
  * Spawns the lobby setup process. Meant to be called exclusively
@@ -105,6 +107,11 @@ int main(int argc, char * argv[])
 	
 	// Used to store exit codes
 	int exitCode = 0;
+
+	///TODO: Also need to receive map file names as args in the future.
+	Config::readMapFile("maps/BasicDungeon.dm", DM_VAL);
+	Config::readMapFile("maps/BasicKitchen.km", KM_VAL);
+	Config::readMapFile("maps/BasicLobby.lm", LM_VAL);
 
 	// Determine if running server/client
 	std::string option = argv[1];
