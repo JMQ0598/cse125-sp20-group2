@@ -479,7 +479,7 @@ void ClientGame::exportMapTxt()
     std::cout << "Processing walls." << std::endl;
 
     // Comments
-    ofs << "// Wall data" << std::endl << std::endl;
+    ofs << "// Wall data" << std::endl;
     ofs.flush();
 
     // Add wall count.
@@ -517,7 +517,7 @@ void ClientGame::exportMapTxt()
 
     // Comments
     ofs << std::endl;
-    ofs << "// Ingredient spawning data" << std::endl << std::endl;
+    ofs << "// Ingredient spawning data" << std::endl;
     ofs.flush();
 
 
@@ -548,7 +548,7 @@ void ClientGame::exportMapTxt()
 
     // Comments
     ofs << std::endl;
-    ofs << "// Player spawning data" << std::endl << std::endl;
+    ofs << "// Player spawning data" << std::endl;
     ofs.flush();
 
     // Add ingredient spawn count.
@@ -578,7 +578,7 @@ void ClientGame::exportMapTxt()
 
     // Comments
     ofs << std::endl;
-    ofs << "// Pot spawning data" << std::endl << std::endl;
+    ofs << "// Pot spawning data" << std::endl;
     ofs.flush();
 
     // Add pot spawn count. 
@@ -606,7 +606,7 @@ void ClientGame::exportMapTxt()
 
     // Comments
     ofs << std::endl;
-    ofs << "// Pan spawning data" << std::endl << std::endl;
+    ofs << "// Pan spawning data" << std::endl;
     ofs.flush();
 
     // Add pan spawn count.
@@ -634,7 +634,7 @@ void ClientGame::exportMapTxt()
 
     // Comments
     ofs << std::endl;
-    ofs << "// Knives spawning data" << std::endl << std::endl;
+    ofs << "// Knives spawning data" << std::endl;
     ofs.flush();
 
     // Add knives spawn count.
@@ -662,7 +662,7 @@ void ClientGame::exportMapTxt()
 
     // Comments
     ofs << std::endl;
-    ofs << "// Plate spawning data" << std::endl << std::endl;
+    ofs << "// Plate spawning data" << std::endl;
     ofs.flush();
 
     // Add plate spawn count. 
@@ -690,7 +690,7 @@ void ClientGame::exportMapTxt()
 
     // Comments
     ofs << std::endl;
-    ofs << "// Floor spawning data" << std::endl << std::endl;
+    ofs << "// Floor spawning data" << std::endl;
     ofs.flush();
 
     // Add floor9 count

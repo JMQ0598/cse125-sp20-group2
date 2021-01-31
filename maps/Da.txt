@@ -1,0 +1,38 @@
+// Wall data
+Da_Wall_Count=0
+
+// Ingredient spawning data
+Da_Ingredient_Count=0
+
+// Player spawning data
+Da_Spawn_Count=0
+
+// Pot spawning data
+Da_Pot_Count=0
+
+// Pan spawning data
+Da_Pan_Count=0
+
+// Knives spawning data
+Da_Knife_Count=0
+
+// Plate spawning data
+Da_Plate_Count=0
+
+// Floor spawning data
+Da_Floor_Piece9_Count=0
+
+Da_Floor_Piece25_Count=0
+
+Da_Floor_Piece49_Count=0
+
+Da_Floor_Piece81_Count=9
+Da_Floor81_Piece_0=0,-0.5,0
+Da_Floor81_Piece_1=-9,-0.5,0
+Da_Floor81_Piece_2=9,-0.5,0
+Da_Floor81_Piece_3=9,-0.5,-9
+Da_Floor81_Piece_4=0,-0.5,-9
+Da_Floor81_Piece_5=-9,-0.5,-9
+Da_Floor81_Piece_6=-9,-0.5,9
+Da_Floor81_Piece_7=0,-0.5,9
+Da_Floor81_Piece_8=9,-0.5,9
