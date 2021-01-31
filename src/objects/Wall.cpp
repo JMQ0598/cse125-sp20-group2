@@ -5,7 +5,6 @@ Wall::Wall() : GameObject() {
     this->applyScale(Config::getVec3("Wall_Scaling"));
     this->baseWidth = Config::getFloat("Wall_Width");
 	this->baseDepth = Config::getFloat("Wall_Depth");
-	this->updateMeasurements();
     this->objType = WALL;
 }
 
@@ -14,6 +13,5 @@ Wall::Wall(int id) : GameObject(id) {
     this->applyScale(Config::getVec3("Wall_Scaling"));
     this->baseWidth = Config::getFloat("Wall_Width");
 	this->baseDepth = Config::getFloat("Wall_Depth");
-	this->updateMeasurements();
     this->objType = WALL;
 }

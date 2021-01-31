@@ -1,28 +1,26 @@
 #pragma once
 
-#include <network/NetworkClient.h>
 #include <iostream>
 #include <util/PrintUtil.h>
 #include <graphics/window.h>
+#include <objects/Wall.h>
+#include <objects/Cookware.h>
+#include <objects/Plate.h>
+#include <util/IngredientFactory.h>
+#include <objects/Player.h>
+#include <objects/Table.h>
+#include <objects/GameObject.h>
 #include <chrono>
 #include <thread>
-#include <util/MessageBuilder.h>
 #include <util/Config.h>
-#include <util/MapBuilder.h>
 #include <stack>
 
 class ClientGame {
     public:
-        // This is the client id.
-        // NOTE: This does NOT correlate directly with any objects!!!
-        unsigned int clientId;
 
-        // This is the object id.
-        // NOTE: This is the id that correlates to this client's player object. 
-        unsigned int objectId;
         unsigned int round = 0;
 
-        ClientGame(std::string IP, int port);
+        ClientGame(int i);
         ~ClientGame();
         void runGame();
 
@@ -30,20 +28,24 @@ class ClientGame {
         void keyBindsHandler(GLFWwindow* window, int key, int scancode, int action, int mods);
 
     private:
-        NetworkClient client;
         Window window;
         void receiveUpdates();
         void updateGameState();
         void processInput();
 
-        ///TODO: DEV TOOL - SHOULD NOT BE IN THE FINAL RELEASE
+        ///NOTE: Dev tool for tracking where the next object will be placed (cursor)
+        /// Should be the only object with index 0.
+        GameObject* cursor = NULL;
+        int cursorId = 0;
+
+        ///NOTE: Dev tool for tracking objects
         std::stack<GameObject*> mapObjects;
         GameObject* lastDeleted = NULL;
         int playerIndex = -2;
 
-        ///TODO: DEV TOOL - SHOULD NOT BE IN THE FINAL RELEASE
+        ///NOTE: Dev tool for map building inputs.
         void mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode, int action, int mods);
 
-        ///TODO: DEV TOOL - SHOULD NOT BE IN THE FINAL RELEASE
+        ///NOTE: Dev tool for exporting map files.
         void exportMapTxt();
 };

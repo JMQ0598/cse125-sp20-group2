@@ -16,7 +16,6 @@ Window::Window(int width = Config::getFloat("Window_Width"), int height = Config
 	this->width = width;
 	this->height = height;
 	this->setupWindow();
-	//this->ui = UIScreenFactory();
 	this->shader = new Shader(Config::get("Vertex_Shader"), Config::get("Fragment_Shader"));
 	this->UIshader = new Shader("src//graphics//shaders//ui_vert_shader.glsl", "src//graphics//shaders//ui_frag_shader.glsl"); 
 	///TODO: Need to add to Config?
@@ -189,42 +188,8 @@ void Window::setTimer(int64_t timer) {
 	this->timer = timer;
 }
 
-void Window::setRound(int round) {
-	this->round = round;
-}
-
-int Window::getRound() {
-	return this->round;
-}
-
 Ingredient* Window::getSelectedIngredient() {
 	return this->selectedIngredient;
-}
-
-void Window::updateRound(Game::RoundInfo_RoundState roundState) {
-	switch (roundState) {
-        case Game::RoundInfo_RoundState_LOBBY: {
-            this->setRound(0);
-            break;
-        }
-        case Game::RoundInfo_RoundState_DUNGEON: {
-            this->setRound(1);
-            break;
-        } 
-        case Game::RoundInfo_RoundState_DUNGEON_WAITING: {
-            this->setRound(2);
-            break;
-        }
-        case Game::RoundInfo_RoundState_KITCHEN:
-        {
-            this->setRound(3);
-            break;
-        }
-        case Game::RoundInfo_RoundState_KITCHEN_WAITING: {
-            this->setRound(4);
-			break;
-        }
-    } 
 }
 
 void Window::setScore(int score) {
@@ -297,23 +262,9 @@ void Window::render()
 		// Get the color scaling
 		glm::vec4 colorScale = Config::getVec4("colorScale");
 
-		// If object is an ingredient, color will scale up with quality.
+		// Rotate ingredient because why not
 		if (obj->getObjectType() == INGREDIENT)
 		{
-			int quality = ((Ingredient*)obj)->getQualityIndex();
-
-			// Modify color based on modifiers defined in the config.
-			switch (quality)
-			{
-				case BAD_QUALITY:
-					colorScale *= Config::getVec4("Bad_Quality_Color_Modifier");
-					break;
-				case GOOD_QUALITY:
-					colorScale *= Config::getVec4("Good_Quality_Color_Modifier");
-					break;
-			}
-
-			// Rotate ingredient because why not
 			obj->setRotation(obj->getRotation() + Config::getFloat("Ingredient_Rotation_Speed"));
 		}
 
@@ -337,50 +288,9 @@ void Window::render()
 		// Draw the model
 		obj->draw(*shader);
 	}
-	int32_t minutes = this->timer / 60;
-	int32_t seconds = this->timer % 60;
 	ui.setUpFrame();
 	ImGui::SetWindowFontScale(Config::getFloat("Font_Scale"));
-	// ImGui::PushFont(font1);
-	ui.UIGameInfo(this->round, minutes, seconds);
-	ui.UIScore(this->score);
 	
-	Ingredient* tmp;
-
-	if (this->round == DUNGEON_NUM && this->inventory != NULL)
-	{
-		ui.UIInventory(this->inventory);
-		ImGui::SetNextWindowCollapsed(true, 0);
-	}
-	else if (this->round == DUNGEON_WAITING_NUM && this->inventory != NULL)
-	{
-		ui.UIDungeonInstructions();
-	}
-	else if (this->round == KITCHEN_NUM && this->inventory != NULL )
-	{
-		tmp = ui.UIButtonInventory(this->inventory);
-		ui.UIInstructionSet(instructionStrings);
-	}
-	else if (this->round == KITCHEN_WAITING_NUM)
-	{
-		ui.UIKitchenInstructions();
-	}
-	else if (this->round == LOBBY_NUM)
-	{
-		ui.UILobbyScreen();
-	}
-
-	selectedIngredient = tmp != NULL? tmp: selectedIngredient;
-
-	if( this->cookingEventMsg.compare("") != 0 )
-		ui.UICookingEvent(this->cookingEventMsg);
-
-	if (gameOver)
-	{
-		ui.UIGameOver(gameWin);
-	}
-	
-
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	// ImGui::PopFont();

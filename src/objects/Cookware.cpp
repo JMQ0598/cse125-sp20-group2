@@ -3,24 +3,18 @@
 Cookware::Cookware(int ID) : GameObject(ID) {
     this->setModel(Config::get("Pan_Model"));
     this->objType = COOKWARE;
-    this->box = new BoundingBox(this);
-    this->box->setRadius(0.8);
     this->applyScale(Config::getVec3("Cookware_Scaling"));
 }
 
 Cookware::Cookware() : GameObject() {
     this->setModel(Config::get("Pan_Model"));
     this->objType = COOKWARE;
-    this->box = new BoundingBox(this);
-    this->box->setRadius(0.8);
     this->applyScale(Config::getVec3("Cookware_Scaling"));
 }
 
 Cookware::Cookware(std::string model): GameObject() {
     this->setModel(Config::get(model + "_Model"));
     this->objType = COOKWARE;
-    this->box = new BoundingBox(this);
-    this->box->setRadius(0.8);
     this->applyScale(Config::getVec3("Cookware_Scaling"));
 }
 

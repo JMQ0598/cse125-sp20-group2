@@ -1,9 +1,8 @@
-#include <util/Recipe.h>
 #include <utility>
 #include <util/Config.h>
+#include <objects/Ingredient.h>
 
-class RecipeBuilder {
+class IngredientFactory {
 public:
-    static Recipe* getBasicRecipe();
     static Ingredient* createIngredient(std::string modelPath);
 };

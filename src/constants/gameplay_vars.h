@@ -18,10 +18,6 @@ const std::string LETTUCE = "Lettuce";
 const std::string TOMATO = "Tomato";
 const int NUM_INGREDIENTS = 6;
 
-const int BAD_QUALITY = 1;
-const int OK_QUALITY = 2;
-const int GOOD_QUALITY = 3;
-
 const std::string LOBBY_STR = "LOBBY";
 const std::string DUNGEON_STR = "DUNGEON";
 const std::string kitchen = "KITCHEN";

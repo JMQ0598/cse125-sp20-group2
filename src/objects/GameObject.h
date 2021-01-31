@@ -6,9 +6,6 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <unordered_map>
-#include <collisions/BoundingBox.h>
-
-class BoundingBox;
 
 enum ObjectType
 {
@@ -18,7 +15,11 @@ enum ObjectType
     COOKWARE = 3,
     WALL = 4,
     TABLE = 5,
-    PLATE = 6
+    PLATE = 6,
+    FLOOR9 = 7,
+    FLOOR25 = 8,
+    FLOOR49 = 9,
+    FLOOR81 = 10
 };
 
 // is intersecting(GameObject) -> return boundingBox.isIntersecting
@@ -43,12 +44,6 @@ private:
     // Identifies the rendering ID of the object
     int ID;
 
-    // Inventory
-    std::unordered_map<unsigned int, GameObject *> inventory;
-
-    // Able to pass through object
-    bool passable = false;
-
     // Rendered in world or not
     bool render = true;
 
@@ -60,16 +55,8 @@ protected:
     // Sizing - may be needed for collisions, depends on model size and scale
     float width, height, depth;
 
-    // The bounding box for this game object
-    BoundingBox *box = NULL;
-
     // Object type
     ObjectType objType;
-
-    /**
-     * Helper method for constructor. Load collision measurements as needed. Update measurements.
-     * */
-    void loadCollisionSize();
 
 public:
     GameObject();
@@ -106,12 +93,6 @@ public:
      * @param path - This is the file path to the model.
      * */
     void setModel(std::string path);
-
-    /**
-     * Should be called after setting the model or changing the scale.
-     * Should update width/depth accordingly. TODO: Consider if height is needed
-     * */
-    void updateMeasurements();
 
     /**
      * Draw the model using the given shader.
@@ -152,8 +133,6 @@ public:
 
     float getRotation();
 
-    BoundingBox *getBoundingBox();
-
     void setRotation(float rot);
 
     GameObject *getItem(int index);
@@ -163,16 +142,6 @@ public:
 
     // Will probably be used on item placement in cooking phase
     void removeItem(int index);
-
-    bool isPassable();
-
-    void setPassable(bool passable);
-
-    /**
-     * Returns true if there is a collision. 
-     * Otherwise, returns false if no collision or either don't have a bounding box.
-     * */
-    bool isColliding(GameObject *);
     
     glm::vec3 getRoundedPosition();
 };

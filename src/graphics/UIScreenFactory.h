@@ -36,20 +36,7 @@ public:
 
 	void loadImages();
 
-	void UIDungeonInstructions();
-	void UIKitchenInstructions();
-	void UILobbyScreen();
-	void UIGameInfo(int round, int32_t minutes, int32_t seconds);
-	void UIScore(int score);
-	void UIInventory(std::unordered_map<int, Ingredient*>* map);
-	Ingredient* UIButtonInventory(std::unordered_map<int, Ingredient*>* map);
-	void UICookingEvent(std::string);
-	void UIInstructionSet(std::vector<std::string>);
-
-	void UIGameOver(bool gameWin);
-
 	void UIText(std::string str);
-	void UIEnd();
 	void setWindowSize(ImVec2 size);
 
 private:

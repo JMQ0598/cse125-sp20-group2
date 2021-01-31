@@ -4,6 +4,9 @@
 // MODEL PATHS
 // // //
 
+// Dev tool model paths
+Cursor_Model=assets/models/cursor.obj
+
 // Ingredient model paths
 Bun_Model=assets/models/ingredients/Bun2.obj
 Cheese_Model=assets/models/ingredients/Cheese2.obj
@@ -27,6 +30,9 @@ Dirty_Wall_Model=assets/models/terrain/dirtywall.obj
 Tile_Model=assets/models/terrain/tile.obj
 Tile4_Model=assets/models/terrain/tile4.obj
 Tile9_Model=assets/models/terrain/tile9.obj
+Tile25_Model=assets/models/terrain/tile25.obj
+Tile49_Model=assets/models/terrain/tile49.obj
+Tile81_Model=assets/models/terrain/tile81.obj
 Floor_Model=assets/models/terrain/floor.obj
 
 // Character model paths
@@ -104,8 +110,7 @@ Ingredient_Radius=0.5
 Player_Radius=0.75
 
 // Controls
-Player_Run_Speed=4
-Player_Turn_Speed=1
+Cursor_Speed=0.25
 
 // Camera Controls
 Camera_Speed=0.25

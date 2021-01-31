@@ -10,8 +10,6 @@ GameObject::GameObject() {
 	this->setRotation(0);
 	this->applyScale(glm::vec3(1));
 	this->model = NULL;
-	this->box = new BoundingBox(this); 
-	this->setPassable(false);
 	this->setObjectType(OBJECT);
 }
 
@@ -33,10 +31,6 @@ GameObject::GameObject(int id) {
 	// Model should be set afterward
 	this->model = NULL;
 
-	// For collisions
-	this->box = new BoundingBox(this); 
-	this->setPassable(false);
-
 	// Generic object type
 	this->setObjectType(OBJECT);
 }
@@ -44,7 +38,6 @@ GameObject::GameObject(int id) {
 GameObject::~GameObject() 
 {
 	if (model) delete model;
-	if (box) delete box;
 }
 
 void GameObject::setObjectType(ObjectType newObjType) {
@@ -63,32 +56,8 @@ int GameObject::getID() {
 	return this->ID;
 }
 
-BoundingBox* GameObject::getBoundingBox() {
-	return box;
-}
-
 void GameObject::setModel(std::string path) {
 	this->modelPath = path;
-}
-
-void GameObject::updateMeasurements()
-{
-	// This code serves to update collisions. If either of these are missing, stop
-	if (!box) return;
-
-	// Update collision box, if applicable
-	if (!this->box->isCircleBoundingBox())
-	{
-		this->box->setWidth(baseWidth * scaleVec.x);
-		this->box->setDepth(baseDepth * scaleVec.z);
-		this->box->updateCorners();
-	} 
-
-	// Update collision circle, if applicable
-	else 
-	{
-		this->box->setRadius(baseRadius * scaleVec.x);
-	}
 }
 
 std::string GameObject::getModelPath()
@@ -99,7 +68,6 @@ std::string GameObject::getModelPath()
 void GameObject::loadModel()
 {
 	this->model = new Model(modelPath);
-	this->updateMeasurements();
 }
 
 // Update the world position
@@ -116,7 +84,6 @@ void GameObject::renderInvisible() {
 	glm::vec3 newPos = glm::vec3(originalPos.x, -100, originalPos.z);
 	this->setPosition(newPos);
 	this->render = false;
-	this->box = NULL;
 }
 
 bool GameObject::getRender() {
@@ -136,7 +103,6 @@ void GameObject::setRender(bool render) {
 // Apply scaling to the model.
 void GameObject::applyScale(glm::vec3 scale) {
 	this->scaleVec = scale;
-	this->updateMeasurements();
 }
 
 glm::vec3 GameObject::getPosition() {
@@ -159,51 +125,12 @@ void GameObject::setRotation(float rot)
 	{
 		std::cout << "Warning: Trying to rotate wall on a non-right angle." << std::endl;
 	}
-
-	// Bounding box rotation
-	if (rot == 90 || rot == 270)
-	{
-		float oldWidth = baseWidth;
-		baseWidth = baseDepth;
-		baseDepth = oldWidth;
-		this->updateMeasurements();
-	}
-}
-
-// Will probably be used on item pickup in dungeon phase
-void GameObject::setItem(int index, GameObject* item) 
-{
-	this->inventory[index] = item;
-}
-
-GameObject* GameObject::getItem(int index) 
-{
-	return this->inventory[index];
-}
-
-// Will probably be used on item placement in cooking phase
-void GameObject::removeItem(int index) {
-    this->inventory.erase(index);
-}
-
-bool GameObject::isPassable() {
-	return this->passable;
-}
-
-void GameObject::setPassable(bool passable) {
-	this->passable = passable;
 }
 
 glm::vec3 GameObject::getScaleVec() {
     return this->scaleVec;
 }
 
-bool GameObject::isColliding(GameObject* obj) {
-	if (this->box == NULL || obj->box == NULL || !obj->render || !this->render ) {
-		return false;
-	}
-	return this->box->isIntersecting(obj->box);
-}
 
 glm::vec3 GameObject::getRoundedPosition()
 {

@@ -25,38 +25,6 @@ std::string Ingredient::getName() {
     return this->name;
 }
 
-void Ingredient::setQualityIndex(int i) {
-    this->qualityIndex = i;
-}
-
-int Ingredient::getQualityIndex() {
-    return this->qualityIndex;
-}
-
-void Ingredient::randomizeQualityIndex()
-{
-    // Generate a number from 1 - 100
-    int randNum = rand() % 100 + 1;
-
-    // Bad quality ingredients
-    if (randNum <= Config::getInt("Bad_Quality_Prob"))
-    {
-        this->qualityIndex = BAD_QUALITY;
-    }
-
-    // Medium quality ingredients
-    else if (randNum <= Config::getInt("Ok_Quality_Prob") + Config::getInt("Bad_Quality_Prob"))
-    {
-        this->qualityIndex = OK_QUALITY;
-    }
-
-    // Good quality ingredients
-    else
-    {
-        this->qualityIndex = GOOD_QUALITY;
-    }
-}
-
 IngredientStatus Ingredient::getStatus() {
     return this->status;
 }
@@ -81,13 +49,7 @@ GLuint Ingredient::getTextureID() {
 }
 
 std::string Ingredient::getDetailedName() {
-    std::string qualityMsg;
-    switch( qualityIndex ) {
-        case BAD_QUALITY : qualityMsg = "Moldy "; break;
-        case OK_QUALITY : qualityMsg = "Mildly Adequate "; break;
-        case GOOD_QUALITY : qualityMsg = "Soviet Union Approved "; break;
-    }
-    return IngredientStatusToString[getStatus()] + " " + qualityMsg + this->name;
+    return IngredientStatusToString[getStatus()] + this->name;
 }
 
 std::unordered_map<IngredientStatus, std::string> Ingredient::IngredientStatusToString = {

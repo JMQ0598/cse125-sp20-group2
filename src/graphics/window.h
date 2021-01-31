@@ -59,13 +59,7 @@ public:
 
     void setScore(int score);
 
-    void setRound(int round);
-
-    int getRound();
-
     Ingredient* getSelectedIngredient();
-
-    void updateRound(Game::RoundInfo_RoundState);
 
     void addInventory(std::unordered_map<int, Ingredient*>* inventory);
 

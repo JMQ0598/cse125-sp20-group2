@@ -36,8 +36,6 @@ protected:
 
     GLuint VAO, VBO, EBO;
 
-    int qualityIndex;
-
 
 public:
     static std::unordered_map<IngredientStatus, std::string> IngredientStatusToString;
@@ -59,22 +57,6 @@ public:
      * Set the ingredient preparation status.
      * */
     void setStatus(IngredientStatus status);
-
-    /**
-     * Get the ingredient quality.
-     * */
-    int getQualityIndex();
-
-    /**
-     * Set the ingredient quality.
-     * */
-    void setQualityIndex(int i);
-
-    /**
-     * Randomly set the ingredient quality.
-     * Probabilities defined in config.
-     * */
-    void randomizeQualityIndex();
 
     /**
      * Get the ingredient's status as a string.

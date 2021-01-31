@@ -2,10 +2,8 @@
 
 #include <objects/GameObject.h>
 #include <objects/Ingredient.h>
-#include <util/Recipe.h>
 #include <unordered_map>
 #include <string>
-#include <util/Instruction.h>
 #include <deque>
 
 enum Team
@@ -29,14 +27,6 @@ protected:
 
     float xSpeed = 0, zSpeed = 0;
 
-    //float runSpeed = 0, turnSpeed = 0;
-
-    std::unordered_map<int, Ingredient*>* inventory;
-
-    std::deque<Instruction*> completedInstructions;
-
-    void loadCollisionSize();
-
     Team team;
 
 public:
@@ -45,12 +35,6 @@ public:
     void setFreeze(bool f);
 
     bool getFreeze();
-
-    std::vector<std::pair<Instruction*, bool>> instructionSet;
-
-    std::deque<Instruction*> getCompletedInstructions();
-
-    void addToCompletedInstructions(Instruction* inst);
     
     void setClientID( int clientID );
 
@@ -77,14 +61,6 @@ public:
     void addToScore( int addition );
 
     int getScore();
-
-    void addToInventory( Ingredient* ingredient );
-
-    void removeFromInventory( Ingredient* ingredient );
-
-    std::unordered_map<int, Ingredient*>* getInventory();
-
-    void drawInventory(GLuint shaderProgram);
 
     Team getTeam();
 

@@ -1,0 +1,10 @@
+D_Wall_Count=1
+D_Wall_Pos_1=-4,1,2
+D_Wall_Rot_1=360
+D_Wall_Scale_1=1,1,1
+D_Ingredient_Count=0
+D_Spawn_Count=0
+D_Pot_Count=0
+D_Pan_Count=0
+D_Knife_Count=0
+D_Plate_Count=0
