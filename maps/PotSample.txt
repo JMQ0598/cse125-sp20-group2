@@ -1,0 +1,38 @@
+// Wall data
+Kitchen_Wall_Count=0
+
+// Ingredient spawning data
+Kitchen_Ingredient_Count=0
+
+// Player spawning data
+Kitchen_Spawn_Count=0
+
+// Pot spawning data
+Kitchen_Pot_Count=0
+
+// Pan spawning data
+Kitchen_Pan_Count=0
+
+// Knives spawning data
+Kitchen_Knife_Count=0
+
+// Plate spawning data
+Kitchen_Plate_Count=3
+Kitchen_Plate_0=0,0,12
+Kitchen_Plate_1=6,0,12
+Kitchen_Plate_2=-6.5,0,12
+
+// Floor spawning data
+Kitchen_Floor_Piece9_Count=0
+
+Kitchen_Floor_Piece25_Count=0
+
+Kitchen_Floor_Piece49_Count=0
+
+Kitchen_Floor_Piece81_Count=6
+Kitchen_Floor81_Piece_3=7,-0.5,12
+Kitchen_Floor81_Piece_4=7,-0.5,3
+Kitchen_Floor81_Piece_5=-2,-0.5,3
+Kitchen_Floor81_Piece_6=-2,-0.5,12
+Kitchen_Floor81_Piece_7=-11,-0.5,3
+Kitchen_Floor81_Piece_8=-11,-0.5,12
