@@ -53,6 +53,7 @@ Tile9_Model=graphics/models/terrain/tile9.obj
 Tile25_Model=assets/models/terrain/tile25.obj
 Tile49_Model=assets/models/terrain/tile49.obj
 Tile81_Model=assets/models/terrain/tile81.obj
+Tile729_Model=assets/models/terrain/tile729.obj
 Floor_Model=graphics/models/terrain/floor.obj
 Cage_Bar_Model=graphics/models/terrain/rustycage_bars.obj
 Cage_Topbot_Model=graphics/models/terrain/rustycage_topbot.obj

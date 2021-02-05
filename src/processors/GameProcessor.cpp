@@ -42,7 +42,6 @@ void GameProcessor::initDungeonPhase(GameState *gameState, ServerGame *server)
         r = RecipeBuilder::getBasicRecipe();
     }
 
-    MapBuilder::assignIngredientPositions(r, m);
     gameState->dungeonMap = m;
     gameState->addWalls(m);
     gameState->addRecipe(r);

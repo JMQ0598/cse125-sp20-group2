@@ -180,19 +180,3 @@ LobbyMap* MapBuilder::getLobbyMap() {
 
     return mp;
 }
-
-void MapBuilder::assignIngredientPositions( Recipe* recipe, DungeonMap* mp ) {
-    /*int i = 0;
-    for( auto ingredient : recipe->ingredientList ) {
-        ingredient->setPosition(mp->ingredientPositions[i]);
-        i++;
-    }*/
-    std::cout << "WARNING, INGREDIENT POSITIONS ARE NOT BEING ASSIGNED" << std::endl;
-    // DungeonMap* dMapPtr = static_cast<DungeonMap*>(mp);
-    // for (int i = 0; i < recipe->ingredientList.size(); i++) {
-    //     Ingredient* ing = recipe->ingredientList.front();
-    //     recipe->ingredientList.erase(recipe->ingredientList.begin());
-    //     ing->setPosition(dMapPtr->ingredientPositions[i]);
-    //     recipe->ingredientList.push_back(ing);
-    // }
-}

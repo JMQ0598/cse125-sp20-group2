@@ -16,5 +16,4 @@ public:
     static DungeonMap* getDungeonMap();
     static KitchenMap* getKitchenMap();
     static LobbyMap* getLobbyMap();
-    static void assignIngredientPositions( Recipe* recipe, DungeonMap* mp );
 };
