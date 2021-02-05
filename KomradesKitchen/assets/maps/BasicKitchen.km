@@ -4,6 +4,9 @@
 // KITCHEN MAP PROPERTIES
 // // //
 
+// Walls
+Kitchen_Wall_Count=0
+
 // Kitchen Spawn Positions
 Kitchen_Spawn_Count=4
 Kitchen_Spawn_0=-1,0,1
@@ -56,5 +59,16 @@ Pan_3=-25,0,25
 
 // Plate Score
 Plate_Score=5
+
+// Floors
+Kitchen_Floor9_Piece_Count=0
+
+Kitchen_Floor25_Piece_Count=0
+
+Kitchen_Floor49_Piece_Count=0
+
+Kitchen_Floor81_Piece_Count=0
+
+Kitchen_Floor729_Piece_Count=0
 
 ////////////////////////////////////////////////////////////////////////////

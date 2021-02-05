@@ -46,4 +46,15 @@ Dungeon_Spawn_1=1,0,1
 Dungeon_Spawn_2=-1,0,-1
 Dungeon_Spawn_3=1,0,-1
 
+// Floors
+Dungeon_Floor9_Piece_Count=0
+
+Dungeon_Floor25_Piece_Count=0
+
+Dungeon_Floor49_Piece_Count=0
+
+Dungeon_Floor81_Piece_Count=0
+
+Dungeon_Floor729_Piece_Count=0
+
 ////////////////////////////////////////////////////////////////////////////

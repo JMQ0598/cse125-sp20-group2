@@ -55,12 +55,6 @@ void BoundingBox::setDepth(float depth)
     this->depth = depth;
 }
 
-void BoundingBox::setHeight(float height)
-{
-    this->isCircle = false;
-    this->height = height;
-}
-
 bool BoundingBox::isCircleBoundingBox()
 {
     return this->isCircle;

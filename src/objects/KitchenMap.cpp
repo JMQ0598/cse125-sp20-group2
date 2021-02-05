@@ -5,8 +5,8 @@ KitchenMap::KitchenMap() {
 }
 
 void KitchenMap::toggleRender() {
-    for(auto & wall : this->wallList)
-        wall->toggleRender();
+    for(auto & terrain : this->terrainList)
+        terrain->toggleRender();
 
     for(auto & table : this->tableList)
         table->toggleRender();
@@ -19,8 +19,8 @@ void KitchenMap::toggleRender() {
 }
 
 void KitchenMap::setRender(bool render) {
-    for(auto & wall : this->wallList)
-        wall->setRender(render);
+    for(auto & terrain : this->terrainList)
+        terrain->setRender(render);
 
     for(auto & table : this->tableList)
         table->setRender(render);

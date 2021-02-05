@@ -2,14 +2,12 @@
 
 void GameProcessor::initLobbyPhase(GameState *gameState)
 {
-    gameState->setRoundTime(Config::getInt("Lobby_Round_Time"));
-
     // Create map and set the gameState's lobbyMap member
     LobbyMap* m = MapBuilder::getLobbyMap();
-    gameState->lobbyMap = m;
+    //gameState->lobbyMap = m;
 
     // Add the game objects involved in the map
-    gameState->addWalls(m);
+    gameState->addTerrain(m);
 
 }
 
@@ -43,7 +41,7 @@ void GameProcessor::initDungeonPhase(GameState *gameState, ServerGame *server)
     }
 
     gameState->dungeonMap = m;
-    gameState->addWalls(m);
+    gameState->addTerrain(m);
     gameState->addRecipe(r);
 
     // Give all connected players basic ingredients
@@ -64,8 +62,14 @@ void GameProcessor::initDungeonPhase(GameState *gameState, ServerGame *server)
                 continue;
             }
 
+            // Set quality index
             currIngredient->setQualityIndex(BAD_QUALITY);
+
+            // Hide object
             currIngredient->renderInvisible();
+
+            // Free up memory associated with old model - we won't use it anymore
+            delete currIngredient->model;   
 
             currPlayer->addToInventory(currIngredient);
             gameState->addIngredient(currIngredient);
@@ -98,7 +102,7 @@ void GameProcessor::initPlayersLocations(Map *map, GameState *gameState)
 void GameProcessor::initKitchenPhase(GameState *gameState)
 {
     KitchenMap *m = MapBuilder::getKitchenMap();
-    gameState->addWalls(m);
+    gameState->addTerrain(m);
     gameState->kitchenMap = m;
 
     for (auto it = m->cookwareObjects.begin(); it != m->cookwareObjects.end(); it++)

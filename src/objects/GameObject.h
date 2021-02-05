@@ -25,8 +25,8 @@ enum ObjectType
 class GameObject
 {
 
-    /// TODO: remove this later - hardcoded id
 public:
+    // Object counter
     static int counter;
 
 private:
@@ -58,7 +58,7 @@ protected:
     float baseRadius = 1;
 
     // Sizing - may be needed for collisions, depends on model size and scale
-    float width, height, depth;
+    float width, depth;
 
     // The bounding box for this game object
     BoundingBox *box = NULL;
@@ -109,7 +109,7 @@ public:
 
     /**
      * Should be called after setting the model or changing the scale.
-     * Should update width/depth accordingly. TODO: Consider if height is needed
+     * Should update width/depth accordingly.
      * */
     void updateMeasurements();
 

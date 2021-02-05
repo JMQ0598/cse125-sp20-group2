@@ -5,44 +5,15 @@ DungeonMap* MapBuilder::getDungeonMap() {
     // Create the dungeon map
     DungeonMap *mp = new DungeonMap();
 
-    // Get wall count
-    int dungeonWallCount = Config::getInt("Dungeon_Wall_Count");
+    // Process walls for dungeon
+    processWalls(mp, "Dungeon");
+
+    // Process floors for dungeon
+    processFloors(mp, "Dungeon");
+
+    // Process spawns for dungeon
+    processSpawns(mp, "Dungeon");
     
-    // Iterate over walls and add them to the map
-    for (int i = 0; i < dungeonWallCount; i++)
-    {
-        Wall* wall = new Wall();
-        wall->setPosition(Config::getVec3("Dungeon_Wall_Pos_" + std::to_string(i)));
-        
-        // Get scale and rotation
-        std::string scaleVecString = Config::get("Dungeon_Wall_Scale_" + std::to_string(i));
-        std::string rotString = Config::get("Dungeon_Wall_Rot_" + std::to_string(i));
-
-        // Apply scale and rotation, if applicable
-        if (scaleVecString.size() != 0)
-        {
-            glm::vec3 scaleVec = Config::getVec3("Dungeon_Wall_Scale_" + std::to_string(i));
-            wall->applyScale(scaleVec);
-        }
-        if (rotString.size() != 0)
-        {
-            float rot = Config::getFloat("Dungeon_Wall_Rot_" + std::to_string(i));
-            wall->setRotation(rot);
-        }
-
-        // Add wall to list
-        mp->wallList.push_back(wall);
-    }
-
-    // Get spawn count
-    int spawnCount = Config::getInt("Dungeon_Spawn_Count");
-
-    // Iterate over spawns and add to map
-    for (int i = 0; i < spawnCount; i++)
-    {
-        mp->spawningLocations.push_back(Config::getVec3("Dungeon_Spawn_" + std::to_string(i)));
-    }
-
     // Set box for ingredient spawning position
     mp->lowerX = Config::getFloat("Dungeon_Lower_X");
     mp->upperX = Config::getFloat("Dungeon_Upper_X");
@@ -62,6 +33,15 @@ KitchenMap* MapBuilder::getKitchenMap() {
     
     // Create kitchenmap container
     KitchenMap* mp = new KitchenMap();
+
+    // Process walls for kitchen
+    processWalls(mp, "Kitchen");
+
+    // Process floors for kitchen
+    processFloors(mp, "Kitchen");
+
+    // Process spawns for kitchen
+    processSpawns(mp, "Kitchen");
 
     // Create the prison cell :)))
     int cellWallCount = Config::getInt("Cell_Wall_Count");
@@ -89,7 +69,7 @@ KitchenMap* MapBuilder::getKitchenMap() {
             wallBoundBox->updateCorners();
         }
 
-        mp->wallList.push_back(cellWall);
+        mp->terrainList.push_back(cellWall);
     }
 
     // Create the base for the cell
@@ -98,10 +78,7 @@ KitchenMap* MapBuilder::getKitchenMap() {
     cellBase->setModel(Config::get("Cage_Topbot_Model"));
     cellBase->applyScale(glm::vec3(Config::getInt("Cell_Scale")));
     cellBase->setPassable(true);
-    mp->wallList.push_back(cellBase);
-
-    // Get spawn count
-    int count = Config::getInt("Kitchen_Spawn_Count");
+    mp->terrainList.push_back(cellBase);
 
     // For testing, spawn player in prison
     int prisonSpawnCount = Config::getInt("Cell_Spawn_Count");
@@ -110,14 +87,8 @@ KitchenMap* MapBuilder::getKitchenMap() {
         mp->prisonLocations.push_back(Config::getVec3("Cell_Wall_Spawn_" + std::to_string(i)));
     }
 
-    // Iterate over spawns and add to map
-    for (int i = 0; i < count; i++)
-    {
-        mp->spawningLocations.push_back(Config::getVec3("Kitchen_Spawn_" + std::to_string(i)));
-    }
-
     // Get plate count
-    count = Config::getInt("Plate_Count");
+    int count = Config::getInt("Plate_Count");
 
     // Add plates 
     for (int i = 0; i < count; i++)
@@ -176,7 +147,126 @@ LobbyMap* MapBuilder::getLobbyMap() {
     // Create lobbymap container
     LobbyMap* mp = new LobbyMap();
 
+    // Process walls for lobby
+    processWalls(mp, "Lobby");
+
     ///TODO: Complete lobby map setup (read wall locations, scales, rots, etc.)
 
     return mp;
+}
+
+/**
+ * Helper function designed to process walls for all map types.
+ */
+void MapBuilder::processWalls(Map* mp, std::string prefix)
+{
+    // Get wall count
+    int wallCount = Config::getInt(prefix + "_Wall_Count");
+    
+    // Iterate over walls and add them to the map
+    for (int i = 0; i < wallCount; i++)
+    {
+        Wall* wall = new Wall();
+        wall->setPosition(Config::getVec3(prefix + "_Wall_Pos_" + std::to_string(i)));
+        
+        // Get scale and rotation
+        std::string scaleVecString = Config::get(prefix + "_Wall_Scale_" + std::to_string(i));
+        std::string rotString = Config::get(prefix + "_Wall_Rot_" + std::to_string(i));
+
+        // Apply scale and rotation, if applicable
+        if (scaleVecString.size() != 0)
+        {
+            glm::vec3 scaleVec = Config::getVec3(prefix + "_Wall_Scale_" + std::to_string(i));
+            wall->applyScale(scaleVec);
+        }
+        if (rotString.size() != 0)
+        {
+            float rot = Config::getFloat(prefix + "_Wall_Rot_" + std::to_string(i));
+            wall->setRotation(rot);
+        }
+
+        // Add wall to list
+        mp->terrainList.push_back(wall);
+    }
+}
+
+/**
+ * Helper function designed to process floor pieces for all map types.
+ */
+void MapBuilder::processFloors(Map* mp, std::string prefix)
+{
+    // Get Floor9 pieces
+    int count = Config::getInt(prefix + "_Floor9_Piece_Count");
+
+    // Iterate
+    for (int i = 0; i < count; i++)
+    {
+        GameObject* floorPiece = new GameObject();
+        floorPiece->setModel("Tile9_Model");
+        floorPiece->setPosition(Config::getVec3(prefix + "_Floor9_Piece_" + std::to_string(i)));
+        mp->terrainList.push_back(floorPiece);
+    }
+
+    // Get Floor25 pieces
+    count = Config::getInt(prefix + "_Floor25_Piece_Count");
+
+    // Iterate
+    for (int i = 0; i < count; i++)
+    {
+        GameObject* floorPiece = new GameObject();
+        floorPiece->setModel("Tile25_Model");
+        floorPiece->setPosition(Config::getVec3(prefix + "_Floor25_Piece_" + std::to_string(i)));
+        mp->terrainList.push_back(floorPiece);
+    }
+
+    // Get Floor49 pieces
+    count = Config::getInt(prefix + "_Floor49_Piece_Count");
+
+    // Iterate
+    for (int i = 0; i < count; i++)
+    {
+        GameObject* floorPiece = new GameObject();
+        floorPiece->setModel("Tile49_Model");
+        floorPiece->setPosition(Config::getVec3(prefix + "_Floor49_Piece_" + std::to_string(i)));
+        mp->terrainList.push_back(floorPiece);
+    }
+
+    // Get Floor81 pieces
+    count = Config::getInt(prefix + "_Floor81_Piece_Count");
+
+    // Iterate
+    for (int i = 0; i < count; i++)
+    {
+        GameObject* floorPiece = new GameObject();
+        floorPiece->setModel("Tile81_Model");
+        floorPiece->setPosition(Config::getVec3(prefix + "_Floor81_Piece_" + std::to_string(i)));
+        mp->terrainList.push_back(floorPiece);
+    }
+
+    // Get Floor729 pieces
+    count = Config::getInt(prefix + "_Floor729_Piece_Count");
+
+    // Iterate
+    for (int i = 0; i < count; i++)
+    {
+        GameObject* floorPiece = new GameObject();
+        floorPiece->setModel("Tile729_Model");
+        floorPiece->setPosition(Config::getVec3(prefix + "_Floor729_Piece_" + std::to_string(i)));
+        mp->terrainList.push_back(floorPiece);
+    }
+}
+
+/**
+ * Helper function designed to process spawn points for all map types.
+ */
+void MapBuilder::processSpawns(Map* mp, std::string prefix)
+{
+    // Get spawn count
+    int spawnCount = Config::getInt(prefix + "_Spawn_Count");
+
+    // Iterate over spawns and add to map
+    for (int i = 0; i < spawnCount; i++)
+    {
+        mp->spawningLocations.push_back(Config::getVec3(prefix + "_Spawn_" + std::to_string(i)));
+    }
 }

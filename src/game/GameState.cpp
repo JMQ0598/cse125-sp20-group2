@@ -26,8 +26,8 @@ Player* GameState::addPlayer(unsigned int clientId) {
     return newPlayerObject;
 }
 
-void GameState::addWalls(Map *map) {
-    for(auto it = map->wallList.begin(); it!= map->wallList.end(); it++) {
+void GameState::addTerrain(Map *map) {
+    for(auto it = map->terrainList.begin(); it!= map->terrainList.end(); it++) {
         this->worldObjects[(*it)->getID()] = *it;
     }
 }

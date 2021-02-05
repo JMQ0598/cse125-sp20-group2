@@ -6,7 +6,6 @@
 class Map {
     public:
         // Walls include tables
-        std::vector<Wall*> wallList;
-        GameObject* floor;
+        std::vector<GameObject*> terrainList;
         std::vector<glm::vec3> spawningLocations;
 };

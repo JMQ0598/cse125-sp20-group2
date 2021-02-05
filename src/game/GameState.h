@@ -50,6 +50,7 @@ public:
     GameState();
     ~GameState();
 
+    ///TODO: Delete this if the game starts lagging hard
     LobbyMap* lobbyMap;
     DungeonMap* dungeonMap;
     KitchenMap* kitchenMap;
@@ -94,7 +95,7 @@ public:
     /**
      * Adds objects from maps
      * */
-    void addWalls(Map* map);
+    void addTerrain(Map* map);
 
     void addIngredient(Ingredient* ing);
 

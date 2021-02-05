@@ -335,7 +335,6 @@ void Window::render()
 		glm::mat4 mat = glm::mat4(1.0);
 		mat = glm::translate(mat, obj->getPosition());
 		mat = glm::scale(mat, obj->getScaleVec());	
-		/// TODO: change back
 		if (obj->getObjectType() != WALL) mat = glm::rotate(mat, obj->getRotation(), glm::vec3(0.0f, 1.0f, 0.0f));	
 		else mat = glm::rotate(mat, (float)((obj->getRotation() * 3.14)/180.0), glm::vec3(0.0f, 1.0f, 0.0f));
 		shader->setMat4("model", mat);
