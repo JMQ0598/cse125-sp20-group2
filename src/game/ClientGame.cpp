@@ -122,22 +122,8 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         mapObjects.push(wall);
     }
 
-    // Create tomato (for ingredient spawn location)
-    if (key == GLFW_KEY_2 && action == GLFW_PRESS)
-    {
-        // Create the tomato and place it at the cursor.
-        GameObject* tomato = IngredientFactory::createIngredient(TOMATO);
-        tomato->setPosition(cursor->getRoundedPosition());
-
-        // Add it to the window.
-        window.addObject(tomato->getID(), tomato);
-
-        // Add it to the stack of map objects.
-        mapObjects.push(tomato);
-    }
-
     // Create player (for spawn position)
-    if (key == GLFW_KEY_3 && action == GLFW_PRESS)
+    if (key == GLFW_KEY_2 && action == GLFW_PRESS)
     {
         // Create the player spawn point and place it at the cursor.
         GameObject* newPlayer = new Player(playerIndex--);
@@ -151,7 +137,7 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
     }
 
     // Create pot
-    if (key == GLFW_KEY_4 && action == GLFW_PRESS)
+    if (key == GLFW_KEY_3 && action == GLFW_PRESS)
     {
         // Create the pot spawn point and place it at the cursor.
         GameObject* pot = new Cookware(POT);
@@ -165,7 +151,7 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
     }
 
     // Create pan
-    if (key == GLFW_KEY_5 && action == GLFW_PRESS)
+    if (key == GLFW_KEY_4 && action == GLFW_PRESS)
     {
         // Create the pan spawn point and place it at the cursor.
         GameObject* pan = new Cookware(PAN);
@@ -178,22 +164,22 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         mapObjects.push(pan);
     }
 
-    // Create knife
-    if (key == GLFW_KEY_6 && action == GLFW_PRESS)
+    // Create cutting board
+    if (key == GLFW_KEY_5 && action == GLFW_PRESS)
     {
-        // Create the knife spawn point and place it at the cursor.
-        GameObject* knife = new Cookware(CUTTING_BOARD);
-        knife->setPosition(cursor->getRoundedPosition());
+        // Create the cutting board spawn point and place it at the cursor.
+        GameObject* cboard = new Cookware(CUTTING_BOARD);
+        cboard->setPosition(cursor->getRoundedPosition());
 
         // Add it to the window.
-        window.addObject(knife->getID(), knife);
+        window.addObject(cboard->getID(), cboard);
 
         // Add it to the stack of map objects.
-        mapObjects.push(knife);
+        mapObjects.push(cboard);
     }
 
     // Create plate
-    if (key == GLFW_KEY_7 && action == GLFW_PRESS)
+    if (key == GLFW_KEY_6 && action == GLFW_PRESS)
     {
         // Create the plate spawn point and place it at the cursor.
         GameObject* plate = new Plate();
@@ -207,7 +193,7 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
     }
 
     // Create floor piece (3x3)
-    if (key == GLFW_KEY_8 && action == GLFW_PRESS)
+    if (key == GLFW_KEY_7 && action == GLFW_PRESS)
     {
         // Create the 3x3 and place it at the cursor.
         GameObject* floorPiece = new GameObject();
@@ -225,7 +211,7 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
     }
 
     // Create floor piece (5x5)
-    if (key == GLFW_KEY_9 && action == GLFW_PRESS)
+    if (key == GLFW_KEY_8 && action == GLFW_PRESS)
     {
         // Create the 5x5 and place it at the cursor.
         GameObject* floorPiece = new GameObject();
@@ -243,7 +229,7 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
     }
 
     // Create floor piece (7x7)
-    if (key == GLFW_KEY_0 && action == GLFW_PRESS)
+    if (key == GLFW_KEY_9 && action == GLFW_PRESS)
     {
         // Create the 7x7 and place it at the cursor.
         GameObject* floorPiece = new GameObject();
@@ -261,7 +247,7 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
     }
 
     // Create floor piece (9x9)
-    if (key == GLFW_KEY_MINUS && action == GLFW_PRESS)
+    if (key == GLFW_KEY_0 && action == GLFW_PRESS)
     {
         // Create the 9x9 and place it at the cursor.
         GameObject* floorPiece = new GameObject();
@@ -270,6 +256,24 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Set as 9x9 model.
         floorPiece->setModel(Config::get("Tile81_Model"));
         floorPiece->setObjectType(FLOOR81);
+
+        // Add it to the window.
+        window.addObject(floorPiece->getID(), floorPiece);
+
+        // Add it to the stack of floor pieces.
+        mapObjects.push(floorPiece);
+    }
+
+    // Create floor piece (27x27)
+    if (key == GLFW_KEY_MINUS && action == GLFW_PRESS)
+    {
+        // Create the 27x27 and place it at the cursor.
+        GameObject* floorPiece = new GameObject();
+        floorPiece->setPosition(cursor->getRoundedPosition() - glm::vec3(0, 0.5, 0));
+
+        // Set as 27x27 model.
+        floorPiece->setModel(Config::get("Tile729_Model"));
+        floorPiece->setObjectType(FLOOR729);
 
         // Add it to the window.
         window.addObject(floorPiece->getID(), floorPiece);
@@ -389,22 +393,22 @@ void ClientGame::exportMapTxt()
     // Index that we will reuse often.
     int i = 1;
 
-    // Default map name
-    std::string mapName = "Dungeon";
+    // Default map type
+    std::string mapType = "Dungeon";
 
-    // Map name prompt
+    // Map type prompt
     std::cout << "Please type in the map type. Use Dungeon/Kitchen/Lobby. Rename this file as preferred after it is generated." << std::endl;
-    std::cin >> mapName;
+    std::cin >> mapType;
 
     // Determine file extension
     std::string ext = "";
-    if (mapName.compare("Dungeon") == 0)        ext = ".dm";
-    else if (mapName.compare("Kitchen") == 0)   ext = ".km";
-    else if (mapName.compare("Lobby") == 0)     ext = ".lm";
+    if (mapType.compare("Dungeon") == 0)        ext = ".dm";
+    else if (mapType.compare("Kitchen") == 0)   ext = ".km";
+    else if (mapType.compare("Lobby") == 0)     ext = ".lm";
 
     // Output stream
     std::ofstream ofs;
-    ofs.open ("maps/" + mapName + ext);
+    ofs.open ("maps/" + mapType + ext);
 
     if (!ofs.is_open()) 
     {
@@ -414,16 +418,16 @@ void ClientGame::exportMapTxt()
 
     // Stacks to take in all the game objects
     std::stack<GameObject*> walls;
-    std::stack<GameObject*> ingredientLocations;
     std::stack<GameObject*> playerSpawns;
     std::stack<GameObject*> pots;
     std::stack<GameObject*> pans;
-    std::stack<GameObject*> knives;
+    std::stack<GameObject*> cboards;
     std::stack<GameObject*> plates;
     std::stack<GameObject*> floorPieces9;
     std::stack<GameObject*> floorPieces25;
     std::stack<GameObject*> floorPieces49;
     std::stack<GameObject*> floorPieces81;
+    std::stack<GameObject*> floorPieces729;
 
     // Iterate over map objects to distribute
     while(!mapObjects.empty())
@@ -440,10 +444,6 @@ void ClientGame::exportMapTxt()
                 walls.push(obj); 
                 break;
 
-            case INGREDIENT:    
-                ingredientLocations.push(obj);
-                break;
-
             case PLAYER:        
                 playerSpawns.push(obj);
                 break;
@@ -454,7 +454,7 @@ void ClientGame::exportMapTxt()
                     std::cerr << "cookware found: " << cookwareName << std::endl;
                     if (cookwareName.compare(POT) == 0)                 pots.push(obj);
                     else if (cookwareName.compare(PAN) == 0)            pans.push(obj);
-                    else if (cookwareName.compare(CUTTING_BOARD) == 0)  knives.push(obj);
+                    else if (cookwareName.compare(CUTTING_BOARD) == 0)  cboards.push(obj);
                     break;
                 }
 
@@ -478,6 +478,10 @@ void ClientGame::exportMapTxt()
                 floorPieces81.push(obj);
                 break;
 
+            case FLOOR729:
+                floorPieces729.push(obj);
+                break;
+
             default:
                 std::cerr << "Undefined object appeared in map." << std::endl;
                 break;
@@ -491,7 +495,7 @@ void ClientGame::exportMapTxt()
     ofs.flush();
 
     // Add wall count.
-    ofs << mapName + "_Wall_Count=" << walls.size() << std::endl;
+    ofs << mapType + "_Wall_Count=" << walls.size() << std::endl;
     ofs.flush();
 
     // Iterate over walls and add to file
@@ -505,45 +509,14 @@ void ClientGame::exportMapTxt()
         walls.pop();
 
         // Add next wall strings
-        ofs << mapName + "_Wall_Pos_" << i << "=";
+        ofs << mapType + "_Wall_Pos_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
-        ofs << mapName + "_Wall_Rot_" << i << "=";
+        ofs << mapType + "_Wall_Rot_" << i << "=";
         ofs << rot << std::endl;
         ofs.flush();
-        ofs << mapName + "_Wall_Scale_" << i << "=";
+        ofs << mapType + "_Wall_Scale_" << i << "=";
         ofs << scale.x << "," << scale.y << "," << scale.z << std::endl;
-        ofs.flush();
-
-        // NEXT
-        i++;
-    }
-    // Reset
-    i = 0;
-
-    std::cout << "Processing ingredient spawn points." << std::endl;
-
-    // Comments
-    ofs << std::endl;
-    ofs << "// Ingredient spawning data" << std::endl;
-    ofs.flush();
-
-
-    // Add ingredient spawn count.
-    ofs << mapName + "_Ingredient_Count=" << ingredientLocations.size() << std::endl;
-    ofs.flush();
-
-    // Iterate over ingredient locations and add to file
-    while (!ingredientLocations.empty())
-    {
-        // Remove from stack
-        GameObject* loc = ingredientLocations.top();
-        glm::vec3 pos = loc->getPosition();
-        ingredientLocations.pop();
-
-        // Add next wall strings
-        ofs << mapName + "_Ingredient_Pos_" << i << "=";
-        ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
         // NEXT
@@ -559,11 +532,11 @@ void ClientGame::exportMapTxt()
     ofs << "// Player spawning data" << std::endl;
     ofs.flush();
 
-    // Add ingredient spawn count.
-    ofs << mapName + "_Spawn_Count=" << playerSpawns.size() << std::endl;
+    // Add player spawn count.
+    ofs << mapType + "_Spawn_Count=" << playerSpawns.size() << std::endl;
     ofs.flush();
 
-    // Iterate over ingredient locations and add to file
+    // Iterate over player locations and add to file
     while (!playerSpawns.empty())
     {
         // Remove from stack
@@ -572,7 +545,7 @@ void ClientGame::exportMapTxt()
         playerSpawns.pop();
 
         // Add next wall strings
-        ofs << mapName + "_Spawn_" << i << "=";
+        ofs << mapType + "_Spawn_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
@@ -590,10 +563,10 @@ void ClientGame::exportMapTxt()
     ofs.flush();
 
     // Add pot spawn count. 
-    ofs << mapName + "_Pot_Count=" << pots.size() << std::endl;
+    ofs << mapType + "_Pot_Count=" << pots.size() << std::endl;
     ofs.flush();
 
-    // Iterate over ingredient locations and add to file
+    // Iterate over pot locations and add to file
     while (!pots.empty())
     {
         // Remove from stack
@@ -602,7 +575,7 @@ void ClientGame::exportMapTxt()
         pots.pop();
 
         // Add next wall strings
-        ofs << mapName + "_Pot_" << i << "=";
+        ofs << mapType + "_Pot_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
@@ -618,10 +591,10 @@ void ClientGame::exportMapTxt()
     ofs.flush();
 
     // Add pan spawn count.
-    ofs << mapName + "_Pan_Count=" << pans.size() << std::endl;
+    ofs << mapType + "_Pan_Count=" << pans.size() << std::endl;
     ofs.flush();
 
-    // Iterate over ingredient locations and add to file
+    // Iterate over pan locations and add to file
     while (!pans.empty())
     {
         // Remove from stack
@@ -630,7 +603,7 @@ void ClientGame::exportMapTxt()
         pans.pop();
 
         // Add next wall strings
-        ofs << mapName + "_Pan_" << i << "=";
+        ofs << mapType + "_Pan_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
@@ -642,23 +615,23 @@ void ClientGame::exportMapTxt()
 
     // Comments
     ofs << std::endl;
-    ofs << "// Knives spawning data" << std::endl;
+    ofs << "// Cutting board spawning data" << std::endl;
     ofs.flush();
 
-    // Add knives spawn count.
-    ofs << mapName + "_Knife_Count=" << knives.size() << std::endl;
+    // Add cutting board spawn count.
+    ofs << mapType + "_Cutting_Board_Count=" << cboards.size() << std::endl;
     ofs.flush();
 
-    // Iterate over ingredient locations and add to file
-    while (!knives.empty())
+    // Iterate over cutting board locations and add to file
+    while (!cboards.empty())
     {
         // Remove from stack
-        GameObject* loc = knives.top();
+        GameObject* loc = cboards.top();
         glm::vec3 pos = loc->getPosition();
-        knives.pop();
+        cboards.pop();
 
         // Add next wall strings
-        ofs << mapName + "_Knife_" << i << "=";
+        ofs << mapType + "_Cutting_Board_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
@@ -674,10 +647,10 @@ void ClientGame::exportMapTxt()
     ofs.flush();
 
     // Add plate spawn count. 
-    ofs << mapName + "_Plate_Count=" << plates.size() << std::endl;
+    ofs << mapType + "_Plate_Count=" << plates.size() << std::endl;
     ofs.flush();
 
-    // Iterate over ingredient locations and add to file
+    // Iterate over plate locations and add to file
     while (!plates.empty())
     {
         // Remove from stack
@@ -686,13 +659,15 @@ void ClientGame::exportMapTxt()
         plates.pop();
 
         // Add next wall strings
-        ofs << mapName + "_Plate_" << i << "=";
+        ofs << mapType + "_Plate_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
         // NEXT
         i++;
     }
+    // Reset
+    i = 0;
 
     std::cout << "Processing floor pieces." << std::endl;
 
@@ -702,10 +677,10 @@ void ClientGame::exportMapTxt()
     ofs.flush();
 
     // Add floor9 count
-    ofs << mapName + "_Floor_Piece9_Count=" << floorPieces9.size() << std::endl;
+    ofs << mapType + "_Floor_Piece9_Count=" << floorPieces9.size() << std::endl;
     ofs.flush();
 
-    // Iterate over ingredient locations and add to file
+    // Iterate over floor piece (3x3) locations and add to file
     while (!floorPieces9.empty())
     {
         // Remove from stack
@@ -714,23 +689,25 @@ void ClientGame::exportMapTxt()
         floorPieces9.pop();
 
         // Add next wall strings
-        ofs << mapName + "_Floor9_Piece_" << i << "=";
+        ofs << mapType + "_Floor9_Piece_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
         // NEXT
         i++;
     }
+    // Reset
+    i = 0;
 
     // Comments
     ofs << std::endl;
     ofs.flush();
 
     // Add floor25 count
-    ofs << mapName + "_Floor_Piece25_Count=" << floorPieces25.size() << std::endl;
+    ofs << mapType + "_Floor_Piece25_Count=" << floorPieces25.size() << std::endl;
     ofs.flush();
 
-    // Iterate over ingredient locations and add to file
+    // Iterate over floor piece (5x5) locations and add to file
     while (!floorPieces25.empty())
     {
         // Remove from stack
@@ -739,23 +716,25 @@ void ClientGame::exportMapTxt()
         floorPieces25.pop();
 
         // Add next wall strings
-        ofs << mapName + "_Floor25_Piece_" << i << "=";
+        ofs << mapType + "_Floor25_Piece_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
         // NEXT
         i++;
     }
+    // Reset
+    i = 0;
 
     // Comments
     ofs << std::endl;
     ofs.flush();
 
     // Add floor49 count
-    ofs << mapName + "_Floor_Piece49_Count=" << floorPieces49.size() << std::endl;
+    ofs << mapType + "_Floor_Piece49_Count=" << floorPieces49.size() << std::endl;
     ofs.flush();
 
-    // Iterate over ingredient locations and add to file
+    // Iterate over floor piece (7x7) locations and add to file
     while (!floorPieces49.empty())
     {
         // Remove from stack
@@ -764,23 +743,25 @@ void ClientGame::exportMapTxt()
         floorPieces49.pop();
 
         // Add next wall strings
-        ofs << mapName + "_Floor9_Piece_" << i << "=";
+        ofs << mapType + "_Floor9_Piece_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
         // NEXT
         i++;
     }
+    // Reset
+    i = 0;
 
     // Comments
     ofs << std::endl;
     ofs.flush();
 
     // Add floor count
-    ofs << mapName + "_Floor_Piece81_Count=" << floorPieces81.size() << std::endl;
+    ofs << mapType + "_Floor_Piece81_Count=" << floorPieces81.size() << std::endl;
     ofs.flush();
 
-    // Iterate over ingredient locations and add to file
+    // Iterate over floor piece (9x9) locations and add to file
     while (!floorPieces81.empty())
     {
         // Remove from stack
@@ -789,12 +770,59 @@ void ClientGame::exportMapTxt()
         floorPieces81.pop();
 
         // Add next wall strings
-        ofs << mapName + "_Floor81_Piece_" << i << "=";
+        ofs << mapType + "_Floor81_Piece_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
         // NEXT
         i++;
+    }
+    // Reset
+    i = 0;
+
+    // Comments
+    ofs << std::endl;
+    ofs.flush();
+
+    // Add floor count
+    ofs << mapType + "_Floor_Piece729_Count=" << floorPieces729.size() << std::endl;
+    ofs.flush();
+
+    // Iterate over floor piece (27x27) locations and add to file
+    while (!floorPieces729.empty())
+    {
+        // Remove from stack
+        GameObject* loc = floorPieces729.top();
+        glm::vec3 pos = loc->getPosition();
+        floorPieces729.pop();
+
+        // Add next wall strings
+        ofs << mapType + "_Floor729_Piece_" << i << "=";
+        ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
+        ofs.flush();
+
+        // NEXT
+        i++;
+    }
+
+    // Handling dungeon unique settings
+    if (mapType.compare("Dungeon") == 0)
+    {
+
+    }
+
+    // Handling kitchen unique settings
+    else if (mapType.compare("Kitchen") == 0)
+    {
+
+    }
+
+    // Handling lobby unique settings
+    else if (mapType.compare("Lobby") == 0)
+    {
+        // Do nothing for now.
+        // This can be used for something useful in the future - maybe some settings for lobby-specific activities
+        // Maybe something to pass the time?
     }
 
     std::cout << "Finished." << std::endl;

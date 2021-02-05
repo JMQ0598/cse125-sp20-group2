@@ -1,0 +1,44 @@
+// Wall data
+lobby_Wall_Count=1
+lobby_Wall_Pos_1=-4,0,0
+lobby_Wall_Rot_1=0
+lobby_Wall_Scale_1=1,1,1
+
+// Player spawning data
+lobby_Spawn_Count=1
+lobby_Spawn_0=0,0,0
+
+// Pot spawning data
+lobby_Pot_Count=1
+lobby_Pot_0=0,0,4
+
+// Pan spawning data
+lobby_Pan_Count=1
+lobby_Pan_0=-6,0,4
+
+// Cutting board spawning data
+lobby_Cutting_Board_Count=1
+lobby_Cutting_Board_0=-9,0,9
+
+// Plate spawning data
+lobby_Plate_Count=1
+lobby_Plate_0=-5,0,13
+
+// Floor spawning data
+lobby_Floor_Piece9_Count=2
+lobby_Floor9_Piece_0=0,-0.5,13
+lobby_Floor9_Piece_1=-18,-0.5,-4
+
+lobby_Floor_Piece25_Count=1
+lobby_Floor25_Piece_0=-18,-0.5,-8
+
+lobby_Floor_Piece49_Count=2
+lobby_Floor9_Piece_0=4,-0.5,13
+lobby_Floor9_Piece_1=-15,-0.5,-8
+
+lobby_Floor_Piece81_Count=2
+lobby_Floor81_Piece_0=6,-0.5,9
+lobby_Floor81_Piece_1=-7,-0.5,-18
+
+lobby_Floor_Piece729_Count=1
+lobby_Floor729_Piece_0=6,-0.5,0

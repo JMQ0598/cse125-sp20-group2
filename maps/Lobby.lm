@@ -1,0 +1,36 @@
+// Wall data
+Lobby_Wall_Count=0
+
+// Ingredient spawning data
+Lobby_Ingredient_Count=0
+
+// Player spawning data
+Lobby_Spawn_Count=0
+
+// Pot spawning data
+Lobby_Pot_Count=0
+
+// Pan spawning data
+Lobby_Pan_Count=0
+
+// Knives spawning data
+Lobby_Knife_Count=0
+
+// Plate spawning data
+Lobby_Plate_Count=0
+
+// Floor spawning data
+Lobby_Floor_Piece9_Count=1
+Lobby_Floor9_Piece_0=-15,-0.5,0
+
+Lobby_Floor_Piece25_Count=1
+Lobby_Floor25_Piece_1=-8,-0.5,0
+
+Lobby_Floor_Piece49_Count=1
+Lobby_Floor9_Piece_2=-1,-0.5,0
+
+Lobby_Floor_Piece81_Count=1
+Lobby_Floor81_Piece_3=10,-0.5,0
+
+Lobby_Floor_Piece729_Count=1
+Lobby_Floor729_Piece_4=32,-0.5,0

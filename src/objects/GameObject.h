@@ -19,7 +19,8 @@ enum ObjectType
     FLOOR9 = 7,
     FLOOR25 = 8,
     FLOOR49 = 9,
-    FLOOR81 = 10
+    FLOOR81 = 10,
+    FLOOR729 = 11
 };
 
 // is intersecting(GameObject) -> return boundingBox.isIntersecting
