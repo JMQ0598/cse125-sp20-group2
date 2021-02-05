@@ -11,6 +11,7 @@ Kitchen_Spawn_1=1,0,1
 Kitchen_Spawn_2=-1,0,-1
 Kitchen_Spawn_3=1,0,-1
 
+// Cell wall positions
 Cell_Wall_Count=4
 Cell_Scale=3
 Cell_Wall_0=6,0,-30
@@ -19,6 +20,7 @@ Cell_Wall_2=0,0,-36
 Cell_Wall_3=0,0,-24
 Cell_Base=0,-0.5,-30
 
+// Where players will spawn within the cell
 Cell_Spawn_Count=3
 Cell_Wall_Spawn_0=1,-0.5,-29
 Cell_Wall_Spawn_1=-1,-0.5,-29

@@ -101,7 +101,7 @@ KitchenMap* MapBuilder::getKitchenMap() {
     mp->wallList.push_back(cellBase);
 
     // Get spawn count
-    int spawnCount = Config::getInt("Kitchen_Spawn_Count");
+    int count = Config::getInt("Kitchen_Spawn_Count");
 
     // For testing, spawn player in prison
     int prisonSpawnCount = Config::getInt("Cell_Spawn_Count");
@@ -111,13 +111,15 @@ KitchenMap* MapBuilder::getKitchenMap() {
     }
 
     // Iterate over spawns and add to map
-    for (int i = 0; i < spawnCount; i++)
+    for (int i = 0; i < count; i++)
     {
         mp->spawningLocations.push_back(Config::getVec3("Kitchen_Spawn_" + std::to_string(i)));
     }
 
+    ///TODO: Update cookware to conform to old format
+
     // Add plates (vary by x)
-    for (int i = 0; i < spawnCount; i++)
+    for (int i = 0; i < count; i++)
     {
         glm::vec3 currPos = Config::getVec3("Plate_Init_Spawn");
         float variation = Config::getFloat("Plate_Spacing");
@@ -132,7 +134,7 @@ KitchenMap* MapBuilder::getKitchenMap() {
     }
 
     // Add cutting boards (vary by x)
-    for (int i = 0; i < spawnCount; i++)
+    for (int i = 0; i < count; i++)
     {
         glm::vec3 currPos = Config::getVec3("Cutting_Board_Init_Spawn");
         float variation = Config::getFloat("Cutting_Board_Spacing");
@@ -143,7 +145,7 @@ KitchenMap* MapBuilder::getKitchenMap() {
     }
 
     // Add pots (vary by z)
-    for (int i = 0; i < spawnCount; i++)
+    for (int i = 0; i < count; i++)
     {
         glm::vec3 currPos = Config::getVec3("Pot_Init_Spawn");
         float variation = Config::getFloat("Pot_Spacing");
@@ -154,7 +156,7 @@ KitchenMap* MapBuilder::getKitchenMap() {
     }
 
     // Add pans (vary by z)
-    for (int i = 0; i < spawnCount; i++)
+    for (int i = 0; i < count; i++)
     {
         glm::vec3 currPos = Config::getVec3("Pan_Init_Spawn");
         float variation = Config::getFloat("Pan_Spacing");
