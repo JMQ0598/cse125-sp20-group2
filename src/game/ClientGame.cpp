@@ -396,9 +396,15 @@ void ClientGame::exportMapTxt()
     std::cout << "Please type in the map type. Use Dungeon/Kitchen/Lobby. Rename this file as preferred after it is generated." << std::endl;
     std::cin >> mapName;
 
+    // Determine file extension
+    std::string ext = "";
+    if (mapName.compare("Dungeon") == 0)        ext = ".dm";
+    else if (mapName.compare("Kitchen") == 0)   ext = ".km";
+    else if (mapName.compare("Lobby") == 0)     ext = ".lm";
+
     // Output stream
     std::ofstream ofs;
-    ofs.open ("maps/" + mapName + ".txt");
+    ofs.open ("maps/" + mapName + ext);
 
     if (!ofs.is_open()) 
     {
@@ -445,9 +451,11 @@ void ClientGame::exportMapTxt()
             case COOKWARE:
                 {
                     std::string cookwareName = ((Cookware*)obj)->getName();
+                    std::cerr << "cookware found: " << cookwareName << std::endl;
                     if (cookwareName.compare(POT) == 0)                 pots.push(obj);
                     else if (cookwareName.compare(PAN) == 0)            pans.push(obj);
                     else if (cookwareName.compare(CUTTING_BOARD) == 0)  knives.push(obj);
+                    break;
                 }
 
             case PLATE:         

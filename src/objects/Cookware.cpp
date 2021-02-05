@@ -14,6 +14,7 @@ Cookware::Cookware() : GameObject() {
 
 Cookware::Cookware(std::string model): GameObject() {
     this->setModel(Config::get(model + "_Model"));
+    this->setName(model);
     this->objType = COOKWARE;
     this->applyScale(Config::getVec3("Cookware_Scaling"));
 }
