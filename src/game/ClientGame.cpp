@@ -326,6 +326,28 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         window.addObject(marker->getID(), marker);
     }
 
+    // Create base for prison cell
+    if (key == GLFW_KEY_EQUAL && action == GLFW_PRESS)
+    {
+        // Do not allow more than one. Replace the old one.
+        if (this->cell)
+        {
+            std::cout << "Prison cell already exists. Replacing with new one." << std::endl;
+            window.removeObject(this->cell->getID());
+        }
+
+        // Create the prison cell base at the cursor.
+        GameObject* cell = new GameObject();
+        cell->setPosition(cursor->getRoundedPosition() - glm::vec3(0, 0.5, 0));
+
+        // Set as prison cell base model.
+        cell->setModel(Config::get("Cage_Topbot_Model"));
+        this->cell = cell;
+
+        // Add it to the window.
+        window.addObject(cell->getID(), cell);
+    }
+
     // Restore last removed object
     if (key == GLFW_KEY_R && action == GLFW_PRESS)
     {
@@ -884,7 +906,34 @@ void ClientGame::exportMapTxt()
     // Handling kitchen unique settings
     else if (mapType.compare("Kitchen") == 0)
     {
+        // Comments
+        ofs << std::endl;
+        ofs << "// Prison cell properties" << std::endl;
+        ofs.flush();
 
+        // Cell properties
+        glm::vec3 pos = cell->getPosition();
+        ofs << "Cell_Wall_Count=4" << std::endl;
+        ofs << "Cell_Scale=3" << std::endl;
+        ofs << "Cell_Wall_0=" << (pos.x - 6) << "," << (pos.y + 0.5) << "," << pos.z << std::endl;
+        ofs << "Cell_Wall_1=" << (pos.x + 6) << "," << (pos.y + 0.5) << "," << pos.z << std::endl;
+        ofs << "Cell_Wall_2=" << pos.x << "," << (pos.y + 0.5) << "," << (pos.z - 6) << std::endl;
+        ofs << "Cell_Wall_3=" << pos.x << "," << (pos.y + 0.5) << "," << (pos.z + 6) << std::endl;
+        ofs << "Cell_Base=" << pos.x << "," << pos.y << "," << pos.z << std::endl;
+
+        // Comments
+        ofs << std::endl;
+        ofs << "// Prison cell spawns" << std::endl;
+        ofs.flush();
+
+        // Cell spawning properties
+        ofs << "Cell_Spawn_Count=3" << std::endl;
+        ofs << "Cell_Wall_Spawn_0=" << (pos.x - 1) << "," << pos.y << "," << (pos.z - 1) << std::endl;
+        ofs << "Cell_Wall_Spawn_1=" << (pos.x - 1) << "," << pos.y << "," << (pos.z + 1) << std::endl;
+        ofs << "Cell_Wall_Spawn_0=" << (pos.x + 1) << "," << pos.y << "," << (pos.z + 1) << std::endl;
+
+        // Plate scoring
+        ofs << "Plate_Score=5" << std::endl;
     }
 
     // Handling lobby unique settings
@@ -909,6 +958,11 @@ void ClientGame::exportMapTxt()
     {
         window.removeObject(this->lowerRight->getID());
         this->lowerRight = NULL;
+    }
+    if (this->cell)
+    {
+        window.removeObject(this->cell->getID());
+        this->cell = NULL;
     }
 
     // Close output stream
