@@ -26,21 +26,33 @@ Cell_Wall_Spawn_0=1,-0.5,-29
 Cell_Wall_Spawn_1=-1,-0.5,-29
 Cell_Wall_Spawn_2=0,-0.5,-28
 
-// Plate Initial and Variation
-Plate_Init_Spawn=-15,0,-13
-Plate_Spacing=10
+// Plate spawning
+Plate_Count=4
+Plate_0=-15,0,-13
+Plate_1=-5,0,-13
+Plate_2=5,0,-13
+Plate_3=15,0,-13
 
-// Cutting Board Inital and Variation
-Cutting_Board_Init_Spawn=-15,0,32
-Cutting_Board_Spacing=10
+// Cutting Board spawning
+Cutting_Board_Count=4
+Cutting_Board_0=-15,0,32
+Cutting_Board_1=-5,0,32
+Cutting_Board_2=5,0,32
+Cutting_Board_3=15,0,32
 
 // Pot Inital and Variation
-Pot_Init_Spawn=25,0,-5
-Pot_Spacing=10
+Pot_Count=4
+Pot_0=25,0,-5
+Pot_1=25,0,5
+Pot_2=25,0,15
+Pot_3=25,0,25
 
 // Pan Inital and Variation
-Pan_Init_Spawn=-25,0,-5
-Pan_Spacing=10
+Pan_Count=4
+Pan_0=-25,0,-5
+Pan_1=-25,0,5
+Pan_2=-25,0,15
+Pan_3=-25,0,25
 
 // Plate Score
 Plate_Score=5

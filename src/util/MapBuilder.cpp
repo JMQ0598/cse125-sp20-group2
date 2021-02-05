@@ -116,14 +116,13 @@ KitchenMap* MapBuilder::getKitchenMap() {
         mp->spawningLocations.push_back(Config::getVec3("Kitchen_Spawn_" + std::to_string(i)));
     }
 
-    ///TODO: Update cookware to conform to old format
+    // Get plate count
+    count = Config::getInt("Plate_Count");
 
-    // Add plates (vary by x)
+    // Add plates 
     for (int i = 0; i < count; i++)
     {
-        glm::vec3 currPos = Config::getVec3("Plate_Init_Spawn");
-        float variation = Config::getFloat("Plate_Spacing");
-        currPos.x += i * variation;
+        glm::vec3 currPos = Config::getVec3("Plate_" + std::to_string(i));
         Plate* plate = new Plate();
         plate->assignId(i);
         plate->setPosition(currPos);
@@ -133,34 +132,37 @@ KitchenMap* MapBuilder::getKitchenMap() {
         mp->plateObjects.push_back(plate);
     }
 
-    // Add cutting boards (vary by x)
+    // Get cutting board count
+    count = Config::getInt("Cutting_Board_Count");
+
+    // Add cutting boards
     for (int i = 0; i < count; i++)
     {
-        glm::vec3 currPos = Config::getVec3("Cutting_Board_Init_Spawn");
-        float variation = Config::getFloat("Cutting_Board_Spacing");
-        currPos.x += i * variation;
+        glm::vec3 currPos = Config::getVec3("Cutting_Board_" + std::to_string(i));
         Cookware* c = new Cookware(CUTTING_BOARD);
         c->setPosition(currPos);
         mp->cookwareObjects.push_back(c);
     }
 
-    // Add pots (vary by z)
+    // Get pot count
+    count = Config::getInt("Pot_Count");
+
+    // Add pots 
     for (int i = 0; i < count; i++)
     {
-        glm::vec3 currPos = Config::getVec3("Pot_Init_Spawn");
-        float variation = Config::getFloat("Pot_Spacing");
-        currPos.z += i * variation;
+        glm::vec3 currPos = Config::getVec3("Pot_" + std::to_string(i));
         Cookware* c = new Cookware(POT);
         c->setPosition(currPos);
         mp->cookwareObjects.push_back(c);
     }
 
-    // Add pans (vary by z)
+    // Get pan count
+    count = Config::getInt("Pan_Count");
+
+    // Add pans 
     for (int i = 0; i < count; i++)
     {
-        glm::vec3 currPos = Config::getVec3("Pan_Init_Spawn");
-        float variation = Config::getFloat("Pan_Spacing");
-        currPos.z += i * variation;
+        glm::vec3 currPos = Config::getVec3("Pan_" + std::to_string(i));
         Cookware* c = new Cookware(PAN);
         c->setPosition(currPos);
         mp->cookwareObjects.push_back(c);
