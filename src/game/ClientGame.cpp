@@ -380,21 +380,37 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         {
             // Nudge up
             obj->setPosition( obj->getPosition() + glm::vec3(0, 0, -0.5) );
+
+            // Debug
+            glm::vec3 pos = obj->getPosition();
+            std::cout << "New position: " << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
         }
         if (key == GLFW_KEY_H && action == GLFW_PRESS)
         {
             // Nudge down
             obj->setPosition( obj->getPosition() + glm::vec3(0, 0, 0.5) );
+
+            // Debug
+            glm::vec3 pos = obj->getPosition();
+            std::cout << "New position: " << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
         }
         if (key == GLFW_KEY_G && action == GLFW_PRESS)
         {
             // Nudge left
             obj->setPosition( obj->getPosition() + glm::vec3(-0.5, 0, 0) );
+
+            // Debug
+            glm::vec3 pos = obj->getPosition();
+            std::cout << "New position: " << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
         }
         if (key == GLFW_KEY_J && action == GLFW_PRESS)
         {
             // Nudge right
             obj->setPosition( obj->getPosition() + glm::vec3(0.5, 0, 0) );
+
+            // Debug
+            glm::vec3 pos = obj->getPosition();
+            std::cout << "New position: " << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
         }
 
         // Rotate object at top of stack 90 degrees
@@ -629,7 +645,7 @@ void ClientGame::exportMapTxt()
     ofs.flush();
 
     // Add pot spawn count. 
-    ofs << mapType + "_Pot_Count=" << pots.size() << std::endl;
+    ofs << "Pot_Count=" << pots.size() << std::endl;
     ofs.flush();
 
     // Iterate over pot locations and add to file
@@ -641,7 +657,7 @@ void ClientGame::exportMapTxt()
         pots.pop();
 
         // Add next wall strings
-        ofs << mapType + "_Pot_" << i << "=";
+        ofs << "Pot_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
@@ -657,7 +673,7 @@ void ClientGame::exportMapTxt()
     ofs.flush();
 
     // Add pan spawn count.
-    ofs << mapType + "_Pan_Count=" << pans.size() << std::endl;
+    ofs << "Pan_Count=" << pans.size() << std::endl;
     ofs.flush();
 
     // Iterate over pan locations and add to file
@@ -669,7 +685,7 @@ void ClientGame::exportMapTxt()
         pans.pop();
 
         // Add next wall strings
-        ofs << mapType + "_Pan_" << i << "=";
+        ofs << "Pan_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
@@ -685,7 +701,7 @@ void ClientGame::exportMapTxt()
     ofs.flush();
 
     // Add cutting board spawn count.
-    ofs << mapType + "_Cutting_Board_Count=" << cboards.size() << std::endl;
+    ofs << "Cutting_Board_Count=" << cboards.size() << std::endl;
     ofs.flush();
 
     // Iterate over cutting board locations and add to file
@@ -697,7 +713,7 @@ void ClientGame::exportMapTxt()
         cboards.pop();
 
         // Add next wall strings
-        ofs << mapType + "_Cutting_Board_" << i << "=";
+        ofs << "Cutting_Board_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
@@ -713,7 +729,7 @@ void ClientGame::exportMapTxt()
     ofs.flush();
 
     // Add plate spawn count. 
-    ofs << mapType + "_Plate_Count=" << plates.size() << std::endl;
+    ofs << "Plate_Count=" << plates.size() << std::endl;
     ofs.flush();
 
     // Iterate over plate locations and add to file
@@ -724,8 +740,8 @@ void ClientGame::exportMapTxt()
         glm::vec3 pos = obj->getPosition();
         plates.pop();
 
-        // Add next wall strings
-        ofs << mapType + "_Plate_" << i << "=";
+        // Add plate strings
+        ofs << "Plate_" << i << "=";
         ofs << pos.x << "," << pos.y << "," << pos.z << std::endl;
         ofs.flush();
 
@@ -882,55 +898,66 @@ void ClientGame::exportMapTxt()
         ofs << "// Ingredient spawning properties" << std::endl;
         ofs.flush();
 
-        // Ingredient spawning boundaries
-        ofs << mapType + "_Upper_X=" << std::to_string((int)this->upperLeft->getPosition().x) << std::endl;
-        ofs << mapType + "_Upper_Z=" << std::to_string((int)this->upperLeft->getPosition().z) << std::endl;
-        ofs << mapType + "_Lower_X=" << std::to_string((int)this->lowerRight->getPosition().x) << std::endl;
-        ofs << mapType + "_Lower_Z=" << std::to_string((int)this->lowerRight->getPosition().z) << std::endl;
+        if (this->upperLeft && this->lowerRight)
+        {
+            // Ingredient spawning boundaries
+            ofs << mapType + "_Upper_X=" << std::to_string((int)this->upperLeft->getPosition().x) << std::endl;
+            ofs << mapType + "_Upper_Z=" << std::to_string((int)this->upperLeft->getPosition().z) << std::endl;
+            ofs << mapType + "_Lower_X=" << std::to_string((int)this->lowerRight->getPosition().x) << std::endl;
+            ofs << mapType + "_Lower_Z=" << std::to_string((int)this->lowerRight->getPosition().z) << std::endl;
+        }
 
-        // Response string
-        std::string response = "";
+            // Response string
+            std::string response = "";
 
-        // Ingredient spawn rates
-        std::cout << "Please enter the ingredient spawn rate (as a float). That is, indicate how many seconds of delay there will be between each ingredient spawn." << std::endl;
-        std::cin >> response;
-        ofs << mapType + "_Ingredient_Spawn_Rate=" << response << std::endl;
+            // Ingredient spawn rates
+            std::cout << "Please enter the ingredient spawn rate (as a float). That is, indicate how many seconds of delay there will be between each ingredient spawn." << std::endl;
+            std::cin >> response;
+            ofs << mapType + "_Ingredient_Spawn_Rate=" << response << std::endl;
 
-        // Vodka spawn chance
-        std::cout << "Please enter the chance of a vodka spawning (as an int). It should value from 0-100." << std::endl;
-        std::cin >> response;
-        ofs << "Vodka_Chance=" << response << std::endl;
+            // Vodka spawn chance
+            std::cout << "Please enter the chance of a vodka spawning (as an int). It should value from 0-100." << std::endl;
+            std::cin >> response;
+            ofs << "Vodka_Chance=" << response << std::endl;
         
     }
 
     // Handling kitchen unique settings
     else if (mapType.compare("Kitchen") == 0)
     {
+        if (this->cell)
+        {
+            // Comments
+            ofs << std::endl;
+            ofs << "// Prison cell properties" << std::endl;
+            ofs.flush();
+
+            // Cell properties
+            glm::vec3 pos = cell->getPosition();
+            ofs << "Cell_Wall_Count=4" << std::endl;
+            ofs << "Cell_Scale=3" << std::endl;
+            ofs << "Cell_Wall_0=" << (pos.x - 6) << "," << (pos.y + 0.5) << "," << pos.z << std::endl;
+            ofs << "Cell_Wall_1=" << (pos.x + 6) << "," << (pos.y + 0.5) << "," << pos.z << std::endl;
+            ofs << "Cell_Wall_2=" << pos.x << "," << (pos.y + 0.5) << "," << (pos.z - 6) << std::endl;
+            ofs << "Cell_Wall_3=" << pos.x << "," << (pos.y + 0.5) << "," << (pos.z + 6) << std::endl;
+            ofs << "Cell_Base=" << pos.x << "," << pos.y << "," << pos.z << std::endl;
+
+            // Comments
+            ofs << std::endl;
+            ofs << "// Prison cell spawns" << std::endl;
+            ofs.flush();
+
+            // Cell spawning properties
+            ofs << "Cell_Spawn_Count=3" << std::endl;
+            ofs << "Cell_Wall_Spawn_0=" << (pos.x - 1) << "," << pos.y << "," << (pos.z - 1) << std::endl;
+            ofs << "Cell_Wall_Spawn_1=" << (pos.x - 1) << "," << pos.y << "," << (pos.z + 1) << std::endl;
+            ofs << "Cell_Wall_Spawn_0=" << (pos.x + 1) << "," << pos.y << "," << (pos.z + 1) << std::endl;
+        }
+
         // Comments
         ofs << std::endl;
-        ofs << "// Prison cell properties" << std::endl;
+        ofs << "// Plate scoring" << std::endl;
         ofs.flush();
-
-        // Cell properties
-        glm::vec3 pos = cell->getPosition();
-        ofs << "Cell_Wall_Count=4" << std::endl;
-        ofs << "Cell_Scale=3" << std::endl;
-        ofs << "Cell_Wall_0=" << (pos.x - 6) << "," << (pos.y + 0.5) << "," << pos.z << std::endl;
-        ofs << "Cell_Wall_1=" << (pos.x + 6) << "," << (pos.y + 0.5) << "," << pos.z << std::endl;
-        ofs << "Cell_Wall_2=" << pos.x << "," << (pos.y + 0.5) << "," << (pos.z - 6) << std::endl;
-        ofs << "Cell_Wall_3=" << pos.x << "," << (pos.y + 0.5) << "," << (pos.z + 6) << std::endl;
-        ofs << "Cell_Base=" << pos.x << "," << pos.y << "," << pos.z << std::endl;
-
-        // Comments
-        ofs << std::endl;
-        ofs << "// Prison cell spawns" << std::endl;
-        ofs.flush();
-
-        // Cell spawning properties
-        ofs << "Cell_Spawn_Count=3" << std::endl;
-        ofs << "Cell_Wall_Spawn_0=" << (pos.x - 1) << "," << pos.y << "," << (pos.z - 1) << std::endl;
-        ofs << "Cell_Wall_Spawn_1=" << (pos.x - 1) << "," << pos.y << "," << (pos.z + 1) << std::endl;
-        ofs << "Cell_Wall_Spawn_0=" << (pos.x + 1) << "," << pos.y << "," << (pos.z + 1) << std::endl;
 
         // Plate scoring
         ofs << "Plate_Score=5" << std::endl;
