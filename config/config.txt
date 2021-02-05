@@ -34,7 +34,11 @@ Tile25_Model=assets/models/terrain/tile25.obj
 Tile49_Model=assets/models/terrain/tile49.obj
 Tile81_Model=assets/models/terrain/tile81.obj
 Tile729_Model=assets/models/terrain/tile729.obj
+UpperLeft_Marker_Model=assets/models/terrain/UpperLeft.obj
+LowerRight_Marker_Model=assets/models/terrain/LowerRight.obj
 Floor_Model=assets/models/terrain/floor.obj
+Cage_Bar_Model=graphics/models/terrain/rustycage_bars.obj
+Cage_Topbot_Model=graphics/models/terrain/rustycage_topbot.obj
 
 // Character model paths
 Player_0=assets/models/characters/characterblue.obj

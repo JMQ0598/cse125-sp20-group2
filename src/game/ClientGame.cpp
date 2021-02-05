@@ -206,7 +206,7 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(floorPiece->getID(), floorPiece);
 
-        // Add it to the stack of floor pieces.
+        // Add it to the stack of map objects.
         mapObjects.push(floorPiece);
     }
 
@@ -224,7 +224,7 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(floorPiece->getID(), floorPiece);
 
-        // Add it to the stack of floor pieces.
+        // Add it to the stack of map objects.
         mapObjects.push(floorPiece);
     }
 
@@ -242,7 +242,7 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(floorPiece->getID(), floorPiece);
 
-        // Add it to the stack of floor pieces.
+        // Add it to the stack of map objects.
         mapObjects.push(floorPiece);
     }
 
@@ -260,7 +260,7 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(floorPiece->getID(), floorPiece);
 
-        // Add it to the stack of floor pieces.
+        // Add it to the stack of map objects.
         mapObjects.push(floorPiece);
     }
 
@@ -278,8 +278,52 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(floorPiece->getID(), floorPiece);
 
-        // Add it to the stack of floor pieces.
+        // Add it to the stack of map objects.
         mapObjects.push(floorPiece);
+    }
+
+    // Create indicator for upper-left ingredient spawning boundary
+    if (key == GLFW_KEY_LEFT_BRACKET && action == GLFW_PRESS)
+    {
+        // Do not allow more than one. Replace the old one.
+        if (this->upperLeft)
+        {
+            std::cout << "Upper-left marker already exists. Replacing with new one." << std::endl;
+            window.removeObject(this->upperLeft->getID());
+        }
+
+        // Create the upper left marker at the cursor.
+        GameObject* marker = new GameObject();
+        marker->setPosition(cursor->getRoundedPosition() - glm::vec3(0, 0.5, 0));
+
+        // Set as upper left model.
+        marker->setModel(Config::get("UpperLeft_Marker_Model"));
+        this->upperLeft = marker;
+
+        // Add it to the window.
+        window.addObject(marker->getID(), marker);
+    }
+
+    // Create indicator for lower-right ingredient spawning boundary
+    if (key == GLFW_KEY_RIGHT_BRACKET && action == GLFW_PRESS)
+    {
+        // Do not allow more than one. Replace the old one.
+        if (this->lowerRight)
+        {
+            std::cout << "Lower-right marker already exists. Replacing with new one." << std::endl;
+            window.removeObject(this->lowerRight->getID());
+        }
+
+        // Create the lower right marker at the cursor.
+        GameObject* marker = new GameObject();
+        marker->setPosition(cursor->getRoundedPosition() - glm::vec3(0, 0.5, 0));
+
+        // Set as lower right model.
+        marker->setModel(Config::get("LowerRight_Marker_Model"));
+        this->lowerRight = marker;
+
+        // Add it to the window.
+        window.addObject(marker->getID(), marker);
     }
 
     // Restore last removed object
@@ -397,7 +441,7 @@ void ClientGame::exportMapTxt()
     std::string mapType = "Dungeon";
 
     // Map type prompt
-    std::cout << "Please type in the map type. Use Dungeon/Kitchen/Lobby. Rename this file as preferred after it is generated." << std::endl;
+    std::cout << "Please type in the map type. Use Dungeon/Kitchen/Lobby. This will create a file of that name (i.e. Dungeon.dm). Rename this file as preferred after it is generated." << std::endl;
     std::cin >> mapType;
 
     // Determine file extension
@@ -540,8 +584,8 @@ void ClientGame::exportMapTxt()
     while (!playerSpawns.empty())
     {
         // Remove from stack
-        GameObject* loc = playerSpawns.top();
-        glm::vec3 pos = loc->getPosition();
+        GameObject* obj = playerSpawns.top();
+        glm::vec3 pos = obj->getPosition();
         playerSpawns.pop();
 
         // Add next wall strings
@@ -570,8 +614,8 @@ void ClientGame::exportMapTxt()
     while (!pots.empty())
     {
         // Remove from stack
-        GameObject* loc = pots.top();
-        glm::vec3 pos = loc->getPosition();
+        GameObject* obj = pots.top();
+        glm::vec3 pos = obj->getPosition();
         pots.pop();
 
         // Add next wall strings
@@ -598,8 +642,8 @@ void ClientGame::exportMapTxt()
     while (!pans.empty())
     {
         // Remove from stack
-        GameObject* loc = pans.top();
-        glm::vec3 pos = loc->getPosition();
+        GameObject* obj = pans.top();
+        glm::vec3 pos = obj->getPosition();
         pans.pop();
 
         // Add next wall strings
@@ -626,8 +670,8 @@ void ClientGame::exportMapTxt()
     while (!cboards.empty())
     {
         // Remove from stack
-        GameObject* loc = cboards.top();
-        glm::vec3 pos = loc->getPosition();
+        GameObject* obj = cboards.top();
+        glm::vec3 pos = obj->getPosition();
         cboards.pop();
 
         // Add next wall strings
@@ -654,8 +698,8 @@ void ClientGame::exportMapTxt()
     while (!plates.empty())
     {
         // Remove from stack
-        GameObject* loc = plates.top();
-        glm::vec3 pos = loc->getPosition();
+        GameObject* obj = plates.top();
+        glm::vec3 pos = obj->getPosition();
         plates.pop();
 
         // Add next wall strings
@@ -684,8 +728,8 @@ void ClientGame::exportMapTxt()
     while (!floorPieces9.empty())
     {
         // Remove from stack
-        GameObject* loc = floorPieces9.top();
-        glm::vec3 pos = loc->getPosition();
+        GameObject* obj = floorPieces9.top();
+        glm::vec3 pos = obj->getPosition();
         floorPieces9.pop();
 
         // Add next wall strings
@@ -711,8 +755,8 @@ void ClientGame::exportMapTxt()
     while (!floorPieces25.empty())
     {
         // Remove from stack
-        GameObject* loc = floorPieces25.top();
-        glm::vec3 pos = loc->getPosition();
+        GameObject* obj = floorPieces25.top();
+        glm::vec3 pos = obj->getPosition();
         floorPieces25.pop();
 
         // Add next wall strings
@@ -738,8 +782,8 @@ void ClientGame::exportMapTxt()
     while (!floorPieces49.empty())
     {
         // Remove from stack
-        GameObject* loc = floorPieces49.top();
-        glm::vec3 pos = loc->getPosition();
+        GameObject* obj = floorPieces49.top();
+        glm::vec3 pos = obj->getPosition();
         floorPieces49.pop();
 
         // Add next wall strings
@@ -765,8 +809,8 @@ void ClientGame::exportMapTxt()
     while (!floorPieces81.empty())
     {
         // Remove from stack
-        GameObject* loc = floorPieces81.top();
-        glm::vec3 pos = loc->getPosition();
+        GameObject* obj = floorPieces81.top();
+        glm::vec3 pos = obj->getPosition();
         floorPieces81.pop();
 
         // Add next wall strings
@@ -792,8 +836,8 @@ void ClientGame::exportMapTxt()
     while (!floorPieces729.empty())
     {
         // Remove from stack
-        GameObject* loc = floorPieces729.top();
-        glm::vec3 pos = loc->getPosition();
+        GameObject* obj = floorPieces729.top();
+        glm::vec3 pos = obj->getPosition();
         floorPieces729.pop();
 
         // Add next wall strings
@@ -805,10 +849,36 @@ void ClientGame::exportMapTxt()
         i++;
     }
 
+    // Comments
+    ofs << std::endl;
+    ofs << "// Ingredient spawning properties" << std::endl;
+    ofs.flush();
+
+    // Info
+    std::cout << "Processing gameplay aspects." << std::endl;
+
     // Handling dungeon unique settings
     if (mapType.compare("Dungeon") == 0)
     {
+        // Ingredient spawning boundaries
+        ofs << mapType + "_Upper_X=" << std::to_string((int)this->upperLeft->getPosition().x) << std::endl;
+        ofs << mapType + "_Upper_Z=" << std::to_string((int)this->upperLeft->getPosition().z) << std::endl;
+        ofs << mapType + "_Lower_X=" << std::to_string((int)this->lowerRight->getPosition().x) << std::endl;
+        ofs << mapType + "_Lower_Z=" << std::to_string((int)this->lowerRight->getPosition().z) << std::endl;
 
+        // Response string
+        std::string response = "";
+
+        // Ingredient spawn rates
+        std::cout << "Please enter the ingredient spawn rate (as a float). That is, indicate how many seconds of delay there will be between each ingredient spawn." << std::endl;
+        std::cin >> response;
+        ofs << mapType + "_Ingredient_Spawn_Rate=" << response << std::endl;
+
+        // Vodka spawn chance
+        std::cout << "Please enter the chance of a vodka spawning (as an int). It should value from 0-100." << std::endl;
+        std::cin >> response;
+        ofs << "Vodka_Chance=" << response << std::endl;
+        
     }
 
     // Handling kitchen unique settings
@@ -825,7 +895,15 @@ void ClientGame::exportMapTxt()
         // Maybe something to pass the time?
     }
 
+    // Finished
     std::cout << "Finished." << std::endl;
+
+    // Cleanup of object trackers
+    lastDeleted = NULL;
+    window.removeObject(this->upperLeft->getID());
+    upperLeft = NULL;
+    window.removeObject(this->lowerRight->getID());
+    lowerRight = NULL;
 
     // Close output stream
     ofs.close();

@@ -42,6 +42,9 @@ class ClientGame {
         std::stack<GameObject*> mapObjects;
         GameObject* lastDeleted = NULL;
         int playerIndex = -2;
+        GameObject* upperLeft = NULL;
+        GameObject* lowerRight = NULL;
+        GameObject* cell = NULL;
 
         ///NOTE: Dev tool for map building inputs.
         void mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode, int action, int mods);
