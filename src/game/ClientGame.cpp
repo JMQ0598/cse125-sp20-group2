@@ -17,7 +17,7 @@ ClientGame::ClientGame(std::string IP, int port) : client(IP, port)
     glfwSetWindowUserPointer(this->window->glfwViewport, reinterpret_cast<void*> (this));
     glfwSetKeyCallback(this->window->glfwViewport, key_callback_wrapper);
 
-    ///TODO: Map variable. Client should not need to know about these.
+    ///TODO: Map variable. Client should not need to know about these. Add to all maps
     // Create floor lol
     GameObject* floor = new GameObject(-1);
     floor->setModel(Config::get("Floor_Model"));
@@ -80,12 +80,17 @@ void ClientGame::keyBindsHandler(GLFWwindow* glfwWindow, int key, int scancode, 
     if (key == GLFW_KEY_E && action == GLFW_PRESS && this->window->getSelectedIngredient() != NULL && this->window->getRound() == KITCHEN_NUM )
     {
         std::cout << "pressed interact key" << std::endl;
-        Game::ClientMessage* cookMsg = MessageBuilder::toCookMessage(this->window->getSelectedIngredient());
-        this->client.send(*cookMsg);
-        delete cookMsg;
 
-        // Prevent spamming the event key, have to select ingredient again
-        this->window->selectedIngredient = NULL;
+        // Only allow interactions in kitchen round
+        if (window->getRound() == KITCHEN_NUM) 
+        {
+            Game::ClientMessage* cookMsg = MessageBuilder::toCookMessage(this->window->getSelectedIngredient());
+            this->client.send(*cookMsg);
+            delete cookMsg;
+
+            // Prevent spamming the event key, have to select ingredient again
+            this->window->selectedIngredient = NULL;
+        }
     }
 }
 
