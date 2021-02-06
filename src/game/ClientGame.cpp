@@ -570,7 +570,7 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
 void ClientGame::exportMapTxt()
 {
     // Index that we will reuse often.
-    int i = 1;
+    int i = 0;
 
     // Default map type
     std::string mapType = "";
