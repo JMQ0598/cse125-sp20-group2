@@ -44,6 +44,9 @@ void ClientGame::runGame()
 {
     while(!window.isClosed) 
     {
+        // Mark object at back of deque as "selected"
+        if (!mapObjects.empty()) mapObjects.back()->selected = true;
+
         // Take local input
         // Send to the server
         processInput();
@@ -118,8 +121,11 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(wall->getID(), wall);
 
+        // Old object no longer considered at the back of the deque, so deselect
+        if (!mapObjects.empty()) mapObjects.back()->selected = false;
+
         // Add it to the stack of map objects.
-        mapObjects.push(wall);
+        mapObjects.push_back(wall);
     }
 
     // Create player (for spawn position)
@@ -132,8 +138,11 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(newPlayer->getID(), newPlayer);
 
+        // Old object no longer considered at the back of the deque, so deselect
+        if (!mapObjects.empty()) mapObjects.back()->selected = false;
+
         // Add it to the stack of map objects.
-        mapObjects.push(newPlayer);
+        mapObjects.push_back(newPlayer);
     }
 
     // Create pot
@@ -146,8 +155,11 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(pot->getID(), pot);
 
+        // Old object no longer considered at the back of the deque, so deselect
+        if (!mapObjects.empty()) mapObjects.back()->selected = false;
+
         // Add it to the stack of map objects.
-        mapObjects.push(pot);
+        mapObjects.push_back(pot);
     }
 
     // Create pan
@@ -160,8 +172,11 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(pan->getID(), pan);
 
+        // Old object no longer considered at the back of the deque, so deselect
+        if (!mapObjects.empty()) mapObjects.back()->selected = false;
+
         // Add it to the stack of map objects.
-        mapObjects.push(pan);
+        mapObjects.push_back(pan);
     }
 
     // Create cutting board
@@ -174,8 +189,11 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(cboard->getID(), cboard);
 
+        // Old object no longer considered at the back of the deque, so deselect
+        if (!mapObjects.empty()) mapObjects.back()->selected = false;
+
         // Add it to the stack of map objects.
-        mapObjects.push(cboard);
+        mapObjects.push_back(cboard);
     }
 
     // Create plate
@@ -188,8 +206,11 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(plate->getID(), plate);
 
+        // Old object no longer considered at the back of the deque, so deselect
+        if (!mapObjects.empty()) mapObjects.back()->selected = false;
+
         // Add it to the stack of map objects.
-        mapObjects.push(plate);
+        mapObjects.push_back(plate);
     }
 
     // Create floor piece (3x3)
@@ -206,8 +227,11 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(floorPiece->getID(), floorPiece);
 
+        // Old object no longer considered at the back of the deque, so deselect
+        if (!mapObjects.empty()) mapObjects.back()->selected = false;
+
         // Add it to the stack of map objects.
-        mapObjects.push(floorPiece);
+        mapObjects.push_back(floorPiece);
     }
 
     // Create floor piece (5x5)
@@ -224,8 +248,11 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(floorPiece->getID(), floorPiece);
 
+        // Old object no longer considered at the back of the deque, so deselect
+        if (!mapObjects.empty()) mapObjects.back()->selected = false;
+
         // Add it to the stack of map objects.
-        mapObjects.push(floorPiece);
+        mapObjects.push_back(floorPiece);
     }
 
     // Create floor piece (7x7)
@@ -242,8 +269,11 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(floorPiece->getID(), floorPiece);
 
+        // Old object no longer considered at the back of the deque, so deselect
+        if (!mapObjects.empty()) mapObjects.back()->selected = false;
+
         // Add it to the stack of map objects.
-        mapObjects.push(floorPiece);
+        mapObjects.push_back(floorPiece);
     }
 
     // Create floor piece (9x9)
@@ -260,8 +290,11 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(floorPiece->getID(), floorPiece);
 
+        // Old object no longer considered at the back of the deque, so deselect
+        if (!mapObjects.empty()) mapObjects.back()->selected = false;
+
         // Add it to the stack of map objects.
-        mapObjects.push(floorPiece);
+        mapObjects.push_back(floorPiece);
     }
 
     // Create floor piece (27x27)
@@ -278,74 +311,116 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         // Add it to the window.
         window.addObject(floorPiece->getID(), floorPiece);
 
+        // Old object no longer considered at the back of the deque, so deselect
+        if (!mapObjects.empty()) mapObjects.back()->selected = false;
+
         // Add it to the stack of map objects.
-        mapObjects.push(floorPiece);
+        mapObjects.push_back(floorPiece);
     }
 
     // Create indicator for upper-left ingredient spawning boundary
     if (key == GLFW_KEY_LEFT_BRACKET && action == GLFW_PRESS)
     {
-        // Do not allow more than one. Replace the old one.
-        if (this->upperLeft)
-        {
-            std::cout << "Upper-left marker already exists. Replacing with new one." << std::endl;
-            window.removeObject(this->upperLeft->getID());
+        // Removal of marker
+        if (mods == GLFW_MOD_SHIFT) {
+            if (this->upperLeft)
+            {
+                window.removeObject(this->upperLeft->getID());
+                this->upperLeft = NULL;
+            }
         }
 
-        // Create the upper left marker at the cursor.
-        GameObject* marker = new GameObject();
-        marker->setPosition(cursor->getRoundedPosition() - glm::vec3(0, 0.5, 0));
+        // Adding marker
+        else 
+        {
+            // Do not allow more than one. Replace the old one.
+            if (this->upperLeft)
+            {
+                std::cout << "Upper-left marker already exists. Replacing with new one." << std::endl;
+                window.removeObject(this->upperLeft->getID());
+            }
 
-        // Set as upper left model.
-        marker->setModel(Config::get("UpperLeft_Marker_Model"));
-        this->upperLeft = marker;
+            // Create the upper left marker at the cursor.
+            GameObject* marker = new GameObject();
+            marker->setPosition(cursor->getRoundedPosition() - glm::vec3(0, 0.5, 0));
 
-        // Add it to the window.
-        window.addObject(marker->getID(), marker);
+            // Set as upper left model.
+            marker->setModel(Config::get("UpperLeft_Marker_Model"));
+            this->upperLeft = marker;
+
+            // Add it to the window.
+            window.addObject(marker->getID(), marker);
+        }
     }
 
     // Create indicator for lower-right ingredient spawning boundary
     if (key == GLFW_KEY_RIGHT_BRACKET && action == GLFW_PRESS)
     {
-        // Do not allow more than one. Replace the old one.
-        if (this->lowerRight)
-        {
-            std::cout << "Lower-right marker already exists. Replacing with new one." << std::endl;
-            window.removeObject(this->lowerRight->getID());
+        // Removal of marker
+        if (mods == GLFW_MOD_SHIFT) {
+            if (this->lowerRight)
+            {
+                window.removeObject(this->lowerRight->getID());
+                this->lowerRight = NULL;
+            }
         }
 
-        // Create the lower right marker at the cursor.
-        GameObject* marker = new GameObject();
-        marker->setPosition(cursor->getRoundedPosition() - glm::vec3(0, 0.5, 0));
+        // Adding marker
+        else 
+        {
+            // Do not allow more than one. Replace the old one.
+            if (this->lowerRight)
+            {
+                std::cout << "Lower-right marker already exists. Replacing with new one." << std::endl;
+                window.removeObject(this->lowerRight->getID());
+            }
 
-        // Set as lower right model.
-        marker->setModel(Config::get("LowerRight_Marker_Model"));
-        this->lowerRight = marker;
+            // Create the lower right marker at the cursor.
+            GameObject* marker = new GameObject();
+            marker->setPosition(cursor->getRoundedPosition() - glm::vec3(0, 0.5, 0));
 
-        // Add it to the window.
-        window.addObject(marker->getID(), marker);
+            // Set as lower right model.
+            marker->setModel(Config::get("LowerRight_Marker_Model"));
+            this->lowerRight = marker;
+
+            // Add it to the window.
+            window.addObject(marker->getID(), marker);
+        }
     }
 
     // Create base for prison cell
     if (key == GLFW_KEY_EQUAL && action == GLFW_PRESS)
     {
-        // Do not allow more than one. Replace the old one.
-        if (this->cell)
-        {
-            std::cout << "Prison cell already exists. Replacing with new one." << std::endl;
-            window.removeObject(this->cell->getID());
+        // Removal of cell
+        if (mods == GLFW_MOD_SHIFT) {
+            if (this->cell)
+            {
+                window.removeObject(this->cell->getID());
+                this->cell = NULL;
+            }
         }
 
-        // Create the prison cell base at the cursor.
-        GameObject* cell = new GameObject();
-        cell->setPosition(cursor->getRoundedPosition() - glm::vec3(0, 0.5, 0));
+        // Adding cell
+        else
+        {
+            // Do not allow more than one. Replace the old one.
+            if (this->cell)
+            {
+                std::cout << "Prison cell already exists. Replacing with new one." << std::endl;
+                window.removeObject(this->cell->getID());
+            }
 
-        // Set as prison cell base model.
-        cell->setModel(Config::get("Cage_Topbot_Model"));
-        this->cell = cell;
+            // Create the prison cell base at the cursor.
+            GameObject* cell = new GameObject();
+            cell->setPosition(cursor->getRoundedPosition() - glm::vec3(0, 0.5, 0));
 
-        // Add it to the window.
-        window.addObject(cell->getID(), cell);
+            // Set as prison cell base model.
+            cell->setModel(Config::get("Cage_Topbot_Model"));
+            this->cell = cell;
+
+            // Add it to the window.
+            window.addObject(cell->getID(), cell);
+        }
     }
 
     // Restore last removed object
@@ -353,29 +428,47 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
     {
         if (lastDeleted)
         {
-            mapObjects.push(lastDeleted);
+            // Object no longer considered at the back of the deque, so deselect
+            if (!mapObjects.empty()) mapObjects.back()->selected = false;
+
+            // Restore deleted object to the back
+            mapObjects.push_back(lastDeleted);
             window.addObject(lastDeleted->getID(), lastDeleted);
             lastDeleted = NULL;
         }
     }
 
-    // Operations that require a non-empty stack
+    // Operations that require a non-empty deque
     if (!mapObjects.empty())
     {
-        GameObject* obj = mapObjects.top();
+        GameObject* obj = mapObjects.back();
 
-        // Remove object at top of stack
+        // Remove object at back of deque and put it at the front (rotate the deque by 1)
+        if (key == GLFW_KEY_Q && action == GLFW_PRESS)
+        {
+            if (mapObjects.size() > 1)
+            {
+                // Deselect the object
+                mapObjects.back()->selected = false;
+
+                // New object at the back of the deque
+                mapObjects.pop_back();
+                mapObjects.push_front(obj);
+            }
+        }
+
+        // Remove object at back of deque
         if (key == GLFW_KEY_E && action == GLFW_PRESS)
         {
             if (!mapObjects.empty())
             {
                 lastDeleted = obj;
                 window.removeObject(lastDeleted->getID());
-                mapObjects.pop();
+                mapObjects.pop_back();
             }
         }
 
-        // Nudge object at top of stack
+        // Nudge object at back of deque
         if (key == GLFW_KEY_Y && action == GLFW_PRESS)
         {
             // Nudge up
@@ -417,49 +510,49 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
             std::cout << "New position: " << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
         }
 
-        // Rotate object at top of stack 90 degrees
+        // Rotate object at back of deque 90 degrees
         if (key == GLFW_KEY_T && action == GLFW_PRESS)
         {
             // Ignore player spawn points
             if (obj->getObjectType() != PLAYER) obj->setRotation( obj->getRotation() + 90 );
         }
 
-        // Scale up object at top of stack (x)
+        // Scale up object at back of deque (x)
         if (key == GLFW_KEY_Z && action == GLFW_PRESS)
         {
             // Ignore player spawn points
             if (obj->getObjectType() != PLAYER) obj->applyScale( obj->getScaleVec() + glm::vec3(0.5, 0, 0) );
         }
 
-        // Scale up object at top of stack (y)
+        // Scale up object at back of deque (y)
         if (key == GLFW_KEY_X && action == GLFW_PRESS)
         {
             // Ignore player spawn points
             if (obj->getObjectType() != PLAYER) obj->applyScale( obj->getScaleVec() + glm::vec3(0, 0.5, 0) );
         }
 
-        // Scale up object at top of stack (z)
+        // Scale up object at back of deque (z)
         if (key == GLFW_KEY_C && action == GLFW_PRESS)
         {
             // Ignore player spawn points
             if (obj->getObjectType() != PLAYER) obj->applyScale( obj->getScaleVec() + glm::vec3(0, 0, 0.5) );
         }
 
-        // Scale down object at top of stack (x)
+        // Scale down object at back of deque (x)
         if (key == GLFW_KEY_V && action == GLFW_PRESS)
         {
             // Ignore player spawn points
             if (obj->getObjectType() != PLAYER) obj->applyScale( obj->getScaleVec() + glm::vec3(-0.5, 0, 0) );
         }
 
-        // Scale down object at top of stack (y)
+        // Scale down object at back of deque (y)
         if (key == GLFW_KEY_B && action == GLFW_PRESS)
         {
             // Ignore player spawn points
             if (obj->getObjectType() != PLAYER) obj->applyScale( obj->getScaleVec() + glm::vec3(0, -0.5, 0) );
         }
 
-        // Scale down object at top of stack (z)
+        // Scale down object at back of deque (z)
         if (key == GLFW_KEY_N && action == GLFW_PRESS)
         {
             // Ignore player spawn points
@@ -518,9 +611,9 @@ void ClientGame::exportMapTxt()
     // Iterate over map objects to distribute
     while(!mapObjects.empty())
     {
-        // Remove object from window and stack
-        GameObject* obj = mapObjects.top();
-        mapObjects.pop();
+        // Remove object from window and deque
+        GameObject* obj = mapObjects.back();
+        mapObjects.pop_back();
         window.removeObject(obj->getID());
 
         // Place in respective stack

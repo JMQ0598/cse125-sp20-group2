@@ -43,16 +43,6 @@ GameObject* Camera::getTarget()
 
 void Camera::toggleFreeCam() {
 	freeCam = !freeCam;
-
-	if (!freeCam) 
-	{
-		yaw = Config::getFloat("Camera_Yaw");
-		pitch = Config::getFloat("Camera_Pitch");
-
-		// Reset position to either target or initalized position
-		if (target) warpToTarget();
-		else pos = staticPos;
-	}
 }
 
 // Returns the view matrix calculated using Euler Angles and the LookAt Matrix

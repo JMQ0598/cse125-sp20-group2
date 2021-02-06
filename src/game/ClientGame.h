@@ -13,6 +13,7 @@
 #include <chrono>
 #include <thread>
 #include <util/Config.h>
+#include <deque>
 #include <stack>
 
 class ClientGame {
@@ -39,7 +40,7 @@ class ClientGame {
         int cursorId = 0;
 
         ///NOTE: Dev tool for tracking objects
-        std::stack<GameObject*> mapObjects;
+        std::deque<GameObject*> mapObjects;
         GameObject* lastDeleted = NULL;
         int playerIndex = -2;
         GameObject* upperLeft = NULL;

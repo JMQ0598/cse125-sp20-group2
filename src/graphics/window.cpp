@@ -262,6 +262,12 @@ void Window::render()
 		// Get the color scaling
 		glm::vec4 colorScale = Config::getVec4("colorScale");
 
+		// Make object red if it is selected by the map creator
+		if (obj->selected)
+		{
+			colorScale *= glm::vec4(1, 0.4, 0.4, 1);
+		}
+
 		// Rotate ingredient because why not
 		if (obj->getObjectType() == INGREDIENT)
 		{
@@ -275,7 +281,6 @@ void Window::render()
 		glm::mat4 mat = glm::mat4(1.0);
 		mat = glm::translate(mat, obj->getPosition());
 		mat = glm::scale(mat, obj->getScaleVec());	
-		/// TODO: Make sure this works
 		mat = glm::rotate(mat, (float)((obj->getRotation() * 3.14)/180.0), glm::vec3(0.0f, 1.0f, 0.0f));
 		shader->setMat4("model", mat);
 

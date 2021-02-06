@@ -30,7 +30,7 @@ class GameObject
     /// TODO: remove this later - hardcoded id
 public:
     static int counter;
-
+    bool selected = false;
 private:
     // Model path
     std::string modelPath;
