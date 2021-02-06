@@ -379,7 +379,8 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         if (key == GLFW_KEY_Y && action == GLFW_PRESS)
         {
             // Nudge up
-            obj->setPosition( obj->getPosition() + glm::vec3(0, 0, -0.5) );
+            if (mods == GLFW_MOD_SHIFT) obj->setPosition( obj->getPosition() + glm::vec3(0, 0, -Config::getFloat("Nudge_Fast_Speed")) );
+            else                        obj->setPosition( obj->getPosition() + glm::vec3(0, 0, -Config::getFloat("Nudge_Speed")) );
 
             // Debug
             glm::vec3 pos = obj->getPosition();
@@ -388,7 +389,8 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         if (key == GLFW_KEY_H && action == GLFW_PRESS)
         {
             // Nudge down
-            obj->setPosition( obj->getPosition() + glm::vec3(0, 0, 0.5) );
+            if (mods == GLFW_MOD_SHIFT) obj->setPosition( obj->getPosition() + glm::vec3(0, 0, Config::getFloat("Nudge_Fast_Speed")) );
+            else                        obj->setPosition( obj->getPosition() + glm::vec3(0, 0, Config::getFloat("Nudge_Speed")) );
 
             // Debug
             glm::vec3 pos = obj->getPosition();
@@ -397,7 +399,8 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         if (key == GLFW_KEY_G && action == GLFW_PRESS)
         {
             // Nudge left
-            obj->setPosition( obj->getPosition() + glm::vec3(-0.5, 0, 0) );
+            if (mods == GLFW_MOD_SHIFT) obj->setPosition( obj->getPosition() + glm::vec3(-Config::getFloat("Nudge_Fast_Speed"), 0, 0) );
+            else                        obj->setPosition( obj->getPosition() + glm::vec3(-Config::getFloat("Nudge_Speed"), 0, 0) );
 
             // Debug
             glm::vec3 pos = obj->getPosition();
@@ -406,7 +409,8 @@ void ClientGame::mapbuildingInput(GLFWwindow* glfwWindow, int key, int scancode,
         if (key == GLFW_KEY_J && action == GLFW_PRESS)
         {
             // Nudge right
-            obj->setPosition( obj->getPosition() + glm::vec3(0.5, 0, 0) );
+            if (mods == GLFW_MOD_SHIFT) obj->setPosition( obj->getPosition() + glm::vec3(Config::getFloat("Nudge_Fast_Speed"), 0, 0) );
+            else                        obj->setPosition( obj->getPosition() + glm::vec3(Config::getFloat("Nudge_Speed"), 0, 0) );
 
             // Debug
             glm::vec3 pos = obj->getPosition();
