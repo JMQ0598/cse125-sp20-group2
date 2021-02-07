@@ -264,8 +264,8 @@ void ServerGame::update()
             while (isColliding)
             {   
                 // Choose a position
-                int x = (rand() % (upperX - lowerX + 1)) + lowerX;
-                int z = (rand() % (upperZ - lowerZ + 1)) + lowerZ;
+                int x = (rand() % (lowerX - upperX + 1)) + upperX;
+                int z = (rand() % (lowerZ - upperZ + 1)) + upperZ;
                 ingredientCopy->setPosition(glm::vec3(x, 0, z));
                 
                 // See if colliding
@@ -429,6 +429,7 @@ void ServerGame::onRoundChange()
         case Game::RoundInfo::LOBBY:
         {
             std::cout << "Initializing Lobby\n";
+            GameProcessor::initLobbyPhase(&this->gameState);
             break;
         }
         case Game::RoundInfo::DUNGEON_WAITING:
@@ -442,7 +443,8 @@ void ServerGame::onRoundChange()
             GameProcessor::initDungeonPhase(&this->gameState, this);
             GameProcessor::initKitchenPhase(&this->gameState);
 
-            // Make kitchen invisible
+            // Make lobby and kitchen invisible
+            this->gameState.lobbyMap->setRender(false);
             this->gameState.kitchenMap->setRender(false);
 
             /// Position players on spawn points

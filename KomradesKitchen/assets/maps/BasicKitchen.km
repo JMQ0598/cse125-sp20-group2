@@ -5,7 +5,19 @@
 // // //
 
 // Walls
-Kitchen_Wall_Count=0
+Kitchen_Wall_Count=4
+Kitchen_Wall_Pos_0=0,0,-60
+Kitchen_Wall_Rot_0=90
+Kitchen_Wall_Scale_0=47.5,1,1
+Kitchen_Wall_Pos_1=0,0,60
+Kitchen_Wall_Rot_1=90
+Kitchen_Wall_Scale_1=47.5,1,1
+Kitchen_Wall_Pos_2=-90,0,0
+Kitchen_Wall_Rot_2=0
+Kitchen_Wall_Scale_2=1,1,31.5
+Kitchen_Wall_Pos_3=90,0,0
+Kitchen_Wall_Rot_3=0
+Kitchen_Wall_Scale_3=1,1,31.5
 
 // Kitchen Spawn Positions
 Kitchen_Spawn_Count=4
@@ -61,14 +73,9 @@ Pan_3=-25,0,25
 Plate_Score=5
 
 // Floors
-Kitchen_Floor9_Piece_Count=0
-
-Kitchen_Floor25_Piece_Count=0
-
-Kitchen_Floor49_Piece_Count=0
-
-Kitchen_Floor81_Piece_Count=0
-
-Kitchen_Floor729_Piece_Count=0
+Kitchen_Floor_Model=graphics/models/terrain/floor.obj
+Kitchen_Floor_Pos=0,-0.5,0
+Kitchen_Floor_Rot=0
+Kitchen_Floor_Scale=2
 
 ////////////////////////////////////////////////////////////////////////////

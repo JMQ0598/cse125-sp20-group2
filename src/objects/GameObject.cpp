@@ -172,22 +172,6 @@ void GameObject::setRotation(float rot)
 	}
 }
 
-// Will probably be used on item pickup in dungeon phase
-void GameObject::setItem(int index, GameObject* item) 
-{
-	this->inventory[index] = item;
-}
-
-GameObject* GameObject::getItem(int index) 
-{
-	return this->inventory[index];
-}
-
-// Will probably be used on item placement in cooking phase
-void GameObject::removeItem(int index) {
-    this->inventory.erase(index);
-}
-
 bool GameObject::isPassable() {
 	return this->passable;
 }

@@ -43,9 +43,6 @@ private:
     // Identifies the rendering ID of the object
     int ID;
 
-    // Inventory
-    std::unordered_map<unsigned int, GameObject *> inventory;
-
     // Able to pass through object
     bool passable = false;
 
@@ -155,14 +152,6 @@ public:
     BoundingBox *getBoundingBox();
 
     void setRotation(float rot);
-
-    GameObject *getItem(int index);
-
-    // Will probably be used on item pickup in dungeon phase
-    void setItem(int index, GameObject *item);
-
-    // Will probably be used on item placement in cooking phase
-    void removeItem(int index);
 
     bool isPassable();
 

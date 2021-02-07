@@ -109,7 +109,7 @@ int main(int argc, char * argv[])
 	int exitCode = 0;
 
 	///TODO: Also need to receive map file names as args in the future.
-	Config::readMapFile("maps/BasicDungeon.dm", DM_VAL);
+	Config::readMapFile("maps/BasicDungeon2.dm", DM_VAL);
 	Config::readMapFile("maps/BasicKitchen.km", KM_VAL);
 	Config::readMapFile("maps/BasicLobby.lm", LM_VAL);
 

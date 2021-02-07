@@ -4,6 +4,25 @@
 // LOBBY MAP PROPERTIES
 // // //
 
-Lobby_Wall_Count=0
+// Walls
+Lobby_Wall_Count=4
+Lobby_Wall_Pos_0=0,0,-60
+Lobby_Wall_Rot_0=90
+Lobby_Wall_Scale_0=47.5,1,1
+Lobby_Wall_Pos_1=0,0,60
+Lobby_Wall_Rot_1=90
+Lobby_Wall_Scale_1=47.5,1,1
+Lobby_Wall_Pos_2=-90,0,0
+Lobby_Wall_Rot_2=0
+Lobby_Wall_Scale_2=1,1,31.5
+Lobby_Wall_Pos_3=90,0,0
+Lobby_Wall_Rot_3=0
+Lobby_Wall_Scale_3=1,1,31.5
+
+// Floors
+Lobby_Floor_Model=graphics/models/terrain/floor.obj
+Lobby_Floor_Pos=0,-0.5,0
+Lobby_Floor_Rot=0
+Lobby_Floor_Scale=2
 
 ////////////////////////////////////////////////////////////////////////////

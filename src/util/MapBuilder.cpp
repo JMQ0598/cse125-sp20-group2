@@ -9,7 +9,7 @@ DungeonMap* MapBuilder::getDungeonMap() {
     processWalls(mp, "Dungeon");
 
     // Process floors for dungeon
-    processFloors(mp, "Dungeon");
+    processFloor(mp, "Dungeon");
 
     // Process spawns for dungeon
     processSpawns(mp, "Dungeon");
@@ -38,7 +38,7 @@ KitchenMap* MapBuilder::getKitchenMap() {
     processWalls(mp, "Kitchen");
 
     // Process floors for kitchen
-    processFloors(mp, "Kitchen");
+    processFloor(mp, "Kitchen");
 
     // Process spawns for kitchen
     processSpawns(mp, "Kitchen");
@@ -150,7 +150,8 @@ LobbyMap* MapBuilder::getLobbyMap() {
     // Process walls for lobby
     processWalls(mp, "Lobby");
 
-    ///TODO: Complete lobby map setup (read wall locations, scales, rots, etc.)
+    // Process floor for lobby
+    processFloor(mp, "Lobby");
 
     return mp;
 }
@@ -191,71 +192,29 @@ void MapBuilder::processWalls(Map* mp, std::string prefix)
 }
 
 /**
- * Helper function designed to process floor pieces for all map types.
+ * Helper function designed to process floors for all map types.
  */
-void MapBuilder::processFloors(Map* mp, std::string prefix)
+void MapBuilder::processFloor(Map* mp, std::string prefix)
 {
-    // Get Floor9 pieces
-    int count = Config::getInt(prefix + "_Floor9_Piece_Count");
+    // Create floor object with map-specific model
+    GameObject* floor = new GameObject();
+    floor->setModel(Config::get(prefix + "_Floor_Model"));
 
-    // Iterate
-    for (int i = 0; i < count; i++)
-    {
-        GameObject* floorPiece = new GameObject();
-        floorPiece->setModel("Tile9_Model");
-        floorPiece->setPosition(Config::getVec3(prefix + "_Floor9_Piece_" + std::to_string(i)));
-        mp->terrainList.push_back(floorPiece);
-    }
+    // Apply scale and rotation
+    glm::vec3 scaleVec = Config::getVec3(prefix + "_Floor_Scale");
+    floor->applyScale(scaleVec);
+    float rot = Config::getFloat(prefix + "_Floor_Rot");
+    floor->setRotation(rot);
 
-    // Get Floor25 pieces
-    count = Config::getInt(prefix + "_Floor25_Piece_Count");
+    // Make floor passable
+    floor->setPassable(true);
 
-    // Iterate
-    for (int i = 0; i < count; i++)
-    {
-        GameObject* floorPiece = new GameObject();
-        floorPiece->setModel("Tile25_Model");
-        floorPiece->setPosition(Config::getVec3(prefix + "_Floor25_Piece_" + std::to_string(i)));
-        mp->terrainList.push_back(floorPiece);
-    }
+    // Set position
+    floor->setPosition(Config::getVec3(prefix + "_Floor_Pos"));
 
-    // Get Floor49 pieces
-    count = Config::getInt(prefix + "_Floor49_Piece_Count");
-
-    // Iterate
-    for (int i = 0; i < count; i++)
-    {
-        GameObject* floorPiece = new GameObject();
-        floorPiece->setModel("Tile49_Model");
-        floorPiece->setPosition(Config::getVec3(prefix + "_Floor49_Piece_" + std::to_string(i)));
-        mp->terrainList.push_back(floorPiece);
-    }
-
-    // Get Floor81 pieces
-    count = Config::getInt(prefix + "_Floor81_Piece_Count");
-
-    // Iterate
-    for (int i = 0; i < count; i++)
-    {
-        GameObject* floorPiece = new GameObject();
-        floorPiece->setModel("Tile81_Model");
-        floorPiece->setPosition(Config::getVec3(prefix + "_Floor81_Piece_" + std::to_string(i)));
-        mp->terrainList.push_back(floorPiece);
-    }
-
-    // Get Floor729 pieces
-    count = Config::getInt(prefix + "_Floor729_Piece_Count");
-
-    // Iterate
-    for (int i = 0; i < count; i++)
-    {
-        GameObject* floorPiece = new GameObject();
-        floorPiece->setModel("Tile729_Model");
-        floorPiece->setPosition(Config::getVec3(prefix + "_Floor729_Piece_" + std::to_string(i)));
-        mp->terrainList.push_back(floorPiece);
-    }
+    // Add to terrain
+    mp->terrainList.push_back(floor);
 }
-
 /**
  * Helper function designed to process spawn points for all map types.
  */

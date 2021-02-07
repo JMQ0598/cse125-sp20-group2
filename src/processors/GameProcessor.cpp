@@ -4,7 +4,7 @@ void GameProcessor::initLobbyPhase(GameState *gameState)
 {
     // Create map and set the gameState's lobbyMap member
     LobbyMap* m = MapBuilder::getLobbyMap();
-    //gameState->lobbyMap = m;
+    gameState->lobbyMap = m;
 
     // Add the game objects involved in the map
     gameState->addTerrain(m);

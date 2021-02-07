@@ -14,10 +14,10 @@ Dungeon_Wall_Pos_1=0,0,-30
 Dungeon_Wall_Scale_1=94.7,1,0.33
 
 // Adjusted wall boundaries used for ingredient spawning
-Dungeon_Lower_X=-44
-Dungeon_Upper_X=44
-Dungeon_Lower_Z=-29
-Dungeon_Upper_Z=29
+Dungeon_Lower_X=44
+Dungeon_Upper_X=-44
+Dungeon_Lower_Z=29
+Dungeon_Upper_Z=-29
 
 // Ingredient spawn rate (in seconds)
 Dungeon_Ingredient_Spawn_Rate=1.0;
@@ -45,16 +45,5 @@ Dungeon_Spawn_0=-1,0,1
 Dungeon_Spawn_1=1,0,1
 Dungeon_Spawn_2=-1,0,-1
 Dungeon_Spawn_3=1,0,-1
-
-// Floors
-Dungeon_Floor9_Piece_Count=0
-
-Dungeon_Floor25_Piece_Count=0
-
-Dungeon_Floor49_Piece_Count=0
-
-Dungeon_Floor81_Piece_Count=0
-
-Dungeon_Floor729_Piece_Count=0
 
 ////////////////////////////////////////////////////////////////////////////

@@ -10,13 +10,12 @@
 #include <objects/Plate.h>
 #include <game/GameState.h>
 
-//
 class MapBuilder {
 public:
     static DungeonMap* getDungeonMap();
     static KitchenMap* getKitchenMap();
     static LobbyMap* getLobbyMap();
     static void processWalls(Map* mp, std::string prefix);
-    static void processFloors(Map* mp, std::string prefix);
+    static void processFloor(Map* mp, std::string prefix);
     static void processSpawns(Map* mp, std::string prefix);
 };
