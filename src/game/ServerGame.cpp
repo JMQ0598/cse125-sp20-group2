@@ -240,6 +240,7 @@ void ServerGame::update()
                 ingredientCopy->setStatus(IngredientStatus::Delicious);
             }
             // Spawn ingredient
+            ///NOTE: For joshua - investigate this on another branch. Is this why it's not always raw?
             else
             {
                 // Get random ingredient

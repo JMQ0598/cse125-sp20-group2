@@ -158,7 +158,7 @@ bool checkMapsExist() {
 }
 
 /**
- * Creates a thread to host a server and detaches the thread from this one.
+ * Creates a process to host a server and exits this process if successful.
  */
 void spawnHost() 
 {    
@@ -179,7 +179,7 @@ void spawnHost()
 }
 
 /**
- * Creates a thread to join a server and detaches the thread from this one.
+ * Creates a process to join a server and exits this process if successful.
  */
 void spawnClient() 
 {
