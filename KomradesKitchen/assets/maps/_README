@@ -1,0 +1,2 @@
+Please do not introduce keys in any of the configs/map files that match each other by name.
+The config loading is contigent upon the assumption that keys are unique across all such files.

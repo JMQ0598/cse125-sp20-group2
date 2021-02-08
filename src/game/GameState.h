@@ -12,6 +12,7 @@
 #include <chrono>
 #include <objects/DungeonMap.h>
 #include <objects/KitchenMap.h>
+#include <objects/LobbyMap.h>
 
 /**
  * This class holds the game state.
@@ -49,8 +50,9 @@ public:
     GameState();
     ~GameState();
 
+    ///TODO: Delete this if the game starts lagging hard
+    LobbyMap* lobbyMap;
     DungeonMap* dungeonMap;
-
     KitchenMap* kitchenMap;
 
     std::vector<CookEvent*> cookEvents;
@@ -93,7 +95,7 @@ public:
     /**
      * Adds objects from maps
      * */
-    void addWalls(Map* map);
+    void addTerrain(Map* map);
 
     void addIngredient(Ingredient* ing);
 

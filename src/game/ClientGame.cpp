@@ -16,29 +16,11 @@ ClientGame::ClientGame(std::string IP, int port) : client(IP, port)
     // Configure keybinds
     glfwSetWindowUserPointer(this->window->glfwViewport, reinterpret_cast<void*> (this));
     glfwSetKeyCallback(this->window->glfwViewport, key_callback_wrapper);
-
-    // Create floor lol
-    GameObject* floor = new GameObject(-1);
-    floor->setModel(Config::get("Floor_Model"));
-    floor->setPosition(glm::vec3(0,-0.5,0));
-    floor->applyScale(glm::vec3(2));
-    window->addObject(-1, floor);
-
-    // Winner model invisible
-    winner = new GameObject(-2);
-    glm::vec3 prisonLocation = Config::getVec3("Cell_Base");
-    prisonLocation.y = prisonLocation.y + 12;
-    winner->setModel(Config::get("Winner"));
-    winner->setPosition(prisonLocation);
-    winner->applyScale(glm::vec3(1));
-    winner->setRender(false);
-    window->addObject(-2, winner);
 }
 
 ClientGame::~ClientGame()
 {
     delete window;
-    delete winner;
 }
 
 /**
@@ -116,12 +98,17 @@ void ClientGame::keyBindsHandler(GLFWwindow* glfwWindow, int key, int scancode, 
     if (key == Config::getInt("Action") && action == GLFW_PRESS && this->window->getSelectedIngredient() != NULL && this->window->getRound() == KITCHEN_NUM )
     {
         std::cout << "pressed interact key" << std::endl;
-        Game::ClientMessage* cookMsg = MessageBuilder::toCookMessage(this->window->getSelectedIngredient());
-        this->client.send(*cookMsg);
-        delete cookMsg;
 
-        // Prevent spamming the event key, have to select ingredient again
-        this->window->selectedIngredient = NULL;
+        // Only allow interactions in kitchen round
+        if (window->getRound() == KITCHEN_NUM) 
+        {
+            Game::ClientMessage* cookMsg = MessageBuilder::toCookMessage(this->window->getSelectedIngredient());
+            this->client.send(*cookMsg);
+            delete cookMsg;
+
+            // Prevent spamming the event key, have to select ingredient again
+            this->window->selectedIngredient = NULL;
+        }
     }
 }
 
@@ -479,7 +466,6 @@ void ClientGame::updateGameState()
             {
                 std::cout << " received win event " << std::endl;
                 window->gameOver = true;
-                winner->setRender(true);
 
                 // Win or lose
                 if (currMessage.win().clientid() == clientId) {

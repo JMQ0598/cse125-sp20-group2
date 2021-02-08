@@ -1,0 +1,86 @@
+////////////////////////////////////////////////////////////////////////////
+
+// // // // // // // // 
+// KITCHEN MAP PROPERTIES
+// // //
+
+// Walls
+Kitchen_Wall_Count=4
+Kitchen_Wall_Pos_0=0,0,-60
+Kitchen_Wall_Rot_0=90
+Kitchen_Wall_Scale_0=47.5,1,1
+Kitchen_Wall_Pos_1=0,0,60
+Kitchen_Wall_Rot_1=90
+Kitchen_Wall_Scale_1=47.5,1,1
+Kitchen_Wall_Pos_2=-90,0,0
+Kitchen_Wall_Rot_2=0
+Kitchen_Wall_Scale_2=1,1,31.5
+Kitchen_Wall_Pos_3=90,0,0
+Kitchen_Wall_Rot_3=0
+Kitchen_Wall_Scale_3=1,1,31.5
+
+// Kitchen Spawn Positions
+Kitchen_Spawn_Count=4
+Kitchen_Spawn_0=-1,0,1
+Kitchen_Spawn_1=1,0,1
+Kitchen_Spawn_2=-1,0,-1
+Kitchen_Spawn_3=1,0,-1
+
+// Cell wall positions
+Cell_Wall_Count=4
+Cell_Scale=3
+Cell_Wall_0=6,0,-30
+Cell_Wall_1=-6,0,-30
+Cell_Wall_2=0,0,-36
+Cell_Wall_3=0,0,-24
+Cell_Base=0,-0.5,-30
+
+// Where players will spawn within the cell
+Cell_Spawn_Count=3
+Cell_Wall_Spawn_0=1,-0.5,-29
+Cell_Wall_Spawn_1=-1,-0.5,-29
+Cell_Wall_Spawn_2=0,-0.5,-28
+
+// Winner model location
+Winner_Pos=0,11.5,-30
+Winner_Scale=1,1,1
+Winner_Rot=0
+
+// Plate spawning
+Plate_Count=4
+Plate_0=-15,0,-13
+Plate_1=-5,0,-13
+Plate_2=5,0,-13
+Plate_3=15,0,-13
+
+// Cutting Board spawning
+Cutting_Board_Count=4
+Cutting_Board_0=-15,0,32
+Cutting_Board_1=-5,0,32
+Cutting_Board_2=5,0,32
+Cutting_Board_3=15,0,32
+
+// Pot Inital and Variation
+Pot_Count=4
+Pot_0=25,0,-5
+Pot_1=25,0,5
+Pot_2=25,0,15
+Pot_3=25,0,25
+
+// Pan Inital and Variation
+Pan_Count=4
+Pan_0=-25,0,-5
+Pan_1=-25,0,5
+Pan_2=-25,0,15
+Pan_3=-25,0,25
+
+// Plate Score
+Plate_Score=5
+
+// Floors
+Kitchen_Floor_Model=graphics/models/terrain/floor.obj
+Kitchen_Floor_Pos=0,-0.5,0
+Kitchen_Floor_Rot=0
+Kitchen_Floor_Scale=2,2,2
+
+////////////////////////////////////////////////////////////////////////////

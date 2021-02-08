@@ -2,10 +2,13 @@
 
 void GameProcessor::initLobbyPhase(GameState *gameState)
 {
-    gameState->setRoundTime(Config::getInt("Lobby_Round_Time"));
-    // Map* m = MapBuilder::getBasicMap();
-    // MapBuilder::assignIngredientPositions(r, m);
-    // gameState->addWalls(m);
+    // Create map and set the gameState's lobbyMap member
+    LobbyMap* m = MapBuilder::getLobbyMap();
+    gameState->lobbyMap = m;
+
+    // Add the game objects involved in the map
+    gameState->addTerrain(m);
+
 }
 
 void GameProcessor::initDungeonWaiting(GameState *gameState)
@@ -21,7 +24,7 @@ void GameProcessor::initKitchenWaiting(GameState *gameState)
 void GameProcessor::initDungeonPhase(GameState *gameState, ServerGame *server)
 {
     // Create the map
-    DungeonMap *m = MapBuilder::getBasicDungeonMap();
+    DungeonMap *m = MapBuilder::getDungeonMap();
 
     int recipeChoice = Config::getInt("Recipe_Choice");
     Recipe *r;
@@ -37,9 +40,8 @@ void GameProcessor::initDungeonPhase(GameState *gameState, ServerGame *server)
         r = RecipeBuilder::getBasicRecipe();
     }
 
-    MapBuilder::assignIngredientPositions(r, m);
     gameState->dungeonMap = m;
-    gameState->addWalls(m);
+    gameState->addTerrain(m);
     gameState->addRecipe(r);
 
     // Give all connected players basic ingredients
@@ -60,8 +62,14 @@ void GameProcessor::initDungeonPhase(GameState *gameState, ServerGame *server)
                 continue;
             }
 
+            // Set quality index
             currIngredient->setQualityIndex(BAD_QUALITY);
+
+            // Hide object
             currIngredient->renderInvisible();
+
+            // Free up memory associated with old model - we won't use it anymore
+            delete currIngredient->model;   
 
             currPlayer->addToInventory(currIngredient);
             gameState->addIngredient(currIngredient);
@@ -78,9 +86,6 @@ void GameProcessor::initDungeonPhase(GameState *gameState, ServerGame *server)
             server->specificMessages[clientId].push_back(serverMsg);
         }
     }
-
-    ///TODO: Spawn first ingredient
-    // spawnIngredient(gameState, r);
 }
 
 void GameProcessor::initPlayersLocations(Map *map, GameState *gameState)
@@ -96,10 +101,8 @@ void GameProcessor::initPlayersLocations(Map *map, GameState *gameState)
 
 void GameProcessor::initKitchenPhase(GameState *gameState)
 {
-    KitchenMap *m = MapBuilder::getBasicKitchenMap(gameState);
-
-    gameState->addWalls(m);
-
+    KitchenMap *m = MapBuilder::getKitchenMap();
+    gameState->addTerrain(m);
     gameState->kitchenMap = m;
 
     for (auto it = m->cookwareObjects.begin(); it != m->cookwareObjects.end(); it++)
@@ -456,6 +459,9 @@ void GameProcessor::initEndPhase(GameState *gameState, ServerGame *server)
     // Indicate who won and who lost
     Game::ServerMessage *winMessage = MessageBuilder::toWinningMessage(gameState->getWinningPlayer()->getClientID());
     server->messages.push_back(winMessage);
+
+    // Render winner model visible
+    gameState->kitchenMap->winner->setRender(true);
 
     // Spawn losing players in prison cell
     GameProcessor::movePlayersPrison(gameState);

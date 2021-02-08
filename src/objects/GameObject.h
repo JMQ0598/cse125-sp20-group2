@@ -25,8 +25,8 @@ enum ObjectType
 class GameObject
 {
 
-    /// TODO: remove this later - hardcoded id
 public:
+    // Object counter
     static int counter;
 
 private:
@@ -43,9 +43,6 @@ private:
     // Identifies the rendering ID of the object
     int ID;
 
-    // Inventory
-    std::unordered_map<unsigned int, GameObject *> inventory;
-
     // Able to pass through object
     bool passable = false;
 
@@ -58,7 +55,7 @@ protected:
     float baseRadius = 1;
 
     // Sizing - may be needed for collisions, depends on model size and scale
-    float width, height, depth;
+    float width, depth;
 
     // The bounding box for this game object
     BoundingBox *box = NULL;
@@ -109,7 +106,7 @@ public:
 
     /**
      * Should be called after setting the model or changing the scale.
-     * Should update width/depth accordingly. TODO: Consider if height is needed
+     * Should update width/depth accordingly.
      * */
     void updateMeasurements();
 
@@ -155,14 +152,6 @@ public:
     BoundingBox *getBoundingBox();
 
     void setRotation(float rot);
-
-    GameObject *getItem(int index);
-
-    // Will probably be used on item pickup in dungeon phase
-    void setItem(int index, GameObject *item);
-
-    // Will probably be used on item placement in cooking phase
-    void removeItem(int index);
 
     bool isPassable();
 

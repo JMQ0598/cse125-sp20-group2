@@ -1,8 +1,6 @@
 #pragma once
 
 #include <objects/GameObject.h>
-// #include <collisions/RectangleBoundingBox.h>
-// #include <collisions/CircleBoundingBox.h>
 
 class GameObject;
 
@@ -12,7 +10,7 @@ protected:
     GameObject *obj;
     float radius;
     float minX, minZ, maxX, maxZ;
-    float height, width, depth;
+    float width, depth;
     bool isCircle;
 
     bool isAABBIntersecting(BoundingBox *rbb);
@@ -40,14 +38,4 @@ public:
     void setWidth(float width);
 
     void setDepth(float depth);
-
-    void setHeight(float height);
-
-    // virtual bool isIntersecting(CircleBoundingBox*) {
-    //    return false;
-    // }
-
-    // virtual bool isIntersecting(RectangleBoundingBox*) {
-    //     return false;
-    // }
 };

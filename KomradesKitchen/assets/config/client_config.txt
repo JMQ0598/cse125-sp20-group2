@@ -47,9 +47,6 @@ Wall_Model=graphics/models/terrain/wall.obj
 Table_Model=graphics/models/terrain/wall.obj
 Dirty_Pillar_Model=graphics/models/terrain/dirtypillar.obj
 Dirty_Wall_Model=graphics/models/terrain/dirtywall.obj
-Tile_Model=graphics/models/terrain/tile.obj
-Tile4_Model=graphics/models/terrain/tile4.obj
-Tile9_Model=graphics/models/terrain/tile9.obj
 Floor_Model=graphics/models/terrain/floor.obj
 Cage_Bar_Model=graphics/models/terrain/rustycage_bars.obj
 Cage_Topbot_Model=graphics/models/terrain/rustycage_topbot.obj
@@ -59,7 +56,7 @@ Player_0=graphics/models/characters/Blue.obj
 Player_1=graphics/models/characters/Green.obj
 Player_2=graphics/models/characters/Purple.obj
 Player_3=graphics/models/characters/Red.obj
-Winner=graphics/models/ingredients/Winner.obj
+Winner_Model=graphics/models/ingredients/Winner.obj
 
 // Etc model paths
 Player_Model=graphics/models/old/Basic_Character_Model.obj
@@ -155,7 +152,7 @@ Ingredient_Rotation_Speed=0.05
 // SOUND VARIABLES
 // // //
 
-Background_Music_Volume=23
+Background_Music_Volume=10
 Sound_Effect_Volume=50
 Nyet_Effect_Volume=100
 Beep_Sound_Effect_Volume=20

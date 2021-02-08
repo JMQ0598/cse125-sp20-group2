@@ -13,6 +13,7 @@ class KitchenMap : public Map {
         std::vector<Table*> tableList;
         std::vector<Plate*> plateObjects;
         std::vector<glm::vec3> prisonLocations;
+        GameObject* winner;
 
         void toggleRender();
         void setRender(bool render);

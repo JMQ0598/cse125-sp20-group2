@@ -14,8 +14,10 @@ std::string EXEC_FILE = "LobbySetup.exe";
 // Declared here because static variables need to be declared outside of class
 std::unordered_map<std::string, std::string>* Config::client_vars;
 std::unordered_map<std::string, std::string>* Config::server_vars;
-std::unordered_map<std::string, std::string>* Config::updated_client_vars;
-std::unordered_map<std::string, std::string>* Config::updated_server_vars;
+std::unordered_set<std::string>* Config::updated_vars;
+std::unordered_map<std::string, std::string>* Config::dm_vars;
+std::unordered_map<std::string, std::string>* Config::km_vars;
+std::unordered_map<std::string, std::string>* Config::lm_vars;
 
 /**
  * Spawns the lobby setup process. Meant to be called exclusively
@@ -98,10 +100,6 @@ int main(int argc, char * argv[])
 
 	// Host and client - get port argument
 	int port = atoi(argv[2]);
-
-	// Client spawn only - get host argument
-	std::string host("localhost");
-	if (argc > 3) host = argv[3];
 	
 	// Used to store exit codes
 	int exitCode = 0;
@@ -110,13 +108,34 @@ int main(int argc, char * argv[])
 	std::string option = argv[1];
 	if (option == "server")
 	{
+		// Get map arguments
+		std::string dm = argv[3];
+		std::string km = argv[4];
+		std::string lm = argv[5];
+
+		// Read in map files
+		Config::readMapFile(dm, DM_VAL);
+		Config::readMapFile(km, KM_VAL);
+		Config::readMapFile(lm, LM_VAL);
+
+		// Start the server
 		ServerGame game(port);
 	}
 	else if (option == "client")
-	{
+	{	
+		// Client spawn only - get host argument
+		std::string host = argv[3];
+
+		// Connection notice
 		std::cout << "Attempting to connect to " << host << std::endl;
+
+		// Instantiate game
 		ClientGame game(host, port);
+		
+		// Close console
 		FreeConsole();
+
+		// Run game and get exit code
 		exitCode = game.runGame();
 	}
 
