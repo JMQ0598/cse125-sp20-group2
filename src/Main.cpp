@@ -98,32 +98,45 @@ int main(int argc, char * argv[])
 		return -1;
 	}
 
+	// Get map arguments
+	std::string dm = argv[2];
+	std::string km = argv[3];
+	std::string lm = argv[4];
+
 	// Host and client - get port argument
-	int port = atoi(argv[2]);
+	int port = atoi(argv[5]);
 
 	// Client spawn only - get host argument
 	std::string host("localhost");
-	if (argc > 3) host = argv[3];
+	if (argc > 6) host = argv[6];
 	
 	// Used to store exit codes
 	int exitCode = 0;
-
-	///TODO: Also need to receive map file names as args in the future.
-	Config::readMapFile("maps/BasicDungeon2.dm", DM_VAL);
-	Config::readMapFile("maps/BasicKitchen.km", KM_VAL);
-	Config::readMapFile("maps/BasicLobby.lm", LM_VAL);
 
 	// Determine if running server/client
 	std::string option = argv[1];
 	if (option == "server")
 	{
+		// Read in map files
+		Config::readMapFile(dm, DM_VAL);
+		Config::readMapFile(km, KM_VAL);
+		Config::readMapFile(lm, LM_VAL);
+
+		// Start the server
 		ServerGame game(port);
 	}
 	else if (option == "client")
-	{
+	{	
+		// Connection notice
 		std::cout << "Attempting to connect to " << host << std::endl;
+
+		// Instantiate game
 		ClientGame game(host, port);
+		
+		// Close console
 		FreeConsole();
+
+		// Run game and get exit code
 		exitCode = game.runGame();
 	}
 

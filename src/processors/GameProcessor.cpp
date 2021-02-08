@@ -460,6 +460,9 @@ void GameProcessor::initEndPhase(GameState *gameState, ServerGame *server)
     Game::ServerMessage *winMessage = MessageBuilder::toWinningMessage(gameState->getWinningPlayer()->getClientID());
     server->messages.push_back(winMessage);
 
+    // Render winner model visible
+    gameState->kitchenMap->winner->setRender(true);
+
     // Spawn losing players in prison cell
     GameProcessor::movePlayersPrison(gameState);
 }

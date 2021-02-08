@@ -41,7 +41,6 @@ class ClientGame {
 
         NetworkClient client;
         Window* window;
-        GameObject* winner;
         void receiveUpdates();
         void updateGameState();
         void processInput();

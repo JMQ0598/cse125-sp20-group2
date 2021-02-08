@@ -466,6 +466,7 @@ void ServerGame::onRoundChange()
         
             // Make kitchen visible, dungeon invisible (and ingredients)
             this->gameState.kitchenMap->setRender(true);
+            this->gameState.kitchenMap->winner->setRender(false);
             this->gameState.dungeonMap->setRender(false);
             for(auto ingredientPair : gameState.ingredientObjects )
                 ingredientPair.second->setRender(false);
@@ -492,7 +493,6 @@ void ServerGame::onRoundChange()
         {
             std::cout << "initializing kitchen" << std::endl;
             gameState.setRoundTime(Config::getInt("Kitchen_Round_Time"));
-            // "set render to false for everything not associate"
             break;
         }
         case Game::RoundInfo::END:

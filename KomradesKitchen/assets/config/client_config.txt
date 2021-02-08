@@ -56,7 +56,7 @@ Player_0=graphics/models/characters/Blue.obj
 Player_1=graphics/models/characters/Green.obj
 Player_2=graphics/models/characters/Purple.obj
 Player_3=graphics/models/characters/Red.obj
-Winner=graphics/models/ingredients/Winner.obj
+Winner_Model=graphics/models/ingredients/Winner.obj
 
 // Etc model paths
 Player_Model=graphics/models/old/Basic_Character_Model.obj
@@ -152,7 +152,7 @@ Ingredient_Rotation_Speed=0.05
 // SOUND VARIABLES
 // // //
 
-Background_Music_Volume=0
+Background_Music_Volume=10
 Sound_Effect_Volume=50
 Nyet_Effect_Volume=100
 Beep_Sound_Effect_Volume=20

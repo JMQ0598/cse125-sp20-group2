@@ -80,7 +80,7 @@ KitchenMap* MapBuilder::getKitchenMap() {
     cellBase->setPassable(true);
     mp->terrainList.push_back(cellBase);
 
-    // For testing, spawn player in prison
+    // Add prison spawn positions
     int prisonSpawnCount = Config::getInt("Cell_Spawn_Count");
     for (int i = 0; i < prisonSpawnCount; i++)
     {
@@ -139,6 +139,17 @@ KitchenMap* MapBuilder::getKitchenMap() {
         mp->cookwareObjects.push_back(c);
     }
 
+    // Add winner model
+    GameObject* winner = new GameObject();
+    winner->setPosition(Config::getVec3("Winner_Pos"));
+    winner->setModel(Config::get("Winner_Model"));
+    winner->applyScale(glm::vec3(Config::getInt("Winner_Scale")));
+    winner->setRotation(Config::getFloat("Winner_Rot"));
+    winner->setPassable(true);
+    mp->winner = winner;
+    mp->terrainList.push_back(winner);
+
+    // Return
     return mp;
 }
 

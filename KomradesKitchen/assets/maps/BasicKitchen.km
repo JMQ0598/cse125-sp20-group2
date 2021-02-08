@@ -41,6 +41,11 @@ Cell_Wall_Spawn_0=1,-0.5,-29
 Cell_Wall_Spawn_1=-1,-0.5,-29
 Cell_Wall_Spawn_2=0,-0.5,-28
 
+// Winner model location
+Winner_Pos=0,11.5,-30
+Winner_Scale=1,1,1
+Winner_Rot=0
+
 // Plate spawning
 Plate_Count=4
 Plate_0=-15,0,-13
@@ -76,6 +81,6 @@ Plate_Score=5
 Kitchen_Floor_Model=graphics/models/terrain/floor.obj
 Kitchen_Floor_Pos=0,-0.5,0
 Kitchen_Floor_Rot=0
-Kitchen_Floor_Scale=2
+Kitchen_Floor_Scale=2,2,2
 
 ////////////////////////////////////////////////////////////////////////////

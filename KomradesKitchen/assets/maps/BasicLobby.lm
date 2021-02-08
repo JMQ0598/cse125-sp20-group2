@@ -23,6 +23,6 @@ Lobby_Wall_Scale_3=1,1,31.5
 Lobby_Floor_Model=graphics/models/terrain/floor.obj
 Lobby_Floor_Pos=0,-0.5,0
 Lobby_Floor_Rot=0
-Lobby_Floor_Scale=2
+Lobby_Floor_Scale=2,2,2
 
 ////////////////////////////////////////////////////////////////////////////
