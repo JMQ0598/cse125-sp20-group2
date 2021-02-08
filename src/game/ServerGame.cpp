@@ -239,8 +239,8 @@ void ServerGame::update()
                 ingredientCopy = RecipeBuilder::createIngredient(VODKA);
                 ingredientCopy->setStatus(IngredientStatus::Delicious);
             }
+
             // Spawn ingredient
-            ///NOTE: For joshua - investigate this on another branch. Is this why it's not always raw?
             else
             {
                 // Get random ingredient
@@ -253,6 +253,9 @@ void ServerGame::update()
 
                 // Random quality index
                 ingredientCopy->randomizeQualityIndex();
+
+                // Make raw
+                ingredientCopy->setStatus(IngredientStatus::Raw);
             }
 
             // set spawn location
