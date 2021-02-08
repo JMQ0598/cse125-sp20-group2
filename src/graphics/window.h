@@ -89,6 +89,22 @@ public:
     std::string recipeName;
     GLFWimage icons[1];
 
+    // Enum used for keybinds
+    enum KeyBindStatus
+    {
+        none,
+        forwards,
+        backwards,
+        left,
+        right,
+        action,
+        ready,
+        settings
+    };
+
+    // Enum variable for window
+    KeyBindStatus currkeyBindStatus;
+
 private:
     Shader* shader;
     Shader* UIshader;

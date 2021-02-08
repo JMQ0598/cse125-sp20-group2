@@ -195,12 +195,12 @@ Font_Size_Pixels=15
 // KEYBINDS
 // // //
 
-Walk_Forward=65
-Walk_Backward=65
+Walk_Forward=87
+Walk_Backward=83
 Turn_Left=65
-Turn_Right=65
-Action=65
-Ready=65
-Open_Settings=65
+Turn_Right=68
+Action=69
+Ready=82
+Open_Settings=256
 
 ////////////////////////////////////////////////////////////////////////////

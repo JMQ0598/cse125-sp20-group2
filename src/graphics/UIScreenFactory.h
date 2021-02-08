@@ -16,6 +16,8 @@
 #include <glad/glad.h>		// Include this...
 #include <GLFW/glfw3.h>		// ...before this.
 
+class Window;
+
 class UIScreenFactory {
 public:
 	ImGuiIO* io = NULL;
@@ -56,7 +58,7 @@ public:
 	Ingredient* UIButtonInventory(std::unordered_map<int, Ingredient*>* map);
 	void UICookingEvent(std::string);
 	void UIInstructionSet(std::vector<std::string>, std::string recipeName);
-	void UIControls(GLFWwindow* window);
+	void UIControls(Window* window);
 
 	void UIGameOver(bool gameWin);
 
