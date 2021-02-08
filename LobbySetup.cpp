@@ -4,6 +4,7 @@
 #include <process.h>
 #include <tchar.h>
 #include <iostream>
+#include <cstdio>
 
 // Filepath
 std::string EXEC_FILE = "gg.exe"; 
@@ -26,7 +27,8 @@ const int DM_BOX_ID = 108;
 const int KM_TEXT_ID = 109;
 const int KM_BOX_ID = 110;
 const int LM_TEXT_ID = 111;
-const int LM_BOX_ID = 107;
+const int LM_BOX_ID = 112;
+const int MAPINFO_TEXT_ID = 113;
 
 // Controls
 HWND hInfo = NULL;      // Lets players know what to do
@@ -43,6 +45,7 @@ HWND hKMText = NULL;    // Text to indicate where to type kitchen map file
 HWND hKM = NULL;        // Text box to enter kitchen map file
 HWND hLMText = NULL;    // Text to indicate where to type lobby map file
 HWND hLM = NULL;        // Text box to enter lobby map file
+HWND hMapInfo = NULL;   // Lets players now only hosts can pick maps
 
 // Port/IP
 std::string port;
@@ -69,6 +72,9 @@ const char* ERR_ENOENT = "The file or path not found.";
 const char* ERR_ENOEXEC = "The specified file is not executable or has an invalid executable-file format.";
 const char* ERR_ENOMEM = "Not enough memory is available to execute the new process; the available memory has been corrupted; or an invalid block exists, indicating that the calling process was not allocated properly.";
 const char* ERR_GENERIC = "Unable to spawn game process.";
+const char* ERR_BADDM_STR = "Dungeon map not found. Try again.";
+const char* ERR_BADKM_STR = "Kitchen map not found. Try again.";
+const char* ERR_BADLM_STR = "Lobby map not found. Try again.";
 
 /**
  * Used for debugging when a process fails to spawn.
@@ -100,9 +106,12 @@ void errorSpawningProcess() {
     }
 }
 
+void clearStatusWarning() {
+    SetWindowText(hStatus, "");
+}
+
 /**
  * Stores map files into strings to send later as command args
- * TODO: Check if these files actually exist
  */
 void collectMapStrings() {
     char buf[32];
@@ -112,6 +121,40 @@ void collectMapStrings() {
     km = buf;
     GetWindowText(hLM, buf, 32);
     lm = buf;
+}
+
+bool checkMapsExist() {
+
+    // Check DM file
+    FILE* f = fopen(dm.c_str(), "r");
+    if (!f)
+    {
+        SetWindowText(hStatus, ERR_BADDM_STR);
+        return false;
+    }
+    fclose(f);
+
+    // Check KM file
+    f = fopen(km.c_str(), "r");
+    if (!f)
+    {
+        SetWindowText(hStatus, ERR_BADKM_STR);
+        return false;
+    }
+    fclose(f);
+
+    // Check LM file
+    f = fopen(lm.c_str(), "r");
+    if (!f)
+    {
+        SetWindowText(hStatus, ERR_BADLM_STR);
+        return false;
+    }
+    fclose(f);
+
+    // All checks passed.
+    clearStatusWarning();
+    return true;
 }
 
 /**
@@ -126,7 +169,7 @@ void spawnHost()
     si.cb = sizeof(si);
     ZeroMemory(&pi, sizeof(pi));
 
-    if (!CreateProcess(NULL, strdup(std::string(EXEC_FILE + " server " + dm + " " + km + " " + lm + " " + port).c_str()),
+    if (!CreateProcess(NULL, strdup(std::string(EXEC_FILE + " server " + port + " " + dm + " " + km + " " + lm).c_str()),
             NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
     {
         SetWindowText(hStatus, ERR_GENERIC);
@@ -147,17 +190,13 @@ void spawnClient()
     si.cb = sizeof(si);
     ZeroMemory(&pi, sizeof(pi));
 
-    if (!CreateProcess(NULL, strdup(std::string(EXEC_FILE + " client " + dm + " " + km + " " + lm + " " + port + " " + hostIP).c_str()),
+    if (!CreateProcess(NULL, strdup(std::string(EXEC_FILE + " client " + port + " " + hostIP).c_str()),
             NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
     {
         SetWindowText(hStatus, ERR_GENERIC);
     } else {
         ExitProcess(0);
     }
-}
-
-void clearStatusWarning() {
-    SetWindowText(hStatus, "");
 }
 
 void invalidPortWarning() {
@@ -261,15 +300,16 @@ LRESULT CALLBACK WndProc(
             hPort =     CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "9000", WS_CHILD | WS_VISIBLE, 65, 55, 185, 30, hWnd, (HMENU) PORT_BOX_ID, GetModuleHandle(NULL), NULL);
             hIPText =   CreateWindowEx(0, "STATIC", "IP:", WS_CHILD | WS_VISIBLE | SS_CENTER, 10, 95, 50, 30, hWnd, (HMENU) IP_TEXT_ID, GetModuleHandle(NULL), NULL);
             hIP =       CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "localhost", WS_CHILD | WS_VISIBLE, 65, 90, 185, 30, hWnd, (HMENU) IP_BOX_ID, GetModuleHandle(NULL), NULL);
-            hHost =     CreateWindowEx(0, "BUTTON", "Host", WS_CHILD | WS_VISIBLE, 95, 125, 110, 30, hWnd, (HMENU) HOST_BTN_ID, GetModuleHandle(NULL), NULL);
-            hJoin =     CreateWindowEx(0, "BUTTON", "Join", WS_CHILD | WS_VISIBLE, 95, 160, 110, 30, hWnd, (HMENU) JOIN_BTN_ID, GetModuleHandle(NULL), NULL);
-            hDMText =   CreateWindowEx(0, "STATIC", "Dungeon Map:", WS_CHILD | WS_VISIBLE | SS_CENTER, 5, 195, 95, 30, hWnd, (HMENU) DM_TEXT_ID, GetModuleHandle(NULL), NULL);
-            hDM =       CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "maps/BasicDungeon.dm", WS_CHILD | WS_VISIBLE, 105, 195, 180, 30, hWnd, (HMENU) DM_BOX_ID, GetModuleHandle(NULL), NULL);
-            hKMText =   CreateWindowEx(0, "STATIC", "Kitchen Map:", WS_CHILD | WS_VISIBLE | SS_CENTER, 5, 230, 95, 30, hWnd, (HMENU) KM_TEXT_ID, GetModuleHandle(NULL), NULL);
-            hKM =       CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "maps/BasicKitchen.km", WS_CHILD | WS_VISIBLE, 105, 230, 180, 30, hWnd, (HMENU) KM_BOX_ID, GetModuleHandle(NULL), NULL);
-            hLMText =   CreateWindowEx(0, "STATIC", "Lobby Map:  ", WS_CHILD | WS_VISIBLE | SS_CENTER, 5, 265, 95, 30, hWnd, (HMENU) LM_TEXT_ID, GetModuleHandle(NULL), NULL);
-            hLM =       CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "maps/BasicLobby.lm", WS_CHILD | WS_VISIBLE, 105, 265, 180, 30, hWnd, (HMENU) LM_BOX_ID, GetModuleHandle(NULL), NULL);
-            hStatus =   CreateWindowEx(0, "STATIC", cmdLine, WS_CHILD | WS_VISIBLE | SS_CENTER, 30, 300, 230, 60, hWnd, (HMENU) STATUS_TEXT_ID, GetModuleHandle(NULL), NULL);
+            hMapInfo =  CreateWindowEx(0, "STATIC", "Enter map file names below. Only hosts can choose the map.", WS_CHILD | WS_VISIBLE | SS_CENTER, 45, 130, 210, 40, hWnd, (HMENU) MAPINFO_TEXT_ID, GetModuleHandle(NULL), NULL);
+            hDMText =   CreateWindowEx(0, "STATIC", "Dungeon Map:", WS_CHILD | WS_VISIBLE | SS_CENTER, 5, 170, 95, 30, hWnd, (HMENU) DM_TEXT_ID, GetModuleHandle(NULL), NULL);
+            hDM =       CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "maps/BasicDungeon.dm", WS_CHILD | WS_VISIBLE, 105, 170, 180, 30, hWnd, (HMENU) DM_BOX_ID, GetModuleHandle(NULL), NULL);
+            hKMText =   CreateWindowEx(0, "STATIC", "Kitchen Map:", WS_CHILD | WS_VISIBLE | SS_CENTER, 5, 205, 95, 30, hWnd, (HMENU) KM_TEXT_ID, GetModuleHandle(NULL), NULL);
+            hKM =       CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "maps/BasicKitchen.km", WS_CHILD | WS_VISIBLE, 105, 205, 180, 30, hWnd, (HMENU) KM_BOX_ID, GetModuleHandle(NULL), NULL);
+            hLMText =   CreateWindowEx(0, "STATIC", "Lobby Map:  ", WS_CHILD | WS_VISIBLE | SS_CENTER, 5, 240, 95, 30, hWnd, (HMENU) LM_TEXT_ID, GetModuleHandle(NULL), NULL);
+            hLM =       CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "maps/BasicLobby.lm", WS_CHILD | WS_VISIBLE, 105, 240, 180, 30, hWnd, (HMENU) LM_BOX_ID, GetModuleHandle(NULL), NULL);
+            hHost =     CreateWindowEx(0, "BUTTON", "Host", WS_CHILD | WS_VISIBLE, 95, 280, 110, 30, hWnd, (HMENU) HOST_BTN_ID, GetModuleHandle(NULL), NULL);
+            hJoin =     CreateWindowEx(0, "BUTTON", "Join", WS_CHILD | WS_VISIBLE, 95, 315, 110, 30, hWnd, (HMENU) JOIN_BTN_ID, GetModuleHandle(NULL), NULL);
+            hStatus =   CreateWindowEx(0, "STATIC", cmdLine, WS_CHILD | WS_VISIBLE | SS_CENTER, 30, 360, 230, 60, hWnd, (HMENU) STATUS_TEXT_ID, GetModuleHandle(NULL), NULL);
             break;
 
         // Handle command messages to window
@@ -278,9 +318,8 @@ LRESULT CALLBACK WndProc(
             // Handle if host button is clicked
             if (LOWORD(wParam) == HOST_BTN_ID) {
                 collectMapStrings();
-                if (getPort()) spawnHost();
+                if (getPort() && checkMapsExist()) spawnHost();
             } else if (LOWORD(wParam) == JOIN_BTN_ID) {
-                collectMapStrings();
                 if (getPort() && getHostIP()) spawnClient();
             }
             break;
@@ -368,7 +407,7 @@ int CALLBACK WinMain(
         szTitle,                        // Title text
         WS_OVERLAPPED | WS_SYSMENU,     // Type of window to create
         CW_USEDEFAULT, CW_USEDEFAULT,   // Initial position of window
-        300, 400,                       // Initial size of window
+        300, 450,                       // Initial size of window
         NULL,                           // Parent of this window
         NULL,                           // Menu bar to be used with this window (NULL for class menu)
         hInstance,                      // An instance of this module

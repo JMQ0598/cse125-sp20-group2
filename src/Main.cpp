@@ -98,17 +98,8 @@ int main(int argc, char * argv[])
 		return -1;
 	}
 
-	// Get map arguments
-	std::string dm = argv[2];
-	std::string km = argv[3];
-	std::string lm = argv[4];
-
 	// Host and client - get port argument
-	int port = atoi(argv[5]);
-
-	// Client spawn only - get host argument
-	std::string host("localhost");
-	if (argc > 6) host = argv[6];
+	int port = atoi(argv[2]);
 	
 	// Used to store exit codes
 	int exitCode = 0;
@@ -117,6 +108,11 @@ int main(int argc, char * argv[])
 	std::string option = argv[1];
 	if (option == "server")
 	{
+		// Get map arguments
+		std::string dm = argv[3];
+		std::string km = argv[4];
+		std::string lm = argv[5];
+
 		// Read in map files
 		Config::readMapFile(dm, DM_VAL);
 		Config::readMapFile(km, KM_VAL);
@@ -127,6 +123,9 @@ int main(int argc, char * argv[])
 	}
 	else if (option == "client")
 	{	
+		// Client spawn only - get host argument
+		std::string host = argv[3];
+
 		// Connection notice
 		std::cout << "Attempting to connect to " << host << std::endl;
 

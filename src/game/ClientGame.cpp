@@ -16,6 +16,7 @@ ClientGame::ClientGame(std::string IP, int port) : client(IP, port)
     // Configure keybinds
     glfwSetWindowUserPointer(this->window->glfwViewport, reinterpret_cast<void*> (this));
     glfwSetKeyCallback(this->window->glfwViewport, key_callback_wrapper);
+}
 
 ClientGame::~ClientGame()
 {
