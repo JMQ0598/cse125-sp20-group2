@@ -3,6 +3,12 @@
 #include <unordered_map>
 #include <objects/Player.h>
 
+enum PlayerAnimState {
+    WADDLE = 1,
+    COOK = 2,
+    IDLE = 3
+};
+
 class Animator
 {
 public:
@@ -31,12 +37,12 @@ public:
     /**
      * Add a new animation to the Animator. Will set animsLoaded to false.
      * */
-    void addAnimation(GameObject*, std::string, Animation*);
+    void addAnimation(GameObject*, PlayerAnimState, Animation*);
 
     /**
      * Sets the current animation state for this object. Resets progress on current animation.
      * */
-    void setCurrentAnimation(GameObject*, std::string);
+    void setCurrentAnimation(GameObject*, PlayerAnimState);
 
     /**
      * Returns whether or not the current animation is set.
@@ -46,8 +52,7 @@ public:
     std::unordered_map<GameObject*, bool> animsLoadedFor;
 
 private:
-    std::unordered_map<GameObject*, std::string> prevState;
-    std::unordered_map<GameObject*, std::string> currentState;
+    std::unordered_map<GameObject*, PlayerAnimState> currentState;
     std::unordered_map<GameObject*, Animation*> currentAnimation;
-    std::unordered_map<GameObject*, std::unordered_map<std::string, Animation*>> animations;
+    std::unordered_map<GameObject*, std::unordered_map<PlayerAnimState, Animation*>> animations;
 };

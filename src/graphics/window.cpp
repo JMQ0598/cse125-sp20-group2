@@ -436,28 +436,28 @@ void Window::handleAnimations(GameObject* object)
 		switch (((Player*)object)->getClientID())
 		{
 			case 0:
-				animator.addAnimation(object, "Waddle", new Animation("Blue_Waddle"));
-				animator.addAnimation(object, "Cook", new Animation("Blue_Cook"));
-				animator.addAnimation(object, "Idle", new Animation("Blue_Idle"));
+				animator.addAnimation(object, PlayerAnimState::WADDLE, new Animation("Blue_Waddle"));
+				animator.addAnimation(object, PlayerAnimState::COOK, new Animation("Blue_Cook"));
+				animator.addAnimation(object, PlayerAnimState::IDLE, new Animation("Blue_Idle"));
 				break;
 			case 1:
-				animator.addAnimation(object, "Waddle", new Animation("Green_Waddle"));
-				animator.addAnimation(object, "Cook", new Animation("Green_Cook"));
-				animator.addAnimation(object, "Idle", new Animation("Green_Idle"));
+				animator.addAnimation(object, PlayerAnimState::WADDLE, new Animation("Green_Waddle"));
+				animator.addAnimation(object, PlayerAnimState::COOK, new Animation("Green_Cook"));
+				animator.addAnimation(object, PlayerAnimState::IDLE, new Animation("Green_Idle"));
 				break;
 			case 2:
-				animator.addAnimation(object, "Waddle", new Animation("Purple_Waddle"));
-				animator.addAnimation(object, "Cook", new Animation("Purple_Cook"));
-				animator.addAnimation(object, "Idle", new Animation("Purple_Idle"));
+				animator.addAnimation(object, PlayerAnimState::WADDLE, new Animation("Purple_Waddle"));
+				animator.addAnimation(object, PlayerAnimState::COOK, new Animation("Purple_Cook"));
+				animator.addAnimation(object, PlayerAnimState::IDLE, new Animation("Purple_Idle"));
 				break;
 			case 3:
-				animator.addAnimation(object, "Waddle", new Animation("Red_Waddle"));
-				animator.addAnimation(object, "Cook", new Animation("Red_Cook"));
-				animator.addAnimation(object, "Idle", new Animation("Red_Idle"));
+				animator.addAnimation(object, PlayerAnimState::WADDLE, new Animation("Red_Waddle"));
+				animator.addAnimation(object, PlayerAnimState::COOK, new Animation("Red_Cook"));
+				animator.addAnimation(object, PlayerAnimState::IDLE, new Animation("Red_Idle"));
 				break;
 		}
 
-		animator.setCurrentAnimation(object, "Idle");
+		animator.setCurrentAnimation(object, PlayerAnimState::IDLE);
 
 		// Load animations as needed
 		animator.loadAnimations(object);

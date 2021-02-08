@@ -35,14 +35,17 @@ void Animator::play(GameObject* object)
         return;
     }
 
+    // Previous state
+    PlayerAnimState prevState = currentState[object];
+
     // Set animation state based on object's action
     switch (object->getObjectType())
     {
         // Handle various player animation states
         case PLAYER:
-            if      (((Player*)object)->moving)     currentState[object] = "Waddle";
-            else if (((Player*)object)->cooking)    currentState[object] = "Cook";
-            else                                    currentState[object] = "Idle";
+            if      (((Player*)object)->moving)     currentState[object] = PlayerAnimState::WADDLE;
+            else if (((Player*)object)->cooking)    currentState[object] = PlayerAnimState::COOK;
+            else                                    currentState[object] = PlayerAnimState::IDLE;
             break;
 
         // Default case - really should not happen
@@ -52,10 +55,9 @@ void Animator::play(GameObject* object)
     }
 
     // Transition animations, if necessary
-    if (currentState[object].compare(prevState[object]) != 0)
+    if (currentState[object] != prevState)
     {
         setCurrentAnimation(object, currentState[object]);
-        prevState[object] = currentState[object];
     }
 
     ///NOTE: Debug statement
@@ -65,18 +67,18 @@ void Animator::play(GameObject* object)
     currentAnimation[object]->playNextFrame(object);
 }
 
-void Animator::addAnimation(GameObject* object, std::string animName, Animation* anim)
+void Animator::addAnimation(GameObject* object, PlayerAnimState animState, Animation* anim)
 {
     // Insert animation with the given name
-    (animations[object])[animName] = anim;
+    (animations[object])[animState] = anim;
 }
 
-void Animator::setCurrentAnimation(GameObject* object, std::string animName)
+void Animator::setCurrentAnimation(GameObject* object, PlayerAnimState animState)
 {
     // Edge case: Cannot find animation
-    if (animations[object].find(animName) == animations[object].end())
+    if (animations[object].find(animState) == animations[object].end())
     {
-        std::cerr << "Animation error: animation " << animName <<  " does not exist." << std::endl;
+        std::cerr << "Animation error: animation does not exist." << std::endl;
         return;
     }
 
@@ -84,5 +86,5 @@ void Animator::setCurrentAnimation(GameObject* object, std::string animName)
     if (currentAnimation.find(object) != currentAnimation.end()) currentAnimation[object]->reset();
 
     // Set current animation based on a given name
-    currentAnimation[object] = (animations[object])[animName];
+    currentAnimation[object] = (animations[object])[animState];
 }
