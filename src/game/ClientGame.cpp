@@ -56,63 +56,47 @@ bool isMappable(int key) {
 void ClientGame::keyBindsHandler(GLFWwindow* glfwWindow, int key, int scancode, int action, int mods)
 {
     // Checking for pending keybinds
-    /// TODO: actually implement keybind stuff below, modify as needed
-    // Code below is mainly just for testing
     if (action == GLFW_PRESS)
     {
         if (this->window->currkeyBindStatus != Window::KeyBindStatus::none)
         {
-            std::cout << "there is a keybind currently" << std::endl;
             if (this->window->currkeyBindStatus == Window::KeyBindStatus::forwards)
             {
                 if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Walk_Forward", key);
-                std::cout << "forwards" << std::endl;
             }
             else if (this->window->currkeyBindStatus == Window::KeyBindStatus::backwards)
             {
                 if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Walk_Backward", key);
-                std::cout << "backwards" << std::endl;
             }
             else if (this->window->currkeyBindStatus == Window::KeyBindStatus::left)
             {
                 if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Turn_Left", key);
-                std::cout << "left" << std::endl;
             }
             else if (this->window->currkeyBindStatus == Window::KeyBindStatus::right)
             {
                 if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Turn_Right", key);
-                std::cout << "right" << std::endl;
             }
             else if (this->window->currkeyBindStatus == Window::KeyBindStatus::action)
             {
                 if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Action", key);
-                std::cout << "action" << std::endl;
             }
             else if (this->window->currkeyBindStatus == Window::KeyBindStatus::ready)
             {
                 if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Ready", key);
-                std::cout << "ready" << std::endl;
             }
             else if (this->window->currkeyBindStatus == Window::KeyBindStatus::settings)
             {
                 if (Config::noConflictingKey(key) && isMappable(key))  Config::setInt("Open_Settings", key);
-                std::cout << "settings" << std::endl;
             }
 
-            std::cout << "resetting keybind to none" << std::endl;
+            // Reset keybind status - we are no longer changing a keybind
             this->window->currkeyBindStatus = Window::KeyBindStatus::none;
-        }
-
-        else
-        {
-            std::cout << "no active keybind detected" << std::endl;
         }
     }
     
     // Handles displaying the Settings Menu
     if (key == Config::getInt("Open_Settings") && action == GLFW_PRESS)
     {
-        std::cout << "opening settings menu" << std::endl;
         this->window->showSettings ^= true;
     }
 

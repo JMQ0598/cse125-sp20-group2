@@ -291,52 +291,41 @@ void UIScreenFactory::UIControls(Window* window) {
 	UIText("Walk Forward");
 	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Walk_Forward"), 32)) ) 
 	{
-		std::cout << "walk forwards keybind initiated" << std::endl;
-		std::cout << "Current key value: " << Config::getInt("Walk_Forward") << std::endl; 
 		window->currkeyBindStatus = Window::KeyBindStatus::forwards;
 	}
 
 	UIText("Walk Backward");
 	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Walk_Backward"), 32)) ) 
 	{
-		std::cout << "walk backwards keybind initiated" << std::endl;
-		std::cout << "Current key value: " << Config::getInt("Walk_Backward") << std::endl; 
 		window->currkeyBindStatus = Window::KeyBindStatus::backwards;
 	}
 
 	UIText("Turn Left");
 	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Turn_Left"), 32)) ) 
 	{
-		std::cout << "turn left keybind initiated" << std::endl;
-		std::cout << "Current key value: " << Config::getInt("Turn_Left") << std::endl; 
 		window->currkeyBindStatus = Window::KeyBindStatus::left;
 	}
 
 	UIText("Turn Right");
 	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Turn_Right"), 32)) )
 	{
-		std::cout << "turn right keybind initiated" << std::endl;
-		std::cout << "Current key value: " << Config::getInt("Turn_Right") << std::endl; 
 		window->currkeyBindStatus = Window::KeyBindStatus::right;
 	}
 
 	UIText("Action");
 	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Action"), 32)) )
 	{
-		std::cout << "action keybind initiated" << std::endl;
-		std::cout << "Current key value: " << Config::getInt("Action") << std::endl; 
 		window->currkeyBindStatus = Window::KeyBindStatus::action;
 	}
 
 	UIText("Ready");
 	if ( ImGui::Button(glfwGetKeyName(Config::getInt("Ready"), 32)) ) 
 	{
-		std::cout << "ready keybind initiated" << std::endl;
-		std::cout << "Current key value: " << Config::getInt("Ready") << std::endl; 
 		window->currkeyBindStatus = Window::KeyBindStatus::ready;
 	}
 
 	// Exit button
+	UIText("Exit");
 	if (ImGui::Button("Exit Game")) {
 		glfwSetWindowShouldClose(window->glfwViewport, true);
 	}
