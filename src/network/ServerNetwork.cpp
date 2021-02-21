@@ -73,6 +73,16 @@ void ServerNetwork::startAccepting()
     }
 }
 
+/**
+ * Helper method to check if there are fatal errors from WSAGetLastError.
+ * Returns true if there has been a fatal error with this socket and its
+ * corresponding client should be disconnected.
+ */
+bool checkForBadDisconnect()
+{
+    return WSAGetLastError() != 0 && WSAGetLastError() != WSAEWOULDBLOCK;
+}
+
 std::unordered_map<unsigned int, std::vector<Game::ClientMessage>> ServerNetwork::readAllMessages()
 {
     std::unordered_map<unsigned int, std::vector<Game::ClientMessage>> map;
@@ -92,7 +102,7 @@ std::unordered_map<unsigned int, std::vector<Game::ClientMessage>> ServerNetwork
             bytesReceived = NetworkService::receiveMessage(socket, network_data, DEFAULT_BUFLEN);
 
             // Client disconnect case
-            if (bytesReceived == 0)
+            if (bytesReceived == 0 || checkForBadDisconnect())
             {
                 if (this->onClientDisconnect) {
                     this->removeClient(clientId);
